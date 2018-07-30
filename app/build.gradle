@@ -36,7 +36,14 @@ dependencies {
     implementation ('com.google.android.gms:play-services-location:15.0.1') {
         exclude group: 'com.android.support'
     }
+
     implementation "com.android.support:design:27.1.1"
 
+
+    implementation "android.arch.persistence.room:runtime:1.1.1"
+    annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
+
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
 
 }
