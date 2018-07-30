@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/places_list_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_alignParentBottom="true"
+android:layout_centerHorizontal="true"
+android:orientation="vertical"
+    android:layout_gravity="bottom|center_horizontal">
+
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:padding="4dp"
+    android:src="@drawable/powered_by_google_light" />
+
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:autoLink="web"
+    android:paddingBottom="4dp"
+    android:text="@string/policies_privacy"
+    android:textAlignment="center" />
+</LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:onClick="onAddPlaceButtonClicked"
+        android:layout_margin="16dp"
+        android:contentDescription="Add new location"
+        android:elevation="6dp"
+        android:foreground="@android:drawable/ic_menu_add"
+        app:fabSize="normal"
+        app:pressedTranslationZ="12dp" />
+
+</android.support.design.widget.CoordinatorLayout>
