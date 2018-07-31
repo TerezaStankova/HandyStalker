@@ -1,15 +1,20 @@
 package com.example.android.handystalker.ui;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Movie;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.handystalker.R;
+import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.PlaceEntry;
+import com.example.android.handystalker.utilities.AppExecutors;
 import com.google.android.gms.location.places.PlaceBufferResponse;
 
 import java.util.List;
@@ -18,6 +23,9 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
 
     private Context mContext;
     private PlaceBufferResponse mPlaces;
+    // Member variable for the Database
+    private AppDatabase mDb;
+
     //private Task<PlaceBufferResponse> mPlaces;
     /**
      * Constructor using the context and the db cursor
@@ -51,11 +59,27 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
      * @param position The current position that needs to be loaded with data
      */
     @Override
-    public void onBindViewHolder(PlaceViewHolder holder, int position) {
+    public void onBindViewHolder(PlaceViewHolder holder, final int position) {
         String placeName = mPlaces.get(position).getName().toString();
         String placeAddress = mPlaces.get(position).getAddress().toString();
         holder.nameTextView.setText(placeName);
         holder.addressTextView.setText(placeAddress);
+        holder.deleteIcon.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                final String placeId = mPlaces.get(position).getId().toString();
+                // Delete from database
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDb.placeDao().deleteByPlaceId(placeId);
+                        Log.d("delete task","deleted task: ");
+                    }
+                });
+            }
+        });
     }
 
     public void swapPlaces(PlaceBufferResponse newPlaces){
@@ -82,14 +106,20 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
      */
     class PlaceViewHolder extends RecyclerView.ViewHolder {
 
+        ImageView deleteIcon;
         TextView nameTextView;
         TextView addressTextView;
 
         public PlaceViewHolder(View itemView) {
             super(itemView);
+            deleteIcon = (ImageView) itemView.findViewById(R.id.delete_icon);
             nameTextView = (TextView) itemView.findViewById(R.id.place_name);
             addressTextView = (TextView) itemView.findViewById(R.id.place_address);
         }
 
+    }
+
+    public void setDatabase(AppDatabase myDatabase) {
+        mDb = myDatabase;
     }
 }

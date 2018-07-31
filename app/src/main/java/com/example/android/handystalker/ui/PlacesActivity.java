@@ -102,6 +102,7 @@ public class PlacesActivity extends AppCompatActivity {
 
 
         mDb = AppDatabase.getInstance(getApplicationContext());
+        mAdapter.setDatabase(mDb);
         setupViewModel();
     }
 
@@ -114,6 +115,11 @@ public class PlacesActivity extends AppCompatActivity {
         mRecyclerView.setVisibility(View.VISIBLE);
     }
 
+    private void hidePlacesDataView() {
+        /* Then, make sure the movie data is visible */
+        mRecyclerView.setVisibility(View.GONE);
+    }
+
 
     private void setupViewModel() {
         showPlacesDataView();
@@ -121,8 +127,13 @@ public class PlacesActivity extends AppCompatActivity {
         viewModel.getPlaces().observe(this, new Observer<List<PlaceEntry>>() {
             @Override
             public void onChanged(@Nullable List<PlaceEntry> placeEntries) {
-                Log.d("message", "Updating list of places from LiveData in ViewModel");
-                if (placeEntries != null) {
+                Log.d("message", "Updating list of places from LiveData in ViewModel"  + placeEntries.size() );
+                if (placeEntries.size() == 0) {
+                    hidePlacesDataView();
+                    return;
+                }
+                if (placeEntries != null || placeEntries.size() != 0) {
+                    showPlacesDataView();
                     List<String> guids = new ArrayList<String>();
 
                     for (int i = 0; i < placeEntries.size(); i++) {
@@ -144,12 +155,10 @@ public class PlacesActivity extends AppCompatActivity {
                             }
                         }
                     });
-
                 }
             }
         });
     }
-
 
     /***
      * Button Click event handler to handle clicking the "Add new location" Button
