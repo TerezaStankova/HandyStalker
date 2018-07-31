@@ -31,6 +31,17 @@
         <activity android:name=".ui.ContactsActivity"
             android:parentActivityName=".ui.MainActivity">
         </activity>
+
+        <activity android:name=".ui.SmsRulesActivity"
+            android:parentActivityName=".ui.RulesActivity">
+        </activity>
+
+        <activity android:name=".ui.NotificationRulesActivity"
+            android:parentActivityName=".ui.RulesActivity">
+        </activity>
+
+        <activity android:name=".ui.NewContactActivity">
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>

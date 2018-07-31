@@ -17,4 +17,8 @@
     <string name="my_places">My Places</string>
     <string name="contacts">Contacts</string>
     <string name="my_rules">My rules</string>
+    <string name="send_sms">Send SMS</string>
+    <string name="e_mail">E-mail</string>
+    <string name="notification_rules">Notification Rules</string>
+    <string name="add_new_contact">Add new contact</string>
 </resources>

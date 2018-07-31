@@ -50,6 +50,7 @@
 
             <Button
                 android:id="@+id/rules_button"
+                style="@style/myButtonStyle"
                 android:onClick="onRulesButtonClicked"
                 android:layout_width="269dp"
                 android:layout_height="68dp"
@@ -58,7 +59,6 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
-                android:background="@color/colorAccent"
                 android:text="@string/my_rules"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -67,6 +67,7 @@
 
             <Button
                 android:id="@+id/contacts_button"
+                style="@style/myButtonStyle"
                 android:onClick="onContactsButtonClicked"
                 android:layout_width="269dp"
                 android:layout_height="68dp"
@@ -75,7 +76,6 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
-                android:background="@color/colorAccent"
                 android:text="@string/contacts"
                 app:layout_constraintBottom_toTopOf="@+id/rules_button"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -84,6 +84,7 @@
 
             <Button
                 android:id="@+id/places_button"
+                style="@style/myButtonStyle"
                 android:onClick="onPlaceButtonClicked"
                 android:layout_width="269dp"
                 android:layout_height="57dp"
@@ -92,7 +93,6 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
-                android:background="@color/colorAccent"
                 android:text="@string/my_places"
                 app:layout_constraintBottom_toTopOf="@+id/contacts_button"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -104,11 +104,11 @@ android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
-        android:onClick="onAddPlaceButtonClicked"
         android:layout_margin="16dp"
         android:contentDescription="Add new location"
         android:elevation="6dp"
-        android:foreground="@android:drawable/ic_menu_add"
+        android:foreground="@android:drawable/ic_input_add"
+        android:onClick="onAddPlaceButtonClicked"
         app:fabSize="normal"
         app:pressedTranslationZ="12dp" />
 

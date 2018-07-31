@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.PlaceEntry;
+import com.example.android.handystalker.model.Contact;
 import com.example.android.handystalker.utilities.AppExecutors;
 import com.google.android.gms.location.places.PlaceBufferResponse;
 
@@ -122,4 +123,5 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
     public void setDatabase(AppDatabase myDatabase) {
         mDb = myDatabase;
     }
+
 }
