@@ -18,6 +18,8 @@ import com.example.android.handystalker.utilities.AppExecutors;
 
 import java.util.List;
 
+import static com.google.android.gms.common.util.ArrayUtils.newArrayList;
+
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ContactViewHolder> {
 
 private Context mContext;
@@ -65,12 +67,14 @@ public ContactsAdapter(Context context, List<Contact> contacts) {
         holder.nameTextView.setText(contactName);
 
         if(contactEmail != null){
+            holder.emailTextView.setVisibility(View.VISIBLE);
             holder.emailTextView.setText(contactEmail);
         } else {
             holder.emailTextView.setVisibility(View.GONE);
         }
 
         if(contactPhone != null){
+            holder.phoneTextView.setVisibility(View.VISIBLE);
             holder.phoneTextView.setText(contactPhone);
         } else {
             holder.phoneTextView.setVisibility(View.GONE);
@@ -118,7 +122,7 @@ class ContactViewHolder extends RecyclerView.ViewHolder {
 
     public ContactViewHolder(View itemView) {
         super(itemView);
-        deleteIcon = (ImageView) itemView.findViewById(R.id.delete_icon);
+        deleteIcon = (ImageView) itemView.findViewById(R.id.delete_contact_icon);
         nameTextView = (TextView) itemView.findViewById(R.id.contact_name);
         emailTextView = (TextView) itemView.findViewById(R.id.contact_email);
         phoneTextView = (TextView) itemView.findViewById(R.id.contact_phone);
@@ -130,11 +134,12 @@ class ContactViewHolder extends RecyclerView.ViewHolder {
     }
     public void setContacts(List<Contact> contacts) {
         mContacts = contacts;
+        notifyDataSetChanged();
     }
 
     public void setContactsFromDatabase(List<ContactsEntry> contactsEntries) {
         if (contactsEntries != null) {
-            List<Contact> mContactDatabase = null;
+            List<Contact> mContactDatabase = newArrayList();
 
             for (int i = 0; i < contactsEntries.size(); i++) {
                 System.out.println("mPlaceEntry" + i + contactsEntries.get(i).getName());

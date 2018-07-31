@@ -19,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:text="email@"
         android:inputType="textEmailAddress" />
 
     <EditText
@@ -26,6 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:text="phone"
         android:inputType="phone" />
 
     <android.support.design.widget.FloatingActionButton

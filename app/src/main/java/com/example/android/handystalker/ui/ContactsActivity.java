@@ -44,7 +44,7 @@ public class ContactsActivity  extends AppCompatActivity {
 
 
         // Set up the recycler view
-        mRecyclerView = (RecyclerView) findViewById(R.id.places_list_recycler_view);
+        mRecyclerView = (RecyclerView) findViewById(R.id.contacts_list_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new ContactsAdapter(this, null);
         mRecyclerView.setAdapter(mAdapter);
