@@ -8,20 +8,21 @@ import java.util.List;
 
 public class PlaceRepository {
 
-    private PlaceDao mWordDao;
-    private LiveData<List<PlaceEntry>> mAllWords;
-    private String title;
+    private PlaceDao mPlaceDao;
+    private LiveData<List<PlaceEntry>> mAllPlaces;
 
     public PlaceRepository(Application application) {
         AppDatabase db = AppDatabase.getInstance(application);
-        mWordDao = db.movieDao();
-        mAllWords = mWordDao.loadAllMovies();
+        mPlaceDao = db.placeDao();
+        mAllPlaces = mPlaceDao.loadAllPlaces();
     }
 
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
-    public LiveData<List<PlaceEntry>> getAllMovies() {
-        return mAllWords;
+    public LiveData<List<PlaceEntry>> getAllPlaces() {
+        return mAllPlaces;
     }
 }
+
+
 

@@ -1,4 +1,4 @@
-package com.example.android.handystalker;
+package com.example.android.handystalker.geofencing;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -13,7 +13,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();
     private static final Object LOCK = new Object();
-    private static final String DATABASE_NAME = "movielist";
+    private static final String DATABASE_NAME = "placeslist";
     private static AppDatabase sInstance;
 
     public static AppDatabase getInstance(Context context) {
@@ -29,5 +29,5 @@ public abstract class AppDatabase extends RoomDatabase {
         return sInstance;
     }
 
-    public abstract PlaceDao movieDao();
+    public abstract PlaceDao placeDao();
 }

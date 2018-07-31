@@ -1,13 +1,18 @@
-package com.example.android.handystalker;
+package com.example.android.handystalker.ui;
 
 import android.content.Context;
+import android.graphics.Movie;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.android.handystalker.R;
+import com.example.android.handystalker.database.PlaceEntry;
 import com.google.android.gms.location.places.PlaceBufferResponse;
+
+import java.util.List;
 
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewHolder> {
 

@@ -4,29 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="Settings"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/colorPrimaryDark" />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dip"
-            android:layout_marginTop="4dp"
-            android:background="@color/colorPrimary" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,44 +35,14 @@
                 android:layout_gravity="center"
                 android:text="Enable Stalking"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:paddingRight="8dp"
-                android:paddingTop="4dp"
-                app:srcCompat="@drawable/ic_my_location_green_24dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Location Permission"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@android:color/black" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <CheckBox
-                    android:id="@+id/location_permission_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="8dp"
-                    />
-
-            </RelativeLayout>
-        </LinearLayout>
-
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:layout_marginTop="4dp"
+            android:background="@color/colorPrimary" />
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -93,6 +50,7 @@
 
             <Button
                 android:id="@+id/rules_button"
+                android:onClick="onRulesButtonClicked"
                 android:layout_width="269dp"
                 android:layout_height="68dp"
                 android:layout_marginBottom="60dp"
@@ -101,7 +59,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
                 android:background="@color/colorAccent"
-                android:text="My rules"
+                android:text="@string/my_rules"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.507"
@@ -109,6 +67,7 @@
 
             <Button
                 android:id="@+id/contacts_button"
+                android:onClick="onContactsButtonClicked"
                 android:layout_width="269dp"
                 android:layout_height="68dp"
                 android:layout_marginBottom="44dp"
@@ -117,7 +76,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
                 android:background="@color/colorAccent"
-                android:text="Contacts"
+                android:text="@string/contacts"
                 app:layout_constraintBottom_toTopOf="@+id/rules_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.507"
@@ -125,6 +84,7 @@
 
             <Button
                 android:id="@+id/places_button"
+                android:onClick="onPlaceButtonClicked"
                 android:layout_width="269dp"
                 android:layout_height="57dp"
                 android:layout_marginBottom="32dp"
@@ -133,7 +93,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
                 android:background="@color/colorAccent"
-                android:text="My Places"
+                android:text="@string/my_places"
                 app:layout_constraintBottom_toTopOf="@+id/contacts_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.507"
