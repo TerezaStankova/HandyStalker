@@ -7,40 +7,41 @@
     <Button
         android:id="@+id/message_button"
         style="@style/myButtonStyle"
-        android:onClick="onSMSButtonClicked"
-        android:layout_width="269dp"
-        android:layout_height="68dp"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="wrap_content"
+        android:layout_margin="44dp"
         android:layout_marginBottom="44dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:text="@string/send_sms"/>
+        android:onClick="onSMSButtonClicked"
+        android:text="@string/send_sms" />
 
     <Button
         android:id="@+id/email_button"
         style="@style/myButtonStyle"
-        android:onClick="onEmailButtonClicked"
-        android:layout_width="269dp"
-        android:layout_height="68dp"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|fill_horizontal"
         android:layout_marginBottom="44dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:text="@string/e_mail"/>
+        android:onClick="onEmailButtonClicked"
+        android:text="@string/e_mail" />
 
     <Button
         android:id="@+id/notification_button"
         style="@style/myButtonStyle"
-        android:onClick="onNotificationButtonClicked"
-        android:layout_width="269dp"
-        android:layout_height="68dp"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
         android:layout_marginBottom="44dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:text="@string/notification_rules"/>
+        android:onClick="onNotificationButtonClicked"
+        android:text="@string/notification_rules" />
 
 </LinearLayout>

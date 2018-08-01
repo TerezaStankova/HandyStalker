@@ -14,12 +14,17 @@ public class PlaceRepository {
     private ContactDao mContactDao;
     private LiveData<List<ContactsEntry>> mAllContacts;
 
+    private RuleDao mRuleDao;
+    private LiveData<List<RuleEntry>> mAllRules;
+
     public PlaceRepository(Application application) {
         AppDatabase db = AppDatabase.getInstance(application);
         mPlaceDao = db.placeDao();
         mAllPlaces = mPlaceDao.loadAllPlaces();
         mContactDao = db.contactDao();
         mAllContacts = mContactDao.loadAllContacts();
+        mRuleDao = db.ruleDao();
+        mAllRules = mRuleDao.loadAllRules();
     }
 
     // Room executes all queries on a separate thread.
@@ -30,6 +35,10 @@ public class PlaceRepository {
 
     public LiveData<List<ContactsEntry>> getmAllContacts() {
         return mAllContacts;
+    }
+
+    public LiveData<List<RuleEntry>> getmAllRules() {
+        return mAllRules;
     }
 }
 

@@ -19,4 +19,7 @@ public interface PlaceDao {
 
     @Query("DELETE FROM place WHERE place_id = :placeId")
     void deleteByPlaceId(String placeId);
+
+    @Query("SELECT place_name FROM place WHERE id=:placeId")
+    String findPlaceNameById(int placeId);
 }

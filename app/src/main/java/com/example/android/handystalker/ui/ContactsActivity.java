@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,17 +14,9 @@ import android.view.View;
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.ContactsEntry;
-import com.example.android.handystalker.database.PlaceEntry;
-import com.example.android.handystalker.geofencing.Geofencing;
+import com.example.android.handystalker.ui.Adapters.ContactsAdapter;
 import com.example.android.handystalker.utilities.ContactsViewModel;
-import com.example.android.handystalker.utilities.PlacesViewModel;
-import com.google.android.gms.location.GeofencingClient;
-import com.google.android.gms.location.places.GeoDataClient;
-import com.google.android.gms.location.places.PlaceBufferResponse;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ContactsActivity  extends AppCompatActivity {

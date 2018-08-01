@@ -11,16 +11,17 @@ import java.util.List;
 
 @Dao
 public interface RuleDao {
-    @Query("SELECT * FROM place ORDER BY id")
-    LiveData<List<PlaceEntry>> loadAllPlaces();
+    @Query("SELECT * FROM rule ORDER BY id")
+    LiveData<List<RuleEntry>> loadAllRules();
 
-    //It will ignore the transaction if the same placeId already exists in DB
+    //It will ignore the transaction if the same ruleId already exists in DB
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertPlace(PlaceEntry placeEntry);
+    void insertRule(RuleEntry ruleEntry);
 
-    @Query("DELETE FROM place WHERE place_id = :placeId")
-    void deleteByPlaceId(String placeId);
+    @Query("DELETE FROM rule WHERE id = :ruleId")
+    void deleteByRuleId(int ruleId);
 
     @Query("SELECT * FROM rule WHERE arrival_id=:arrivalId")
     List<RuleEntry> findRulesForArrivalPlace(final int arrivalId);
+
 }

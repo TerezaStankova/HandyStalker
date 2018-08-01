@@ -26,4 +26,13 @@ public interface ContactDao {
 
     @Query("DELETE FROM contacts WHERE id = :contactId")
     void deleteByContactId(int contactId);
+
+    @Query("SELECT name FROM contacts WHERE id=:contactId")
+    String findNameForContactId(final int contactId);
+
+    @Query("SELECT phone FROM contacts WHERE id=:contactId")
+    String findPhoneForContactId(final int contactId);
+
+    @Query("SELECT email FROM contacts WHERE id=:contactId")
+    String findEmailForContactId(final int contactId);
 }

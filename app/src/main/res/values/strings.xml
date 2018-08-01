@@ -26,4 +26,11 @@
     <string name="save">Save this place</string>
     <string name="cancel">Cancel</string>
     <string name="enter_name">Enter name of your place</string>
+
+
+    <string-array name="type_array">
+        <item>Send SMS</item>
+        <item>Send Email</item>
+    </string-array>
+
 </resources>

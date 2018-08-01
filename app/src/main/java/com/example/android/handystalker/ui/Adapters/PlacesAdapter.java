@@ -1,8 +1,6 @@
-package com.example.android.handystalker.ui;
+package com.example.android.handystalker.ui.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Movie;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,8 +11,6 @@ import android.widget.TextView;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
-import com.example.android.handystalker.database.PlaceEntry;
-import com.example.android.handystalker.model.Contact;
 import com.example.android.handystalker.utilities.AppExecutors;
 import com.google.android.gms.location.places.PlaceBufferResponse;
 
