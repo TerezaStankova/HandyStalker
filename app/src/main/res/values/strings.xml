@@ -21,4 +21,9 @@
     <string name="e_mail">E-mail</string>
     <string name="notification_rules">Notification Rules</string>
     <string name="add_new_contact">Add new contact</string>
+
+
+    <string name="save">Save this place</string>
+    <string name="cancel">Cancel</string>
+    <string name="enter_name">Enter name of your place</string>
 </resources>

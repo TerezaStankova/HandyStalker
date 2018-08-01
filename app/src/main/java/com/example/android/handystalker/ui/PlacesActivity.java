@@ -1,18 +1,17 @@
 package com.example.android.handystalker.ui;
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.ContentValues;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Movie;
-import android.net.Uri;
+
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -49,7 +48,8 @@ import java.util.List;
 
 import static com.google.android.gms.location.places.ui.PlacePicker.getPlace;
 
-public class PlacesActivity extends AppCompatActivity {
+public class PlacesActivity extends AppCompatActivity
+        implements PlaceNameFragment.PlaceNameListener {
 
     // Constants
     public static final String TAG = PlacesActivity.class.getSimpleName();
@@ -111,12 +111,12 @@ public class PlacesActivity extends AppCompatActivity {
     }
 
     private void showPlacesDataView() {
-        /* Then, make sure the movie data is visible */
+        /* Then, make sure the data is visible */
         mRecyclerView.setVisibility(View.VISIBLE);
     }
 
     private void hidePlacesDataView() {
-        /* Then, make sure the movie data is visible */
+        /* Then, make sure the data is invisible */
         mRecyclerView.setVisibility(View.GONE);
     }
 
@@ -134,20 +134,22 @@ public class PlacesActivity extends AppCompatActivity {
                 }
                 if (placeEntries != null || placeEntries.size() != 0) {
                     showPlacesDataView();
-                    List<String> guids = new ArrayList<String>();
+                    List<String> placeIds = new ArrayList<String>();
+                    final List<String> placeNames = new ArrayList<String>();
 
                     for (int i = 0; i < placeEntries.size(); i++) {
-                        guids.add(placeEntries.get(i).getPlaceId());
-                        System.out.println("guids" + i + guids.get(i));
+                        placeIds.add(placeEntries.get(i).getPlaceId());
+                        System.out.println("placeIds" + i + placeIds.get(i));
+                        placeNames.add(placeEntries.get(i).getPlaceName());
+                        System.out.println("placeNames" + i + placeNames.get(i));
                     }
 
-
-                    mGeoDataClient.getPlaceById(guids.toArray(new String[guids.size()])).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
+                    mGeoDataClient.getPlaceById(placeIds.toArray(new String[placeIds.size()])).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
                         @Override
                         public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
                             if (task.isSuccessful()) {
                                 PlaceBufferResponse places = task.getResult();
-                                mAdapter.swapPlaces(places);
+                                mAdapter.swapPlaces(places, placeNames);
                                 mGeofencing.updateGeofencesList(places);
                                 if (mIsEnabled) mGeofencing.registerAllGeofences();
                             } else {
@@ -202,26 +204,59 @@ public class PlacesActivity extends AppCompatActivity {
                 return;
             }
 
+
+
             // Extract the place information from the API
             String placeName = place.getName().toString();
             String placeAddress = place.getAddress().toString();
             String placeId = place.getId();
 
-
-            final PlaceEntry placeEntry = new PlaceEntry(placeId);
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    // insert new task
-                    mDb.placeDao().insertPlace(placeEntry);
-                    //You should checkout Timber library (https://github.com/JakeWharton/timber) for easier logging.
-                }
-            });
-
-            // Get live data information
-            //refreshPlacesData();
+            showNamePlaceDialog(placeId, placeAddress);
         }
     }
+
+    public void showNamePlaceDialog(String placeId, String placeAddress) {
+        // Create an instance of the dialog fragment and show it
+        PlaceNameFragment dialog = new PlaceNameFragment();
+        dialog.setAddress(placeAddress);
+        dialog.setmPlaceId(placeId);
+        dialog.show(getSupportFragmentManager(), "PlaceNameFragment");
+    }
+
+    // The dialog fragment receives a reference to this Activity through the
+    // Fragment.onAttach() callback, which it uses to call the following methods
+    // defined by the NoticeDialogFragment.NoticeDialogListener interface
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog, String id, String name) {
+        // User touched the dialog's positive button
+
+        final PlaceEntry placeEntry = new PlaceEntry(id, name);
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                // insert new task
+                mDb.placeDao().insertPlace(placeEntry);
+            }
+        });
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        // User touched the dialog's negative button
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public void onResume() {

@@ -26,6 +26,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
     private PlaceBufferResponse mPlaces;
     // Member variable for the Database
     private AppDatabase mDb;
+    List<String> mNames;
 
     //private Task<PlaceBufferResponse> mPlaces;
     /**
@@ -61,7 +62,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
      */
     @Override
     public void onBindViewHolder(PlaceViewHolder holder, final int position) {
-        String placeName = mPlaces.get(position).getName().toString();
+        String placeName = mNames.get(position);
         String placeAddress = mPlaces.get(position).getAddress().toString();
         holder.nameTextView.setText(placeName);
         holder.addressTextView.setText(placeAddress);
@@ -83,7 +84,8 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
         });
     }
 
-    public void swapPlaces(PlaceBufferResponse newPlaces){
+    public void swapPlaces(PlaceBufferResponse newPlaces, List<String> names){
+        mNames = names;
         mPlaces = newPlaces;
         if (mPlaces != null) {
             // Force the RecyclerView to refresh

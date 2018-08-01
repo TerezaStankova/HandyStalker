@@ -19,13 +19,17 @@ public class PlaceEntry {
     @NonNull
     private String placeId;
 
+    @ColumnInfo(name = "place_name")
+    @NonNull
+    private String placeName;
+
     @Ignore
     public PlaceEntry() {
     }
 
-    public PlaceEntry(@NonNull String placeId) {
+    public PlaceEntry(@NonNull String placeId, @NonNull String placeName) {
         this.placeId = placeId;
-
+        this.placeName = placeName;
     }
 
     // Getters and setters are required for Room to work.
@@ -42,5 +46,10 @@ public class PlaceEntry {
     }
     public void setPlaceId(String placeId) {
         this.placeId = placeId;
+    }
+
+    public String getPlaceName() { return placeName; }
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
     }
 }
