@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 public class PlaceEntry {
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
     @NonNull
     private int id;
 

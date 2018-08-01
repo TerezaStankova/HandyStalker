@@ -20,4 +20,7 @@ public interface RuleDao {
 
     @Query("DELETE FROM place WHERE place_id = :placeId")
     void deleteByPlaceId(String placeId);
+
+    @Query("SELECT * FROM rule WHERE arrival_id=:arrivalId")
+    List<RuleEntry> findRulesForArrivalPlace(final int arrivalId);
 }

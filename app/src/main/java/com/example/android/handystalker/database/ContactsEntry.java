@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 public class ContactsEntry {
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
     @NonNull
     private int id;
 
