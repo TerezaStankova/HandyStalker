@@ -1,22 +1,32 @@
 package com.example.android.handystalker.ui;
 
+import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.Toast;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
+import com.example.android.handystalker.database.ContactsEntry;
 import com.example.android.handystalker.database.RuleEntry;
+import com.example.android.handystalker.model.Contact;
 import com.example.android.handystalker.model.Rule;
 import com.example.android.handystalker.ui.Adapters.RulesAdapter;
 import com.example.android.handystalker.utilities.AppExecutors;
+import com.example.android.handystalker.utilities.ContactsViewModel;
 import com.example.android.handystalker.utilities.RulesViewModel;
 
 import java.util.List;
@@ -32,6 +42,8 @@ public class SmsRulesActivity extends AppCompatActivity {
     // Member variable for the Database
     private AppDatabase mDb;
 
+    private static final int PERMISSIONS_REQUEST = 2222;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +58,7 @@ public class SmsRulesActivity extends AppCompatActivity {
         mDb = AppDatabase.getInstance(getApplicationContext());
         mAdapter.setDatabase(mDb);
 
-        setupViewModel();
+        setUpRulesViewModel();
     }
 
     public void onAddSendRulesButtonClicked(View view) {
@@ -65,7 +77,7 @@ public class SmsRulesActivity extends AppCompatActivity {
     }
 
 
-    private void setupViewModel() {
+    private void setUpRulesViewModel() {
         showContactsDataView();
         RulesViewModel viewModel = ViewModelProviders.of(this).get(RulesViewModel.class);
         viewModel.getRules().observe(this, new Observer<List<RuleEntry>>() {
@@ -101,12 +113,38 @@ public class SmsRulesActivity extends AppCompatActivity {
                         }
                         mAdapter.setRules(mContactDatabase);
                 }
-                //mAdapter.setRulesFromDatabase(ruleEntries);
-
             }
 
         });
     }
+
+    public void onSMSPermissionClicked(View view) {
+        ActivityCompat.requestPermissions(SmsRulesActivity.this,
+                new String[]{Manifest.permission.SEND_SMS},
+                PERMISSIONS_REQUEST);
+    }
+
+    public void onEmailPermissionClicked(View view) {
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Initialize location permissions checkbox
+        CheckBox smsPermissions = (CheckBox) findViewById(R.id.sms_permission_checkbox);
+        if (ActivityCompat.checkSelfPermission(SmsRulesActivity.this,
+                android.Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            smsPermissions.setChecked(false);
+        } else {
+            smsPermissions.setChecked(true);
+            smsPermissions.setEnabled(false);
+        }
+    }
+
 }
+
+
 
 

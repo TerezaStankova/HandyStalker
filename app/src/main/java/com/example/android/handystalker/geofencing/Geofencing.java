@@ -120,6 +120,7 @@ public class Geofencing implements ResultCallback {
         for (Place place : places) {
             // Read the place information from the DB cursor
             String placeUID = place.getId();
+            Log.d("updateGeofenceList", "regId" + placeUID);
             double placeLat = place.getLatLng().latitude;
             double placeLng = place.getLatLng().longitude;
             // Build a Geofence object

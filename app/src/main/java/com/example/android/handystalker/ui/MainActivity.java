@@ -38,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
         Button mContactsButton = (Button)findViewById(R.id.contacts_button);
         Button mRulesButton = (Button)findViewById(R.id.rules_button);
 
+        mGeoClient = LocationServices.getGeofencingClient(this);
+
+        mGeofencing = new Geofencing(this, mGeoClient);
+
         // Initialize the switch state and Handle enable/disable switch change
         Switch onOffSwitch = (Switch) findViewById(R.id.enable_switch);
         mIsEnabled = getPreferences(MODE_PRIVATE).getBoolean(getString(R.string.setting_enabled), false);
@@ -54,9 +58,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mGeoClient = LocationServices.getGeofencingClient(this);
 
-        mGeofencing = new Geofencing(this, mGeoClient);
     }
 
       /** Called when the user taps the Place button */

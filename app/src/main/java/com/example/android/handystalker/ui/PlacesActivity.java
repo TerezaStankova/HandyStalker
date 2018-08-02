@@ -78,6 +78,12 @@ public class PlacesActivity extends AppCompatActivity
         mAdapter = new PlacesAdapter(this, null);
         mRecyclerView.setAdapter(mAdapter);
 
+        mGeoClient = LocationServices.getGeofencingClient(this);
+
+        mGeofencing = new Geofencing(this, mGeoClient);
+        mGeoDataClient = Places.getGeoDataClient(this);
+
+
         // Initialize the switch state and Handle enable/disable switch change
         Switch onOffSwitch = (Switch) findViewById(R.id.enable_switch);
         mIsEnabled = getPreferences(MODE_PRIVATE).getBoolean(getString(R.string.setting_enabled), false);
@@ -94,12 +100,6 @@ public class PlacesActivity extends AppCompatActivity
             }
 
         });
-
-        mGeoClient = LocationServices.getGeofencingClient(this);
-
-        mGeofencing = new Geofencing(this, mGeoClient);
-        mGeoDataClient = Places.getGeoDataClient(this);
-
 
         mDb = AppDatabase.getInstance(getApplicationContext());
         mAdapter.setDatabase(mDb);
@@ -152,6 +152,7 @@ public class PlacesActivity extends AppCompatActivity
                                 mAdapter.swapPlaces(places, placeNames);
                                 mGeofencing.updateGeofencesList(places);
                                 if (mIsEnabled) mGeofencing.registerAllGeofences();
+                                places.release();
                             } else {
                                 Log.e(TAG, "Place not found.");
                             }
@@ -244,15 +245,6 @@ public class PlacesActivity extends AppCompatActivity
     public void onDialogNegativeClick(DialogFragment dialog) {
         // User touched the dialog's negative button
     }
-
-
-
-
-
-
-
-
-
 
 
 

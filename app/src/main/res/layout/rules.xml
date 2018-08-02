@@ -10,9 +10,6 @@
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:layout_margin="44dp"
-        android:layout_marginBottom="44dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:onClick="onSMSButtonClicked"
         android:text="@string/send_sms" />
 
@@ -21,12 +18,7 @@
         style="@style/myButtonStyle"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|fill_horizontal"
-        android:layout_marginBottom="44dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_margin="44dp"
         android:onClick="onEmailButtonClicked"
         android:text="@string/e_mail" />
 
@@ -35,12 +27,7 @@
         style="@style/myButtonStyle"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_marginBottom="44dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_margin="44dp"
         android:onClick="onNotificationButtonClicked"
         android:text="@string/notification_rules" />
 

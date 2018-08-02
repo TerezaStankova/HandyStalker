@@ -42,6 +42,9 @@
 
         <activity android:name=".ui.NewContactActivity">
         </activity>
+
+        <activity android:name=".ui.NewRuleActivity">
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>
