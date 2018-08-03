@@ -24,4 +24,9 @@ public interface RuleDao {
     @Query("SELECT * FROM rule WHERE arrival_id=:arrivalId")
     List<RuleEntry> findRulesForArrivalPlace(final int arrivalId);
 
+    @Query("SELECT * FROM rule WHERE departure_id=:departureId")
+    List<RuleEntry> findRulesForDeparturePlace(final int departureId);
+
+    @Query("SELECT id FROM rule WHERE departure_id=:departureId")
+    List<Integer> findRulesById(final int departureId);
 }

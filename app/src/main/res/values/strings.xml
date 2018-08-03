@@ -12,24 +12,27 @@
     <string name="silent_mode_activated">Silent mode activated</string>
     <string name="touch_to_relaunch">Touch to launch the app.</string>
     <string name="back_to_normal">Back to normal</string>
+
+    <!--MainActivity Buttons -->
     <string name="my_places">My Places</string>
     <string name="contacts">Contacts</string>
     <string name="my_rules">My rules</string>
+
+    <!--Rules Buttons -->
     <string name="send_sms">Send SMS</string>
+
+    <string name="send_rules">Stalking Rules</string>
     <string name="e_mail">E-mail</string>
-    <string name="notification_rules">Notification Rules</string>
-    <string name="add_new_contact">Add new contact</string>
+    <string name="settings_rules">Handy Rules</string>
 
 
-    <!--Dialog string-->
+    <!--Dialog -->
     <string name="save">Save this place</string>
     <string name="cancel">Cancel</string>
 
-
     <string name="enter_name">Enter name of your place</string>
 
-
-    <!--Permissions string-->
+    <!--Permissions -->
     <string name="sms_permission">SMS Permission</string>
     <string name="e_mail_permission">E-mail Permission</string>
     <string name="ringer_permissions">Ringer Permissions</string>
@@ -39,11 +42,16 @@
     <string name="need_location_permission_message">You need to enable location permissions first</string>
     <string name="location_permissions_granted_message">Location Permissions Granted</string>
 
+    <!--Contacts-->
+    <string name="phone_number_with_country_code_420xxxxxxxxx">phone number (+420xxxxxxxxx)</string>
+    <string name="name">name</string>
+    <string name="e_mail_address">e-mail address (mystalker@gmail.com)</string>
 
+    <string name="add_new_contact">Add new contact</string>
 
     <string-array name="type_array">
         <item>Send SMS</item>
-        <item>Send Email</item>
+        <item>Notify me to send SMS</item>
     </string-array>
 
 </resources>

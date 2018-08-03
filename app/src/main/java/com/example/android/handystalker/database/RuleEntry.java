@@ -10,7 +10,7 @@ import android.support.annotation.NonNull;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "rule", foreignKeys = {@ForeignKey(entity = PlaceEntry.class,
+@Entity(tableName = "rule", indices = {@Index("arrival_id"), @Index("departure_id"), @Index("contact_id")}, foreignKeys = {@ForeignKey(entity = PlaceEntry.class,
         parentColumns = "id",
         childColumns = "arrival_id",
         onDelete = CASCADE),

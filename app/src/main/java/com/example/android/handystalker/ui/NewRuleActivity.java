@@ -44,6 +44,7 @@ public class NewRuleActivity  extends AppCompatActivity {
     List<String> placeNames = new ArrayList<String>();
 
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 2222;
+    private static final int MY_PERMISSIONS_REQUEST_SEND_NOTIFICATIONS = 1111;
 
     // Member variable for the Database
     private AppDatabase mDb;
@@ -105,6 +106,7 @@ public class NewRuleActivity  extends AppCompatActivity {
 
                 if (name != null) {
                     final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureId, contactId, type);
+                    Log.d("rules entred", "r " + arrivalId + departureId + contactId + type);
                     AppExecutors.getInstance().diskIO().execute(new Runnable() {
                         @Override
                         public void run() {
@@ -118,6 +120,22 @@ public class NewRuleActivity  extends AppCompatActivity {
                 Intent intent = new Intent(this, SmsRulesActivity.class);
                 startActivity(intent);
             }
+            } else if (type.equals("notify")){
+                String name = (String) contactNameSpinner.getSelectedItem();
+
+                final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureId, contactId, type);
+                Log.d("rules entred notify", "r " + arrivalId + departureId + contactId + type);
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        // insert new contact
+                        mDb.ruleDao().insertRule(ruleEntry);
+
+                    }
+                });
+
+            Intent intent = new Intent(this, SmsRulesActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -146,6 +164,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                 }
             } else {
                 // Permission has already been granted
+                Log.d("rules entred", "r " + arrivalId + departureId + contactId + type);
                 String name = (String) contactNameSpinner.getSelectedItem();
 
                 if (name != null) {
@@ -163,7 +182,25 @@ public class NewRuleActivity  extends AppCompatActivity {
                 Intent intent = new Intent(this, SmsRulesActivity.class);
                 startActivity(intent);
             }
+        } else if (type.equals("notify")){
+
+            Log.d("rules entred notif", "r " + arrivalId + departureId + contactId + type);
+
+                    final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureId, contactId, type);
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            // insert new contact
+                            mDb.ruleDao().insertRule(ruleEntry);
+
+                        }
+                    });
+
+
+                Intent intent = new Intent(this, SmsRulesActivity.class);
+                startActivity(intent);
         }
+
     }
 
     @Override
@@ -185,6 +222,23 @@ public class NewRuleActivity  extends AppCompatActivity {
                 }
                 return;
             }
+
+            case MY_PERMISSIONS_REQUEST_SEND_NOTIFICATIONS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    saveRule();
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    //Intent intent = new Intent(this, SmsRulesActivity.class);
+                    //startActivity(intent);
+                }
+                return;
+            }
+
 
             // other 'case' lines to check for other
             // permissions this app might request.
@@ -209,8 +263,8 @@ public class NewRuleActivity  extends AppCompatActivity {
                         type = "sms";
                         break;
                     case 1:
-                        // Chosen SEND EMAIL
-                        type = "email";
+                        // Chosen SEND NOTIFICATION
+                        type = "notify";
                         break;
                 }
             }

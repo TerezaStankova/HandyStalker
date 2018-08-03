@@ -64,6 +64,7 @@ public class PlacesActivity extends AppCompatActivity
     private GeoDataClient mGeoDataClient;
     private Geofencing mGeofencing;
 
+
     // Member variable for the Database
     private AppDatabase mDb;
 
@@ -83,10 +84,12 @@ public class PlacesActivity extends AppCompatActivity
         mGeofencing = new Geofencing(this, mGeoClient);
         mGeoDataClient = Places.getGeoDataClient(this);
 
+        mIsEnabled = getPreferences(MODE_PRIVATE).getBoolean(getString(R.string.setting_enabled), false);
+        Log.d("Preference","getPref" + mIsEnabled);
 
         // Initialize the switch state and Handle enable/disable switch change
-        Switch onOffSwitch = (Switch) findViewById(R.id.enable_switch);
-        mIsEnabled = getPreferences(MODE_PRIVATE).getBoolean(getString(R.string.setting_enabled), false);
+        Switch onOffSwitch = (Switch) findViewById(R.id.enable_switch2);
+
         onOffSwitch.setChecked(mIsEnabled);
         onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -97,9 +100,8 @@ public class PlacesActivity extends AppCompatActivity
                 editor.commit();
                 if (isChecked) mGeofencing.registerAllGeofences();
                 else mGeofencing.unRegisterAllGeofences();
-            }
+            }});
 
-        });
 
         mDb = AppDatabase.getInstance(getApplicationContext());
         mAdapter.setDatabase(mDb);
@@ -139,10 +141,13 @@ public class PlacesActivity extends AppCompatActivity
 
                     for (int i = 0; i < placeEntries.size(); i++) {
                         placeIds.add(placeEntries.get(i).getPlaceId());
+                        System.out.println("Ids" + placeEntries.get(i).getId());
                         System.out.println("placeIds" + i + placeIds.get(i));
                         placeNames.add(placeEntries.get(i).getPlaceName());
                         System.out.println("placeNames" + i + placeNames.get(i));
                     }
+
+                    Log.d("PreferenceView","success" + mIsEnabled);
 
                     mGeoDataClient.getPlaceById(placeIds.toArray(new String[placeIds.size()])).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
                         @Override
@@ -152,7 +157,7 @@ public class PlacesActivity extends AppCompatActivity
                                 mAdapter.swapPlaces(places, placeNames);
                                 mGeofencing.updateGeofencesList(places);
                                 if (mIsEnabled) mGeofencing.registerAllGeofences();
-                                places.release();
+                               // places.release();
                             } else {
                                 Log.e(TAG, "Place not found.");
                             }

@@ -22,4 +22,7 @@ public interface PlaceDao {
 
     @Query("SELECT place_name FROM place WHERE id=:placeId")
     String findPlaceNameById(int placeId);
+
+    @Query("SELECT id FROM place WHERE place_id=:placeId")
+    int findIdByPlaceId(String placeId);
 }

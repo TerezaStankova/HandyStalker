@@ -21,9 +21,6 @@ public class RulesActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onEmailButtonClicked(View view) {
-    }
-
-    public void onNotificationButtonClicked(View view) {
+    public void onSettingsButtonClicked(View view) {
     }
 }

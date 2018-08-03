@@ -12,14 +12,14 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name" />
+        android:hint="@string/name" />
 
     <EditText
         android:id="@+id/email_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:text="email@"
+        android:hint="@string/e_mail_address"
         android:inputType="textEmailAddress" />
 
     <EditText
@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:text="phone"
+        android:hint="@string/phone_number_with_country_code_420xxxxxxxxx"
         android:inputType="phone" />
 
     <android.support.design.widget.FloatingActionButton
@@ -37,5 +37,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
         android:clickable="true"
-        app:srcCompat="@android:drawable/ic_menu_save" />
+        app:srcCompat="@android:drawable/ic_menu_save"
+        android:focusable="true" />
 </LinearLayout>

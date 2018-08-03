@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_gravity="center">
 
     <Button
         android:id="@+id/message_button"
@@ -10,17 +13,10 @@
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:layout_margin="44dp"
+        android:background="@drawable/rounded_button"
         android:onClick="onSMSButtonClicked"
-        android:text="@string/send_sms" />
+        android:text="@string/send_rules" />
 
-    <Button
-        android:id="@+id/email_button"
-        style="@style/myButtonStyle"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="wrap_content"
-        android:layout_margin="44dp"
-        android:onClick="onEmailButtonClicked"
-        android:text="@string/e_mail" />
 
     <Button
         android:id="@+id/notification_button"
@@ -28,7 +24,8 @@
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:layout_margin="44dp"
-        android:onClick="onNotificationButtonClicked"
-        android:text="@string/notification_rules" />
+        android:background="@drawable/rounded_button"
+        android:onClick="onSettingsButtonClicked"
+        android:text="@string/settings_rules" />
 
 </LinearLayout>
