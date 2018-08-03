@@ -29,4 +29,7 @@ public interface RuleDao {
 
     @Query("SELECT id FROM rule WHERE departure_id=:departureId")
     List<Integer> findRulesById(final int departureId);
+
+    @Query("SELECT type FROM rule WHERE id=:ruleId")
+    String findTypeByRuleId(int ruleId);
 }

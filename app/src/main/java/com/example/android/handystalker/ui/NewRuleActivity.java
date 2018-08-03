@@ -55,20 +55,30 @@ public class NewRuleActivity  extends AppCompatActivity {
     Spinner arrivalSpinner;
     Spinner departureSpinner;
 
+    Spinner contactNameSpinnerNotify;
+    Spinner placeSpinner;
+
+    int placeId = -1;
     int arrivalId = -1;
     int departureId = -1;
     int contactId = -1;
+    int contactIdNot = -1;
     String type = "sms";
+    boolean arrivalNotificationRule = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_rule);
+        setTitle("New Stalking Rule");
 
         typeSpinner = (Spinner) findViewById(R.id.type_spinner);
         contactNameSpinner = (Spinner) findViewById(R.id.name_spinner);
         arrivalSpinner = (Spinner) findViewById(R.id.arrival_spinner);
         departureSpinner = (Spinner) findViewById(R.id.departure_spinner);
+
+        contactNameSpinnerNotify = (Spinner) findViewById(R.id.name_spinner2);
+        placeSpinner = (Spinner) findViewById(R.id.place_spinner);
 
         setupTypeSpinner();
         mDb = AppDatabase.getInstance(getApplicationContext());
@@ -76,9 +86,9 @@ public class NewRuleActivity  extends AppCompatActivity {
         setupContactsViewModel();
     }
 
-    public void onSaveRuleClick(View view) {
+    public void onSaveSendingRuleClick(View view) {
+        type = "sms";
 
-        if (type.equals("sms")) {
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.SEND_SMS)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -120,24 +130,36 @@ public class NewRuleActivity  extends AppCompatActivity {
                 Intent intent = new Intent(this, SmsRulesActivity.class);
                 startActivity(intent);
             }
-            } else if (type.equals("notify")){
-                String name = (String) contactNameSpinner.getSelectedItem();
-
-                final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureId, contactId, type);
-                Log.d("rules entred notify", "r " + arrivalId + departureId + contactId + type);
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        // insert new contact
-                        mDb.ruleDao().insertRule(ruleEntry);
-
-                    }
-                });
-
-            Intent intent = new Intent(this, SmsRulesActivity.class);
-            startActivity(intent);
-        }
     }
+
+    public void onSaveNotifyRuleClick(View view) {
+        type = "notify";
+        String name = (String) contactNameSpinner.getSelectedItem();
+
+        if (arrivalNotificationRule){
+            final RuleEntry ruleEntry = new RuleEntry(placeId, -1, contactIdNot, type);
+            Log.d("rules entred notify", "r " + placeId + contactIdNot + type);
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    // insert new contact
+                    mDb.ruleDao().insertRule(ruleEntry);
+
+                }});
+        } else {
+            final RuleEntry ruleEntry = new RuleEntry(-1, placeId, contactIdNot, type);
+            Log.d("rules entred notify", "r " + placeId + contactIdNot + type);
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    // insert new contact
+                    mDb.ruleDao().insertRule(ruleEntry);
+
+                }});
+        }
+        Intent intent = new Intent(this, SmsRulesActivity.class);
+        startActivity(intent);
+        }
 
     public void saveRule(){
         if (type.equals("sms")) {
@@ -182,25 +204,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                 Intent intent = new Intent(this, SmsRulesActivity.class);
                 startActivity(intent);
             }
-        } else if (type.equals("notify")){
-
-            Log.d("rules entred notif", "r " + arrivalId + departureId + contactId + type);
-
-                    final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureId, contactId, type);
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            // insert new contact
-                            mDb.ruleDao().insertRule(ruleEntry);
-
-                        }
-                    });
-
-
-                Intent intent = new Intent(this, SmsRulesActivity.class);
-                startActivity(intent);
         }
-
     }
 
     @Override
@@ -259,12 +263,12 @@ public class NewRuleActivity  extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
                 switch (position) {
                     case 0:
-                        // Chosen SEND SMS
-                        type = "sms";
+                        // Chosen arrival
+                        arrivalNotificationRule = true;
                         break;
                     case 1:
-                        // Chosen SEND NOTIFICATION
-                        type = "notify";
+                        // Chosen departure
+                        arrivalNotificationRule = false;
                         break;
                 }
             }
@@ -305,6 +309,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                     // Apply the adapter to the spinner
                     arrivalSpinner.setAdapter(adapterPlace);
                     departureSpinner.setAdapter(adapterPlace);
+                    placeSpinner.setAdapter(adapterPlace);
                 }
 
                 arrivalSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -322,6 +327,15 @@ public class NewRuleActivity  extends AppCompatActivity {
                     }
                     public void onNothingSelected(AdapterView<?> parent) {
                         departureId = -1;
+                    }
+                });
+
+                placeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
+                        placeId = placeIds.get(position);
+                    }
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        placeId = -1;
                     }
                 });
 
@@ -366,6 +380,17 @@ public class NewRuleActivity  extends AppCompatActivity {
                         }
                         public void onNothingSelected(AdapterView<?> parent) {
                             contactId = -1;
+                        }
+                    });
+
+                contactNameSpinnerNotify.setAdapter(adapterContacts);
+
+                contactNameSpinnerNotify.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
+                        contactIdNot = mContactsId.get(position);
+                        }
+                        public void onNothingSelected(AdapterView<?> parent) {
+                            contactIdNot = -1;
                         }
                     });
             }

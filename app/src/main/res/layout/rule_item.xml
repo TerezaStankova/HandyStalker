@@ -24,11 +24,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:gravity="start"
         android:orientation="vertical"
+        android:paddingLeft="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/edit_rule_icon"
         app:layout_constraintStart_toEndOf="@+id/type_icon"
@@ -43,13 +45,13 @@
             android:id="@+id/rule_arrival"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Arrival"/>
+            android:text="Arrival" />
 
         <TextView
             android:id="@+id/rule_depart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Depart from"/>
+            android:text="Depart from" />
 
     </LinearLayout>
 

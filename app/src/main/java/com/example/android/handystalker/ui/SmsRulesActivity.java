@@ -48,6 +48,7 @@ public class SmsRulesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.send_rules);
+        setTitle("Stalking Rules");
 
         // Set up the recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.sendrules_list_recycler_view);
@@ -102,11 +103,20 @@ public class SmsRulesActivity extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     final String name = mDb.contactDao().findNameForContactId(idContact);
-                                    final String arrival = mDb.placeDao().findPlaceNameById(idArrival);
-                                    final String departure = mDb.placeDao().findPlaceNameById(idDeparture);
+                                    final String arrival;
+                                    final String departure;
+                                    if (idArrival != -1){arrival = mDb.placeDao().findPlaceNameById(idArrival);} else {
+                                        arrival = null;
+                                    }
+
+                                    if (idDeparture != -1){departure = mDb.placeDao().findPlaceNameById(idDeparture);} else {
+                                        departure = null;
+                                    }
+
+                                    final String type = mDb.ruleDao().findTypeByRuleId(id);
                                     Log.d("collect contact data","contact: ");
 
-                                    Rule newRule = new Rule(id, arrival, name, departure);
+                                    Rule newRule = new Rule(id, arrival, name, departure, type);
                                     mContactDatabase.add(newRule);
                                 }
                             });
@@ -122,10 +132,6 @@ public class SmsRulesActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(SmsRulesActivity.this,
                 new String[]{Manifest.permission.SEND_SMS},
                 PERMISSIONS_REQUEST);
-    }
-
-    public void onEmailPermissionClicked(View view) {
-
     }
 
     @Override

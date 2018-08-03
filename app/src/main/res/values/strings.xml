@@ -50,8 +50,8 @@
     <string name="add_new_contact">Add new contact</string>
 
     <string-array name="type_array">
-        <item>Send SMS</item>
-        <item>Notify me to send SMS</item>
+        <item>arrival to </item>
+        <item>departure from </item>
     </string-array>
 
 </resources>

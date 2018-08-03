@@ -8,16 +8,18 @@ public class Rule  implements Parcelable {
     private String arrivalPlace;
     private String name;
     private String departurePlace;
+    private String type;
 
     /* No args constructor */
     public Rule() {
     }
 
-    public Rule(int id, String arrivalPlace, String name, String departurePlace) {
+    public Rule(int id, String arrivalPlace, String name, String departurePlace, String type) {
         this.id = id;
         this.arrivalPlace = arrivalPlace;
         this.name = name;
         this.departurePlace = departurePlace;
+        this.type = type;
     }
 
     public int getRuleId() {
@@ -32,6 +34,9 @@ public class Rule  implements Parcelable {
     public String getDeparturePlace() {
         return departurePlace;
     }
+    public String getType() {
+        return type;
+    }
 
 
     private Rule(Parcel in){
@@ -39,6 +44,7 @@ public class Rule  implements Parcelable {
         arrivalPlace = in.readString();
         name = in.readString();
         departurePlace = in.readString();
+        type = in.readString();
     }
 
     @Override
@@ -52,6 +58,7 @@ public class Rule  implements Parcelable {
         parcel.writeString(arrivalPlace);
         parcel.writeString(name);
         parcel.writeString(departurePlace);
+        parcel.writeString(type);
     }
 
     public static final Parcelable.Creator<Rule> CREATOR = new Parcelable.Creator<Rule>() {

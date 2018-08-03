@@ -65,20 +65,29 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
         String contactName = mRules.get(position).getName();
         String arrivalPlace = mRules.get(position).getArrivalPlace();
         String departurePlace = mRules.get(position).getDeparturePlace();
-        holder.nameTextView.setText(contactName);
+        String typeRule = mRules.get(position).getType();
+        holder.nameTextView.setText("My Stalker: " + contactName);
 
         if(arrivalPlace != null){
             holder.arriveTextView.setVisibility(View.VISIBLE);
-            holder.arriveTextView.setText(arrivalPlace);
+            holder.arriveTextView.setText("Arrival: " + arrivalPlace);
         } else {
             holder.arriveTextView.setVisibility(View.GONE);
         }
 
+
+
         if(departurePlace != null){
             holder.departTextView.setVisibility(View.VISIBLE);
-            holder.departTextView.setText(departurePlace);
+            holder.departTextView.setText("Departure: " + departurePlace);
         } else {
             holder.departTextView.setVisibility(View.GONE);
+        }
+
+        if(typeRule.equals("sms")){
+            holder.typeIcon.setImageResource(R.drawable.ic_sms_green_24dp);
+        } else {
+            holder.typeIcon.setImageResource(R.drawable.ic_notifications_active_green_24dp);
         }
 
         holder.deleteIcon.setOnClickListener(new View.OnClickListener()
@@ -117,6 +126,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
     class RuleViewHolder extends RecyclerView.ViewHolder {
 
         ImageView deleteIcon;
+        ImageView typeIcon;
         TextView nameTextView;
         TextView arriveTextView;
         TextView departTextView;
@@ -124,6 +134,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
         public RuleViewHolder(View itemView) {
             super(itemView);
             deleteIcon = (ImageView) itemView.findViewById(R.id.delete_rule_icon);
+            typeIcon = (ImageView) itemView.findViewById(R.id.type_icon);
             nameTextView = (TextView) itemView.findViewById(R.id.rule_contact_name);
             arriveTextView = (TextView) itemView.findViewById(R.id.rule_arrival);
             departTextView = (TextView) itemView.findViewById(R.id.rule_depart);
