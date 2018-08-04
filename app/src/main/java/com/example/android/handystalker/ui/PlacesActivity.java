@@ -3,6 +3,7 @@ package com.example.android.handystalker.ui;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -11,15 +12,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.handystalker.database.AppDatabase;
@@ -63,6 +68,8 @@ public class PlacesActivity extends AppCompatActivity
     private GeofencingClient mGeoClient;
     private GeoDataClient mGeoDataClient;
     private Geofencing mGeofencing;
+    private String placeIdfromPicker;
+    private String AddressfromPicker;
 
 
     // Member variable for the Database
@@ -210,15 +217,52 @@ public class PlacesActivity extends AppCompatActivity
                 return;
             }
 
-
-
             // Extract the place information from the API
             String placeName = place.getName().toString();
-            String placeAddress = place.getAddress().toString();
-            String placeId = place.getId();
+            AddressfromPicker = place.getAddress().toString();
+            placeIdfromPicker = place.getId();
 
-            showNamePlaceDialog(placeId, placeAddress);
+            xz();
         }
+    }
+
+
+    public void xz(){
+        // Use the Builder class for convenient dialog construction
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View placeLayout = inflater.inflate(R.layout.place_name_dialog, null);
+        TextView address = (TextView) placeLayout.findViewById(R.id.address_textView);
+        final EditText nameEdit= (EditText) placeLayout.findViewById(R.id.my_place_name);
+        address.setText(AddressfromPicker);
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        builder.setTitle("Set name of your place")
+                .setView(placeLayout)
+                .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Send the positive button event back to the host activity
+                        String name = nameEdit.getText().toString();
+                        final PlaceEntry placeEntry = new PlaceEntry(placeIdfromPicker, name);
+                        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                // insert new task
+                                mDb.placeDao().insertPlace(placeEntry);
+                            }
+                        });
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Send the negative button event back to the host activity
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder.create();
+        alert11.show();
     }
 
     public void showNamePlaceDialog(String placeId, String placeAddress) {

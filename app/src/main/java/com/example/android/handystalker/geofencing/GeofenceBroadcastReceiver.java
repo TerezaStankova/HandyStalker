@@ -130,9 +130,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
 
         } else if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
             Log.d("exit", "exited");
-
-
-
+            final List<String> placeName = new ArrayList<String>();
 
 
             final PendingResult pendingResult = goAsync();
@@ -149,6 +147,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                     List<RuleEntry> rulesForThisPlace = mDb.ruleDao().findRulesForDeparturePlace(departureId);
                     List<String> phoneNumbers = new ArrayList<String>();
 
+
                     Log.d(TAG, "rulesForThisPlace.size= " + rulesForThisPlace.size());
 
                     List<Integer> rulesIdForThisPlace = mDb.ruleDao().findRulesById(departureId);
@@ -158,6 +157,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                     for (int i = 0; i < rulesForThisPlace.size(); i++) {
                         if (rulesForThisPlace.get(i).getType().equals("sms")) {
                             phoneNumbers.add(mDb.contactDao().findPhoneForContactId(rulesForThisPlace.get(i).getContactId()));
+                            placeName.add(mDb.contactDao().findPhoneForContactId(rulesForThisPlace.get(i).getContactId()));
                         } else if (rulesForThisPlace.get(i).getType().equals("notify")){
                             Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
                             sendNotification(context, rulesForThisPlace.get(i).getContactId());
@@ -174,7 +174,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                 protected void onPostExecute(List<String> phoneNumbers) {
                     if (phoneNumbers.size() != 0) {
                         for (int i = 0; i < phoneNumbers.size(); i++) {
-                            sendSMS(context, phoneNumbers.get(i));
+                            sendDeparturingSMS(context, phoneNumbers.get(i), placeName.get(i));
                         }
                     }
                     pendingResult.finish();
@@ -239,6 +239,22 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                 Log.d("sentsms", "now send " + context);
                 SmsManager smsManager = SmsManager.getDefault();
                 smsManager.sendTextMessage(phoneNumber, null, "Dorazila jsem", null, null);
+                //  smsManager.sendTextMessage(number,null,matn,null,null);
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    protected void sendDeparturingSMS(Context context, String phoneNumber, String placeName) {
+
+        Log.d("sentsms", "exited " + context);
+        Log.d("sentsms", "Number " + phoneNumber);
+        if (android.os.Build.VERSION.SDK_INT < 24 ||
+                (android.os.Build.VERSION.SDK_INT >= 24 && (ContextCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED))) {
+            try {
+                Log.d("sentsms", "now send " + context);
+                SmsManager smsManager = SmsManager.getDefault();
+                smsManager.sendTextMessage(phoneNumber, null, "Ahoj! Vyrazila jsem z místa" + placeName, null, null);
                 //  smsManager.sendTextMessage(number,null,matn,null,null);
             } catch (Exception e) {
             }
