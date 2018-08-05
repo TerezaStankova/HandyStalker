@@ -7,6 +7,8 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import com.example.android.handystalker.model.Contact;
+
 import java.util.List;
 
 @Dao
@@ -35,4 +37,7 @@ public interface ContactDao {
 
     @Query("SELECT email FROM contacts WHERE id=:contactId")
     String findEmailForContactId(final int contactId);
+
+    @Query("SELECT * FROM contacts WHERE id=:contactId")
+    ContactsEntry findContactsEntryfromContactId(final int contactId);
 }

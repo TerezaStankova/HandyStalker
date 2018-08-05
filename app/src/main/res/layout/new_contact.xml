@@ -15,28 +15,42 @@
         android:hint="@string/name" />
 
     <EditText
-        android:id="@+id/email_editText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/e_mail_address"
-        android:inputType="textEmailAddress" />
-
-    <EditText
         android:id="@+id/phone_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/phone_number_with_country_code_420xxxxxxxxx"
+        android:hint="@string/phone_number_cc"
         android:inputType="phone" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/save_FAB"
-        android:onClick="onSaveContactClick"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:id="@+id/new_contact_picker"
+        android:layout_margin="8dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
+        android:background="@drawable/rounded_button"
         android:clickable="true"
-        app:srcCompat="@android:drawable/ic_menu_save"
-        android:focusable="true" />
+        android:focusable="true"
+        android:text="@string/browse_my_contacts"
+        android:onClick="onAddFromContactsClicked"/>
+
+        <Button
+            android:id="@+id/save_contact_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
+            android:onClick="onSaveContactClick"
+            android:layout_height="wrap_content"
+            android:text="@string/save_my_stalker"
+            android:background="@drawable/rounded_button"
+            android:clickable="true"
+            app:srcCompat="@android:drawable/ic_menu_save"
+            android:focusable="true" />
+</LinearLayout>
 </LinearLayout>

@@ -157,7 +157,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                     for (int i = 0; i < rulesForThisPlace.size(); i++) {
                         if (rulesForThisPlace.get(i).getType().equals("sms")) {
                             phoneNumbers.add(mDb.contactDao().findPhoneForContactId(rulesForThisPlace.get(i).getContactId()));
-                            placeName.add(mDb.contactDao().findPhoneForContactId(rulesForThisPlace.get(i).getContactId()));
+                            placeName.add(mDb.placeDao().findPlaceNameById(departureId));
                         } else if (rulesForThisPlace.get(i).getType().equals("notify")){
                             Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
                             sendNotification(context, rulesForThisPlace.get(i).getContactId());
@@ -263,7 +263,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
 
     public void openWhatsApp(){
         try {
-            String text = "This is a test";// Replace with your message.
+            String text = "Hi, I arrived safely!";// Replace with your message.
 
             String toNumber = "+420736604152"; // Replace with mobile phone number without +Sign or leading zeros.
 

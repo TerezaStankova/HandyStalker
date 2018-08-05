@@ -1,6 +1,7 @@
 package com.example.android.handystalker.ui.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.ContactsEntry;
 import com.example.android.handystalker.model.Contact;
+import com.example.android.handystalker.ui.ContactsActivity;
+import com.example.android.handystalker.ui.NewContactActivity;
 import com.example.android.handystalker.utilities.AppExecutors;
 
 import java.util.List;
@@ -25,6 +28,7 @@ private Context mContext;
 private List<Contact> mContacts;
 // Member variable for the Database
 private AppDatabase mDb;
+private final String CONTACTS = "contacts";
 
 //private Task<PlaceBufferResponse> mPlaces;
 /**
@@ -79,6 +83,18 @@ public ContactsAdapter(Context context, List<Contact> contacts) {
             holder.phoneTextView.setVisibility(View.GONE);
         }
 
+        holder.updateIcon.setOnClickListener(new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            Contact mContact = mContacts.get(position);
+            Intent intent = new Intent(mContext, NewContactActivity.class);
+            intent.putExtra(CONTACTS, mContact);
+            mContext.startActivity(intent);
+        }
+    });
+
         holder.deleteIcon.setOnClickListener(new View.OnClickListener()
         {
                 @Override
@@ -115,6 +131,7 @@ public int getItemCount() {
 class ContactViewHolder extends RecyclerView.ViewHolder {
 
     ImageView deleteIcon;
+    ImageView updateIcon;
     TextView nameTextView;
     TextView emailTextView;
     TextView phoneTextView;
@@ -122,6 +139,7 @@ class ContactViewHolder extends RecyclerView.ViewHolder {
     public ContactViewHolder(View itemView) {
         super(itemView);
         deleteIcon = (ImageView) itemView.findViewById(R.id.delete_contact_icon);
+        updateIcon = (ImageView) itemView.findViewById(R.id.edit_contact_icon);
         nameTextView = (TextView) itemView.findViewById(R.id.contact_name);
         emailTextView = (TextView) itemView.findViewById(R.id.contact_email);
         phoneTextView = (TextView) itemView.findViewById(R.id.contact_phone);

@@ -43,11 +43,14 @@
     <string name="location_permissions_granted_message">Location Permissions Granted</string>
 
     <!--Contacts-->
-    <string name="phone_number_with_country_code_420xxxxxxxxx">phone number (+420xxxxxxxxx)</string>
+    <string name="phone_number_cc">phone number (with country code)</string>
     <string name="name">name</string>
     <string name="e_mail_address">e-mail address (mystalker@gmail.com)</string>
 
     <string name="add_new_contact">Add new contact</string>
+    <string name="save_my_stalker">Save my stalker</string>
+    <string name="browse_my_contacts">Browse my contacts</string>
+    <string name="update_contact">Update Contact</string>
 
     <string-array name="type_array">
         <item>arrival to </item>

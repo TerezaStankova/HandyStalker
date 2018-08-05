@@ -63,8 +63,10 @@ public class ContactsActivity  extends AppCompatActivity {
         viewModel.getContacts().observe(this, new Observer<List<ContactsEntry>>() {
             @Override
             public void onChanged(@Nullable List<ContactsEntry> contactsEntries) {
-                Log.d("message", "Updating list of places from LiveData in ViewModel"  + contactsEntries.size() );
                 mAdapter.setContactsFromDatabase(contactsEntries);
+                if (contactsEntries != null){
+                Log.d("message", "Updating list of contacts from LiveData in ViewModel"  + contactsEntries.size() );
+                }
                 }
 
         });

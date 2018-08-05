@@ -63,6 +63,6 @@ public class ContactsEntry {
         return phone;
     }
     public void setPhone(String phone) {
-        this.name = phone;
+        this.phone = phone;
     }
 }
