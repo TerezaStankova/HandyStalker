@@ -1,6 +1,8 @@
 package com.example.android.handystalker.ui.Adapters;
 
 import android.content.Context;
+import android.os.AsyncTask;
+import android.support.annotation.UiThread;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,8 +17,10 @@ import com.example.android.handystalker.database.ContactsEntry;
 import com.example.android.handystalker.database.RuleEntry;
 import com.example.android.handystalker.model.Contact;
 import com.example.android.handystalker.model.Rule;
+import com.example.android.handystalker.ui.SmsRulesActivity;
 import com.example.android.handystalker.utilities.AppExecutors;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.android.gms.common.util.ArrayUtils.newArrayList;
@@ -25,13 +29,12 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
 
     private Context mContext;
     private List<Rule> mRules;
+    private List<RuleEntry> mRulesEntries;
     // Member variable for the Database
     private AppDatabase mDb;
 
-//private Task<PlaceBufferResponse> mPlaces;
-    /**
-     * Constructor using the context and the db cursor
-     *
+    /*
+     *Constructor using the context and the db cursor
      * @param context the calling context/activity
      */
     public RulesAdapter(Context context, List<Rule> rules) {
@@ -149,36 +152,73 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
         notifyDataSetChanged();
     }
 
-    /*public void setRulesFromDatabase(List<RuleEntry> ruleEntries) {
+
+    public void setRulesFromDatabase(final List<RuleEntry> ruleEntries) {
         if (ruleEntries != null) {
-            List<Rule> mContactDatabase = newArrayList();
-
-            for (int i = 0; i < ruleEntries.size(); i++) {
-                System.out.println("mRuleEntry" + i + ruleEntries.get(i).getContactId());
-
-                final int id = ruleEntries.get(i).getId();
-
-                final String arrival;
-                final String departure;
-
-                final int idContact = ruleEntries.get(i).getContactId();
-                int idArrival = ruleEntries.get(i).getArrivalId();
-                int idDeparture = ruleEntries.get(i).getDepartureId();
-
-                // Select from database
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        String name = mDb.contactDao().findNameForContactId(idContact);
-                        Log.d("collect contact data","contact: ");
-                    }
-                });
-
-                //Rule newRule = new Rule(id, arrival, name, departure);
-                //mContactDatabase.add(newRule);
-            }
-            setRules(mContactDatabase);
+        mRulesEntries = ruleEntries;
+        new FetchRulesTask().execute();
         }
-    }*/
+    }
 
+        class FetchRulesTask extends AsyncTask<String, Void, List<Rule>> {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+        protected List<Rule> doInBackground(String... params){
+
+            final List<Rule> mRuleDatabase = newArrayList();
+            final List<RuleEntry> ruleEntries = mRulesEntries;
+            // Select from database
+
+                    for (int i = 0; i < ruleEntries.size(); i++) {
+                        System.out.println("mRuleEntry" + i + ruleEntries.get(i).getContactId());
+
+                        final int id = ruleEntries.get(i).getId();
+
+                        final int idContact = ruleEntries.get(i).getContactId();
+                        final Integer idArrival = ruleEntries.get(i).getArrivalId();
+                        final Integer idDeparture = ruleEntries.get(i).getDepartureId();
+
+                        final String name = mDb.contactDao().findNameForContactId(idContact);
+                        final String arrival;
+                        final String departure;
+                        if (idArrival != null) {
+                            arrival = mDb.placeDao().findPlaceNameById(idArrival);
+                        } else {
+                            arrival = null;
+                        }
+
+                        if (idDeparture != null) {
+                            departure = mDb.placeDao().findPlaceNameById(idDeparture);
+                        } else {
+                            departure = null;
+                        }
+
+                        final String type = mDb.ruleDao().findTypeByRuleId(id);
+                        Log.d("collect rule data", "contact: ");
+
+                        Rule newRule = new Rule(id, arrival, name, departure, type);
+
+                        mRuleDatabase.add(newRule);
+                        Log.d("collect rule data", "contact: " + mRuleDatabase.get(i).getArrivalPlace());
+                    }
+
+            return mRuleDatabase;
+        }
+
+        @Override
+        protected void onPostExecute(List<Rule> mRuleDatabase) {
+
+            Log.d("collect rule data","contact: " + mRuleDatabase.size());
+
+            if (mRuleDatabase != null && mRuleDatabase.size() != 0) {
+                setRules(mRuleDatabase);
+            }
+        }
 }
+}
+

@@ -14,7 +14,7 @@ public class PlaceEntry {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     @NonNull
-    private int id;
+    private Integer id;
 
     @ColumnInfo(name = "place_id")
     @NonNull
@@ -35,10 +35,10 @@ public class PlaceEntry {
 
     // Getters and setters are required for Room to work.
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

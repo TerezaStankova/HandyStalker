@@ -6,6 +6,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import java.util.List;
 
@@ -22,14 +23,18 @@ public interface RuleDao {
     void deleteByRuleId(int ruleId);
 
     @Query("SELECT * FROM rule WHERE arrival_id=:arrivalId")
-    List<RuleEntry> findRulesForArrivalPlace(final int arrivalId);
+    List<RuleEntry> findRulesForArrivalPlace(final Integer arrivalId);
 
     @Query("SELECT * FROM rule WHERE departure_id=:departureId")
-    List<RuleEntry> findRulesForDeparturePlace(final int departureId);
+    List<RuleEntry> findRulesForDeparturePlace(final Integer departureId);
 
     @Query("SELECT id FROM rule WHERE departure_id=:departureId")
-    List<Integer> findRulesById(final int departureId);
+    List<Integer> findRulesById(final Integer departureId);
 
     @Query("SELECT type FROM rule WHERE id=:ruleId")
     String findTypeByRuleId(int ruleId);
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void updateRule(RuleEntry ruleEntry);
+
 }

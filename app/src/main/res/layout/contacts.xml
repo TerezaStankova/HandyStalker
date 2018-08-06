@@ -20,8 +20,10 @@
         android:layout_margin="16dp"
         android:contentDescription="@string/add_new_contact"
         android:elevation="6dp"
-        android:foreground="@android:drawable/ic_input_add"
+        android:foreground="@drawable/ic_add_circle_green_24dp"
         android:onClick="onAddContactButtonClicked"
+        android:visibility="visible"
+        app:backgroundTint="?attr/colorBackgroundFloating"
         app:fabSize="normal"
         app:pressedTranslationZ="12dp" />
 

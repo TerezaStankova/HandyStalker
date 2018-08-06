@@ -24,7 +24,7 @@ public class PlacesViewModel extends AndroidViewModel {
         super(application);
         mRepository = new PlaceRepository(application);
         AppDatabase database = AppDatabase.getInstance(this.getApplication());
-        Log.d(TAG, "Actively retrieving the tasks from the DataBase");
+        Log.d(TAG, "Actively retrieving the places from the DataBase");
         places = mRepository.getAllPlaces();
     }
 

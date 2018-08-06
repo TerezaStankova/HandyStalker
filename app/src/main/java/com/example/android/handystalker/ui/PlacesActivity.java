@@ -222,12 +222,12 @@ public class PlacesActivity extends AppCompatActivity
             AddressfromPicker = place.getAddress().toString();
             placeIdfromPicker = place.getId();
 
-            xz();
+            buildDialog();
         }
     }
 
 
-    public void xz(){
+    public void buildDialog(){
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();

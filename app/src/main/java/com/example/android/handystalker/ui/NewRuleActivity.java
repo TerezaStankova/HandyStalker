@@ -58,11 +58,11 @@ public class NewRuleActivity  extends AppCompatActivity {
     Spinner contactNameSpinnerNotify;
     Spinner placeSpinner;
 
-    int placeId = -1;
-    int arrivalId = -1;
-    int departureId = -1;
-    int contactId = -1;
-    int contactIdNot = -1;
+    Integer placeId = null;
+    Integer arrivalId = null;
+    Integer departureId = null;
+    int contactId = 0;
+    int contactIdNot = 0;
     String type = "sms";
     boolean arrivalNotificationRule = true;
 
@@ -115,7 +115,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                 String name = (String) contactNameSpinner.getSelectedItem();
 
                 if (name != null) {
-                    final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureId, contactId, type);
+                    final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureId, contactId, type, false);
                     Log.d("rules entred", "r " + arrivalId + departureId + contactId + type);
                     AppExecutors.getInstance().diskIO().execute(new Runnable() {
                         @Override
@@ -137,7 +137,7 @@ public class NewRuleActivity  extends AppCompatActivity {
         String name = (String) contactNameSpinner.getSelectedItem();
 
         if (arrivalNotificationRule){
-            final RuleEntry ruleEntry = new RuleEntry(placeId, -1, contactIdNot, type);
+            final RuleEntry ruleEntry = new RuleEntry(placeId, null, contactIdNot, type, false);
             Log.d("rules entred notify", "r " + placeId + contactIdNot + type);
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
@@ -147,7 +147,7 @@ public class NewRuleActivity  extends AppCompatActivity {
 
                 }});
         } else {
-            final RuleEntry ruleEntry = new RuleEntry(-1, placeId, contactIdNot, type);
+            final RuleEntry ruleEntry = new RuleEntry(null, placeId, contactIdNot, type, false);
             Log.d("rules entred notify", "r " + placeId + contactIdNot + type);
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
@@ -190,7 +190,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                 String name = (String) contactNameSpinner.getSelectedItem();
 
                 if (name != null) {
-                    final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureId, contactId, type);
+                    final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureId, contactId, type, false);
                     AppExecutors.getInstance().diskIO().execute(new Runnable() {
                         @Override
                         public void run() {
@@ -317,7 +317,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                         arrivalId = placeIds.get(position);
                     }
                     public void onNothingSelected(AdapterView<?> parent) {
-                        arrivalId = -1;
+                        arrivalId = null;
                     }
                 });
 
@@ -326,7 +326,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                         departureId = placeIds.get(position);
                     }
                     public void onNothingSelected(AdapterView<?> parent) {
-                        departureId = -1;
+                        departureId = null;
                     }
                 });
 
@@ -335,7 +335,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                         placeId = placeIds.get(position);
                     }
                     public void onNothingSelected(AdapterView<?> parent) {
-                        placeId = -1;
+                        placeId = null;
                     }
                 });
 
@@ -379,7 +379,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                             contactId = mContactsId.get(position);
                         }
                         public void onNothingSelected(AdapterView<?> parent) {
-                            contactId = -1;
+                            contactId = 0;
                         }
                     });
 
@@ -390,7 +390,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                         contactIdNot = mContactsId.get(position);
                         }
                         public void onNothingSelected(AdapterView<?> parent) {
-                            contactIdNot = -1;
+                            contactIdNot = 0;
                         }
                     });
             }

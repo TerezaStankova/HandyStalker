@@ -32,7 +32,7 @@
         android:orientation="vertical"
         android:paddingLeft="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/edit_rule_icon"
+        app:layout_constraintEnd_toStartOf="@+id/delete_rule_icon"
         app:layout_constraintStart_toEndOf="@+id/type_icon"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -68,16 +68,4 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_delete" />
 
-    <ImageView
-        android:id="@+id/edit_rule_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/delete_rule_icon"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
 </android.support.constraint.ConstraintLayout>

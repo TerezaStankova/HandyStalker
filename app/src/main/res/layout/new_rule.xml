@@ -79,8 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:gravity="end"
-            android:minHeight="12dp"
-            android:textAlignment="center" />
+            android:minHeight="12dp"/>
     </LinearLayout>
 
     <Button

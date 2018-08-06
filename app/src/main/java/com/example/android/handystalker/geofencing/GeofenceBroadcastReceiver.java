@@ -74,8 +74,6 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
 
         if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
             Log.d("enter", "entered ");
-            sendNotification(context, 0);
-
 
             final PendingResult pendingResult = goAsync();
             @SuppressLint("StaticFieldLeak") AsyncTask<String, Void, List<String>> asyncTask = new AsyncTask<String, Void, List<String>>() {
@@ -91,19 +89,26 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                     List<RuleEntry> rulesForThisPlace = mDb.ruleDao().findRulesForArrivalPlace(arrivalId);
                     List<String> phoneNumbers = new ArrayList<String>();
 
-                    Log.d(TAG, "rulesForThisPlace.size= " + rulesForThisPlace.size());
+                    if (rulesForThisPlace != null && rulesForThisPlace.size() != 0 ) {
+                        Log.d(TAG, "rulesForThisPlace.size= " + rulesForThisPlace.size());
+                        List<Integer> rulesIdForThisPlace = mDb.ruleDao().findRulesById(arrivalId);
 
-                    List<Integer> rulesIdForThisPlace = mDb.ruleDao().findRulesById(arrivalId);
+                        Log.d(TAG, "rulesIdForThisPlace.size= " + rulesIdForThisPlace.size());
 
-                    Log.d(TAG, "rulesIdForThisPlace.size= " + rulesIdForThisPlace.size() + rulesIdForThisPlace.get(0));
+                        for (int i = 0; i < rulesForThisPlace.size(); i++) {
+                            if (rulesForThisPlace.get(i).getType().equals("sms")) {
 
-                    for (int i = 0; i < rulesForThisPlace.size(); i++) {
-                        if (rulesForThisPlace.get(i).getType().equals("sms")) {
-                            phoneNumbers.add(mDb.contactDao().findPhoneForContactId(rulesForThisPlace.get(i).getContactId()));
-                        } else if (rulesForThisPlace.get(i).getType().equals("notify")){
-                            Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
-                            sendNotification(context, rulesForThisPlace.get(i).getContactId());
+                                boolean active = rulesForThisPlace.get(i).getActive();
+                                if (active == true){
+                                    rulesForThisPlace.get(i).setActive(false);
+                                    mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
+                                    phoneNumbers.add(mDb.contactDao().findPhoneForContactId(rulesForThisPlace.get(i).getContactId()));}
+                            } else if (rulesForThisPlace.get(i).getType().equals("notify")){
+                                Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                sendNotification(context, rulesForThisPlace.get(i).getContactId());
+                            }
                         }
+
                     }
 
                     Log.d(TAG, "async finished");
@@ -114,7 +119,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
 
                 @Override
                 protected void onPostExecute(List<String> phoneNumbers) {
-                    if (phoneNumbers.size() != 0) {
+                    if (phoneNumbers != null && phoneNumbers.size() != 0) {
                         for (int i = 0; i < phoneNumbers.size(); i++) {
                             sendSMS(context, phoneNumbers.get(i));
                         }
@@ -147,36 +152,40 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                     List<RuleEntry> rulesForThisPlace = mDb.ruleDao().findRulesForDeparturePlace(departureId);
                     List<String> phoneNumbers = new ArrayList<String>();
 
+                    if (rulesForThisPlace != null && rulesForThisPlace.size() != 0 ) {
 
-                    Log.d(TAG, "rulesForThisPlace.size= " + rulesForThisPlace.size());
 
-                    List<Integer> rulesIdForThisPlace = mDb.ruleDao().findRulesById(departureId);
+                        Log.d(TAG, "rulesForThisPlace.size= " + rulesForThisPlace.size());
 
-                    Log.d(TAG, "rulesIdForThisPlace.size= " + rulesIdForThisPlace.size() + rulesIdForThisPlace.get(0));
+                        List<Integer> rulesIdForThisPlace = mDb.ruleDao().findRulesById(departureId);
 
-                    for (int i = 0; i < rulesForThisPlace.size(); i++) {
-                        if (rulesForThisPlace.get(i).getType().equals("sms")) {
-                            phoneNumbers.add(mDb.contactDao().findPhoneForContactId(rulesForThisPlace.get(i).getContactId()));
-                            placeName.add(mDb.placeDao().findPlaceNameById(departureId));
-                        } else if (rulesForThisPlace.get(i).getType().equals("notify")){
-                            Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
-                            sendNotification(context, rulesForThisPlace.get(i).getContactId());
+                        Log.d(TAG, "rulesIdForThisPlace.size= " + rulesIdForThisPlace.size());
+
+                        for (int i = 0; i < rulesForThisPlace.size(); i++) {
+                            if (rulesForThisPlace.get(i).getType().equals("sms")) {
+                                rulesForThisPlace.get(i).setActive(true);
+                                mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
+                                phoneNumbers.add(mDb.contactDao().findPhoneForContactId(rulesForThisPlace.get(i).getContactId()));
+                                placeName.add(mDb.placeDao().findPlaceNameById(departureId));
+                            } else if (rulesForThisPlace.get(i).getType().equals("notify")){
+                                Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                sendNotification(context, rulesForThisPlace.get(i).getContactId());
+                            }
                         }
-                    }
 
+                    }
                     Log.d(TAG, "async finished");
-                    // Must call finish() so the BroadcastReceiver can be recycled.
-                    //pendingResult.finish();
                     return phoneNumbers;
                 }
 
                 @Override
                 protected void onPostExecute(List<String> phoneNumbers) {
-                    if (phoneNumbers.size() != 0) {
+                    if (phoneNumbers != null && phoneNumbers.size() != 0) {
                         for (int i = 0; i < phoneNumbers.size(); i++) {
                             sendDeparturingSMS(context, phoneNumbers.get(i), placeName.get(i));
                         }
                     }
+                    // Must call finish() so the BroadcastReceiver can be recycled.
                     pendingResult.finish();
                 }
             };

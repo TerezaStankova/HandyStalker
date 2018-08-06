@@ -5,12 +5,15 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Movie;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -29,6 +32,7 @@ import com.example.android.handystalker.utilities.AppExecutors;
 import com.example.android.handystalker.utilities.ContactsViewModel;
 import com.example.android.handystalker.utilities.RulesViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.android.gms.common.util.ArrayUtils.newArrayList;
@@ -39,10 +43,20 @@ public class SmsRulesActivity extends AppCompatActivity {
     private RulesAdapter mAdapter;
     private RecyclerView mRecyclerView;
 
+    //Variable to save position in the list
+    private Parcelable mListState;
+    private LinearLayoutManager layoutManager;
+
     // Member variable for the Database
     private AppDatabase mDb;
+    //List<Rule> mRuleDatabase = newArrayList();
 
     private static final int PERMISSIONS_REQUEST = 2222;
+
+    // Final String to store state information about the rules
+    private static final String RULES = "rules";
+
+    private static final String LIST_STATE_KEY = "list_state";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +66,16 @@ public class SmsRulesActivity extends AppCompatActivity {
 
         // Set up the recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.sendrules_list_recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        layoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(layoutManager);
+        restoreLayoutManagerPosition();
+
+        if (savedInstanceState != null) {
+            // Load the saved state (the array of trailers) if there is one
+            showContactsDataView();
+            //mRuleDatabase = savedInstanceState.getParcelableArrayList(RULES);
+        }
+
         mAdapter = new RulesAdapter(this, null);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -72,56 +95,26 @@ public class SmsRulesActivity extends AppCompatActivity {
         mRecyclerView.setVisibility(View.VISIBLE);
     }
 
-    private void hidePlacesDataView() {
+    private void hideRulesDataView() {
         /* Then, make sure the movie data is visible */
         mRecyclerView.setVisibility(View.GONE);
     }
 
 
     private void setUpRulesViewModel() {
-        showContactsDataView();
         RulesViewModel viewModel = ViewModelProviders.of(this).get(RulesViewModel.class);
         viewModel.getRules().observe(this, new Observer<List<RuleEntry>>() {
             @Override
             public void onChanged(@Nullable List<RuleEntry> ruleEntries) {
                 Log.d("message", "Updating list of rules from LiveData in ViewModel"  + ruleEntries.size() );
+                if (ruleEntries.size() == 0) {
+                    hideRulesDataView();
+                    return;
+                }
 
-                    if (ruleEntries != null) {
-                        final List<Rule> mContactDatabase = newArrayList();
-
-                        for (int i = 0; i < ruleEntries.size(); i++) {
-                            System.out.println("mRuleEntry" + i + ruleEntries.get(i).getContactId());
-
-                            final int id = ruleEntries.get(i).getId();
-
-                            final int idContact = ruleEntries.get(i).getContactId();
-                            final int idArrival = ruleEntries.get(i).getArrivalId();
-                            final int idDeparture = ruleEntries.get(i).getDepartureId();
-
-                            // Select from database
-                            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                                @Override
-                                public void run() {
-                                    final String name = mDb.contactDao().findNameForContactId(idContact);
-                                    final String arrival;
-                                    final String departure;
-                                    if (idArrival != -1){arrival = mDb.placeDao().findPlaceNameById(idArrival);} else {
-                                        arrival = null;
-                                    }
-
-                                    if (idDeparture != -1){departure = mDb.placeDao().findPlaceNameById(idDeparture);} else {
-                                        departure = null;
-                                    }
-
-                                    final String type = mDb.ruleDao().findTypeByRuleId(id);
-                                    Log.d("collect contact data","contact: ");
-
-                                    Rule newRule = new Rule(id, arrival, name, departure, type);
-                                    mContactDatabase.add(newRule);
-                                }
-                            });
-                        }
-                        mAdapter.setRules(mContactDatabase);
+                if (ruleEntries != null) {
+                        showContactsDataView();
+                        mAdapter.setRulesFromDatabase(ruleEntries);
                 }
             }
 
@@ -132,6 +125,10 @@ public class SmsRulesActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(SmsRulesActivity.this,
                 new String[]{Manifest.permission.SEND_SMS},
                 PERMISSIONS_REQUEST);
+    }
+
+    public static void setmRulesDatabase(List<Rule> ruleDatabase) {
+        //mRuleDatabase = ruleDatabase;
     }
 
     @Override
@@ -147,8 +144,38 @@ public class SmsRulesActivity extends AppCompatActivity {
             smsPermissions.setChecked(true);
             smsPermissions.setEnabled(false);
         }
+
+        if (mListState != null) {
+            layoutManager.onRestoreInstanceState(mListState);
+        }
     }
 
+    private void restoreLayoutManagerPosition() {
+        if (mListState != null) {
+            layoutManager.onRestoreInstanceState(mListState);
+        }
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState)
+    {
+        super.onSaveInstanceState(savedInstanceState);
+
+        // Save list state
+        mListState = layoutManager.onSaveInstanceState();
+        savedInstanceState.putParcelable(LIST_STATE_KEY, mListState);
+        //savedInstanceState.putParcelableArrayList(RULES, (ArrayList<Rule>) mRuleDatabase);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+
+        // Retrieve list state and list/item positions
+        if(state != null)
+            mListState = state.getParcelable(LIST_STATE_KEY);
+    }
 }
 
 

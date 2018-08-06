@@ -5,6 +5,9 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
+
+import com.example.android.handystalker.model.Place;
 
 import java.util.List;
 
@@ -21,8 +24,11 @@ public interface PlaceDao {
     void deleteByPlaceId(String placeId);
 
     @Query("SELECT place_name FROM place WHERE id=:placeId")
-    String findPlaceNameById(int placeId);
+    String findPlaceNameById(Integer placeId);
 
     @Query("SELECT id FROM place WHERE place_id=:placeId")
-    int findIdByPlaceId(String placeId);
+    Integer findIdByPlaceId(String placeId);
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void updatePlace(PlaceEntry placeEntry);
 }

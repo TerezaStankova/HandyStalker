@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="spinnerDropDownItemStyle">@style/mySpinnerStyle</item>
-
+        <item name="android:spinnerItemStyle">@style/mySpinnerStyleItem</item>
     </style>
 
     <style name="myDetailTitleStyle" parent="TextAppearance.AppCompat.Title">
@@ -29,7 +29,13 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">16sp</item>
         <item name="android:background">@color/colorAccent</item>
-        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+    <style name="mySpinnerStyleItem" parent="Widget.AppCompat.TextView.SpinnerItem">
+        <item name="android:textColor">@color/TextOnLight</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:background">@color/colorAccent</item>
     </style>
 
     <style name="myNewRuleStyle" parent="TextAppearance.AppCompat.Medium">

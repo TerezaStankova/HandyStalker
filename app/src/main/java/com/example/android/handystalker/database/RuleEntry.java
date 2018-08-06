@@ -29,10 +29,10 @@ public class RuleEntry {
     private int id;
 
     @ColumnInfo(name = "arrival_id")
-    private int arrivalId;
+    private Integer arrivalId;
 
     @ColumnInfo(name = "departure_id")
-    private int departureId;
+    private Integer departureId;
 
     @ColumnInfo(name = "contact_id")
     private int contactId;
@@ -41,15 +41,20 @@ public class RuleEntry {
     @NonNull
     private String type;
 
+    @ColumnInfo(name = "active")
+    @NonNull
+    private boolean active;
+
     @Ignore
     public RuleEntry() {
     }
 
-    public RuleEntry(@NonNull int arrivalId, int departureId, int contactId, @NonNull String type) {
+    public RuleEntry(Integer arrivalId, Integer departureId, int contactId, @NonNull String type,@NonNull boolean active) {
         this.arrivalId = arrivalId;
         this.departureId = departureId;
         this.contactId = contactId;
         this.type = type;
+        this.active = active;
     }
 
     // Getters and setters are required for Room to work.
@@ -61,15 +66,15 @@ public class RuleEntry {
         this.id = id;
     }
 
-    public int getArrivalId() {
+    public Integer getArrivalId() {
         return arrivalId;
     }
-    public void setArrivalId(int arrivalId) {
+    public void setArrivalId(Integer arrivalId) {
         this.arrivalId = arrivalId;
     }
 
-    public int getDepartureId() { return departureId; }
-    public void setDepartureId(int departureId) {
+    public Integer getDepartureId() { return departureId; }
+    public void setDepartureId(Integer departureId) {
         this.departureId = departureId;
     }
 
@@ -81,5 +86,10 @@ public class RuleEntry {
     public String getType() { return type; }
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean getActive() { return active; }
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
