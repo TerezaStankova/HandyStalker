@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.handystalker">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,49 +18,46 @@
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBMB3g1ntUFEctWuKwBOLUThIqwVEPZ4CQ"/>
+            android:value="AIzaSyBMB3g1ntUFEctWuKwBOLUThIqwVEPZ4CQ" />
 
+        <activity
+            android:name=".ui.PlacesActivity"
+            android:parentActivityName=".ui.MainActivity"></activity>
+        <activity
+            android:name=".ui.RulesActivity"
+            android:parentActivityName=".ui.MainActivity"></activity>
+        <activity
+            android:name=".ui.ContactsActivity"
+            android:parentActivityName=".ui.MainActivity"></activity>
+        <activity
+            android:name=".ui.SmsRulesActivity"
+            android:parentActivityName=".ui.RulesActivity"></activity>
+        <activity
+            android:name=".ui.NotificationRulesActivity"
+            android:parentActivityName=".ui.RulesActivity"></activity>
+        <activity android:name=".ui.NewContactActivity"></activity>
+        <activity android:name=".ui.NewRuleActivity"></activity>
 
-        <activity android:name=".ui.PlacesActivity"
-            android:parentActivityName=".ui.MainActivity">
-        </activity>
-        <activity android:name=".ui.RulesActivity"
-            android:parentActivityName=".ui.MainActivity">
-        </activity>
-        <activity android:name=".ui.ContactsActivity"
-            android:parentActivityName=".ui.MainActivity">
-        </activity>
+        <service android:name=".ui.StalkerService" />
 
-        <activity android:name=".ui.SmsRulesActivity"
-            android:parentActivityName=".ui.RulesActivity">
-        </activity>
-
-        <activity android:name=".ui.NotificationRulesActivity"
-            android:parentActivityName=".ui.RulesActivity">
-        </activity>
-
-        <activity android:name=".ui.NewContactActivity">
-        </activity>
-
-        <activity android:name=".ui.NewRuleActivity">
-        </activity>
 
         <receiver android:name=".geofencing.GeofenceBroadcastReceiver" />
+        <receiver android:name=".StalkerWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
 
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/stalker_widget_info" />
+        </receiver>
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
-
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-permission android:name="android.permission.SEND_SMS"/>
-
 
 </manifest>

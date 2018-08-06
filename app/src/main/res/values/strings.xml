@@ -56,5 +56,9 @@
         <item>arrival to </item>
         <item>departure from </item>
     </string-array>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="add_new_rule">Add new rule</string>
+    <string name="reached">You recently reached</string>
 
 </resources>

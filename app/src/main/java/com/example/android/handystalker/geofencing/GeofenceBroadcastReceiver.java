@@ -25,7 +25,10 @@ import android.view.View;
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
 
+import com.example.android.handystalker.database.ContactsEntry;
 import com.example.android.handystalker.database.RuleEntry;
+import com.example.android.handystalker.model.Contact;
+import com.example.android.handystalker.ui.StalkerService;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
@@ -86,8 +89,11 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                     Log.d(TAG, "requestId " + requestId);
                     arrivalId = mDb.placeDao().findIdByPlaceId(requestId);
                     Log.d(TAG, "triggeringGeofence.size()" + triggeringGeofence.size() + " " + arrivalId);
+                    String namePlace = mDb.placeDao().findPlaceNameById(arrivalId);
                     List<RuleEntry> rulesForThisPlace = mDb.ruleDao().findRulesForArrivalPlace(arrivalId);
                     List<String> phoneNumbers = new ArrayList<String>();
+                    ArrayList<Contact> contactsForThisPlace = new ArrayList<Contact>();
+
 
                     if (rulesForThisPlace != null && rulesForThisPlace.size() != 0 ) {
                         Log.d(TAG, "rulesForThisPlace.size= " + rulesForThisPlace.size());
@@ -105,15 +111,18 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                                     phoneNumbers.add(mDb.contactDao().findPhoneForContactId(rulesForThisPlace.get(i).getContactId()));}
                             } else if (rulesForThisPlace.get(i).getType().equals("notify")){
                                 Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
-                                sendNotification(context, rulesForThisPlace.get(i).getContactId());
+                                int contactId = rulesForThisPlace.get(i).getContactId();
+                                sendNotification(context, contactId);
+                                ContactsEntry contactsEntry = mDb.contactDao().findContactsEntryfromContactId(contactId);
+                                contactsForThisPlace.add(new Contact(0, contactsEntry.getPhone(), contactsEntry.getName(), null));
                             }
                         }
-
                     }
 
                     Log.d(TAG, "async finished");
                     // Must call finish() so the BroadcastReceiver can be recycled.
                     //pendingResult.finish();
+                    StalkerService.startActionAddEvents(context, namePlace, contactsForThisPlace);
                     return phoneNumbers;
                 }
 
@@ -200,40 +209,6 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
         }
     }
 
-    /*class FetchRulesTask extends AsyncTask<String, Void, Movie[]> {
-
-
-        @Override
-        protected Movie[] doInBackground(String... params) {
-
-
-            try {
-                String jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
-
-                return JSONUtils.getMovieDataFromJson(MainActivity.this, jsonMovieResponse);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Movie[] movieData) {
-            mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if (movieData != null) {
-                movies = new Movie[movieData.length];
-                movies = movieData;
-                showMovieDataView();
-                mMovieAdapter.setMovieData(movieData);
-            } else {
-                showErrorMessage();
-            }
-            pendingResult.finish();
-            return data;
-        }
-    }*/
-
 
 
     //Sends an SMS to the number stated
@@ -296,7 +271,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                 .setContentTitle("You arrived!")
                 .setContentText("Let your beloved ones know that you are safe.")
                 .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText("Safely there" + contactId))
+                        .bigText("Safely there!" + contactId))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
 

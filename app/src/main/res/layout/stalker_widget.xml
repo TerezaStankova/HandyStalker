@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/widget_margin"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/ingredients_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="2dp"
+        android:verticalSpacing="4dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/appwidget_image"
+            android:contentDescription="Image for widget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/appwidget_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_new_rule"
+            style="@style/myDetailTitleStyle"
+            android:layout_margin="8dp"/>
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/stalker_actions_widget_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="2dp"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>
