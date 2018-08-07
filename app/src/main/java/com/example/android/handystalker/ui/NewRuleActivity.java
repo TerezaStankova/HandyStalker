@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
@@ -42,6 +42,7 @@ public class NewRuleActivity  extends AppCompatActivity {
     List<String> mContactsName = newArrayList();
     List<Integer> placeIds = new ArrayList<Integer>();
     List<String> placeNames = new ArrayList<String>();
+    List<String> placeNamesAnywhere = new ArrayList<String>();
 
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 2222;
     private static final int MY_PERMISSIONS_REQUEST_SEND_NOTIFICATIONS = 1111;
@@ -52,8 +53,10 @@ public class NewRuleActivity  extends AppCompatActivity {
     //edit texts
     Spinner typeSpinner;
     Spinner contactNameSpinner;
+    Spinner contactName2Spinner;
     Spinner arrivalSpinner;
     Spinner departureSpinner;
+    Spinner departure2Spinner;
 
     Spinner contactNameSpinnerNotify;
     Spinner placeSpinner;
@@ -61,21 +64,26 @@ public class NewRuleActivity  extends AppCompatActivity {
     Integer placeId = null;
     Integer arrivalId = null;
     Integer departureId = null;
-    int contactId = 0;
-    int contactIdNot = 0;
+    Integer departureId2 = null;
+    Integer contactId = null;
+    Integer contactId2 = null;
+    Integer contactIdNot = null;
     String type = "sms";
-    boolean arrivalNotificationRule = true;
+    private boolean arrivalNotificationRule = true;
+    private boolean depRule = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_rule);
+        setContentView(R.layout.new_stalking_rule);
         setTitle("New Stalking Rule");
 
         typeSpinner = (Spinner) findViewById(R.id.type_spinner);
         contactNameSpinner = (Spinner) findViewById(R.id.name_spinner);
+        contactName2Spinner = (Spinner) findViewById(R.id.name_departure_spinner);
         arrivalSpinner = (Spinner) findViewById(R.id.arrival_spinner);
         departureSpinner = (Spinner) findViewById(R.id.departure_spinner);
+        departure2Spinner = (Spinner) findViewById(R.id.departure_place_rule_spinner);
 
         contactNameSpinnerNotify = (Spinner) findViewById(R.id.name_spinner2);
         placeSpinner = (Spinner) findViewById(R.id.place_spinner);
@@ -87,6 +95,7 @@ public class NewRuleActivity  extends AppCompatActivity {
     }
 
     public void onSaveSendingRuleClick(View view) {
+        depRule = false;
         type = "sms";
 
             if (ContextCompat.checkSelfPermission(this,
@@ -130,6 +139,53 @@ public class NewRuleActivity  extends AppCompatActivity {
                 Intent intent = new Intent(this, SmsRulesActivity.class);
                 startActivity(intent);
             }
+    }
+
+    public void onSaveSendingRuleDepClick(View view) {
+        depRule = true;
+        type = "sms";
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.SEND_SMS)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.SEND_SMS},
+                        MY_PERMISSIONS_REQUEST_SEND_SMS);
+
+                // MY_PERMISSIONS_REQUEST_SEND_SMS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        } else {
+            // Permission has already been granted
+            String name = (String) contactName2Spinner.getSelectedItem();
+
+            if (name != null) {
+                final RuleEntry ruleEntry = new RuleEntry(null, departureId2, contactId2, type, false);
+                Log.d("rules entred", "r " + arrivalId + departureId + contactId2 + type);
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        // insert new contact
+                        mDb.ruleDao().insertRule(ruleEntry);
+
+                    }
+                });
+            }
+
+            Intent intent = new Intent(this, SmsRulesActivity.class);
+            startActivity(intent);
+        }
     }
 
     public void onSaveNotifyRuleClick(View view) {
@@ -188,18 +244,21 @@ public class NewRuleActivity  extends AppCompatActivity {
                 // Permission has already been granted
                 Log.d("rules entred", "r " + arrivalId + departureId + contactId + type);
                 String name = (String) contactNameSpinner.getSelectedItem();
+                final RuleEntry ruleEntry;
 
-                if (name != null) {
-                    final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureId, contactId, type, false);
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                if (!depRule){
+                    ruleEntry = new RuleEntry(arrivalId, departureId, contactId, type, false);
+                }else{
+                    ruleEntry = new RuleEntry(null, departureId2, contactId, type, false);
+                }
+
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
                         @Override
                         public void run() {
                             // insert new contact
                             mDb.ruleDao().insertRule(ruleEntry);
-
                         }
                     });
-                }
 
                 Intent intent = new Intent(this, SmsRulesActivity.class);
                 startActivity(intent);
@@ -226,23 +285,6 @@ public class NewRuleActivity  extends AppCompatActivity {
                 }
                 return;
             }
-
-            case MY_PERMISSIONS_REQUEST_SEND_NOTIFICATIONS: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                    saveRule();
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    //Intent intent = new Intent(this, SmsRulesActivity.class);
-                    //startActivity(intent);
-                }
-                return;
-            }
-
 
             // other 'case' lines to check for other
             // permissions this app might request.
@@ -273,7 +315,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                 }
             }
             public void onNothingSelected(AdapterView<?> parent) {
-                type = "sms";
+                arrivalNotificationRule = true;
             }
         });
     }
@@ -288,7 +330,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                 if (placeEntries.size() == 0) {
                     return;
                 }
-                if (placeEntries != null || placeEntries.size() != 0) {
+                if (placeEntries != null && placeEntries.size() != 0) {
                     placeIds.clear();
                     placeNames.clear();
 
@@ -304,12 +346,25 @@ public class NewRuleActivity  extends AppCompatActivity {
                             android.R.layout.simple_spinner_item,
                             placeNames
                     );
+
                     // Specify the layout to use when the list of choices appears
                     adapterPlace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     // Apply the adapter to the spinner
                     arrivalSpinner.setAdapter(adapterPlace);
-                    departureSpinner.setAdapter(adapterPlace);
+
+                    departure2Spinner.setAdapter(adapterPlace);
                     placeSpinner.setAdapter(adapterPlace);
+
+                    placeNamesAnywhere = placeNames;
+                    placeNamesAnywhere.add(0, "anywhere");
+
+                    ArrayAdapter<String> adapterDepartureAnywherePlace = new ArrayAdapter<String>(
+                            getApplicationContext(),
+                            android.R.layout.simple_spinner_item,
+                            placeNamesAnywhere
+                    );
+
+                    departureSpinner.setAdapter(adapterDepartureAnywherePlace);
                 }
 
                 arrivalSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -321,12 +376,14 @@ public class NewRuleActivity  extends AppCompatActivity {
                     }
                 });
 
-                departureSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                departureSpinner.setOnItemSelectedListener(new DepartureAnywhereSpinnerClass());
+
+                departure2Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
-                        departureId = placeIds.get(position);
+                        departureId2 = placeIds.get(position);
                     }
                     public void onNothingSelected(AdapterView<?> parent) {
-                        departureId = null;
+                        departureId2 = null;
                     }
                 });
 
@@ -341,6 +398,19 @@ public class NewRuleActivity  extends AppCompatActivity {
 
             }
         });
+    }
+
+    class DepartureAnywhereSpinnerClass implements AdapterView.OnItemSelectedListener
+    {
+        public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
+        { if (position == 0){
+            departureId = null;
+        } else {
+            departureId = placeIds.get(position - 1);}
+        }
+        public void onNothingSelected(AdapterView<?> parent) {
+            departureId = null;
+        }
     }
 
     private void setupContactsViewModel() {
@@ -373,6 +443,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                 adapterContacts.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 // Apply the adapter to the spinner
                 contactNameSpinner.setAdapter(adapterContacts);
+                contactName2Spinner.setAdapter(adapterContacts);
 
                 contactNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
@@ -382,6 +453,15 @@ public class NewRuleActivity  extends AppCompatActivity {
                             contactId = 0;
                         }
                     });
+
+                contactName2Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
+                            contactId2 = mContactsId.get(position);
+                        }
+                        public void onNothingSelected(AdapterView<?> parent) {
+                            contactId = 0;
+                        }
+                });
 
                 contactNameSpinnerNotify.setAdapter(adapterContacts);
 

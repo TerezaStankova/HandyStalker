@@ -27,17 +27,17 @@ public interface ContactDao {
     void updateContact(ContactsEntry contactsEntry);
 
     @Query("DELETE FROM contacts WHERE id = :contactId")
-    void deleteByContactId(int contactId);
+    void deleteByContactId(Integer contactId);
 
     @Query("SELECT name FROM contacts WHERE id=:contactId")
-    String findNameForContactId(final int contactId);
+    String findNameForContactId(final Integer contactId);
 
     @Query("SELECT phone FROM contacts WHERE id=:contactId")
-    String findPhoneForContactId(final int contactId);
+    String findPhoneForContactId(final Integer contactId);
 
     @Query("SELECT email FROM contacts WHERE id=:contactId")
-    String findEmailForContactId(final int contactId);
+    String findEmailForContactId(final Integer contactId);
 
     @Query("SELECT * FROM contacts WHERE id=:contactId")
-    ContactsEntry findContactsEntryfromContactId(final int contactId);
+    ContactsEntry findContactsEntryfromContactId(final Integer contactId);
 }

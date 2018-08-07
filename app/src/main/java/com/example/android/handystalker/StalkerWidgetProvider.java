@@ -14,6 +14,7 @@ import com.example.android.handystalker.ui.MainActivity;
 import com.example.android.handystalker.ui.NewRuleActivity;
 import com.example.android.handystalker.ui.StalkerService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ import java.util.List;
 public class StalkerWidgetProvider extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId, String arrivalPlace, List<Contact> mContacts) {
+                                int appWidgetId, String arrivalPlace, ArrayList<Contact> mContacts) {
 
         // Construct the RemoteViews object
         String title;
@@ -87,7 +88,7 @@ public class StalkerWidgetProvider extends AppWidgetProvider {
     }
 
     public static void updateStalkersWidgets(Context context, AppWidgetManager appWidgetManager,
-                                             int[] appWidgetIds, String arrivalPlace, List<Contact> mContacts) {
+                                             int[] appWidgetIds, String arrivalPlace, ArrayList<Contact> mContacts) {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId, arrivalPlace, mContacts);
         }

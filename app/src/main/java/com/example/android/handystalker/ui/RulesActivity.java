@@ -22,5 +22,7 @@ public class RulesActivity extends AppCompatActivity {
     }
 
     public void onSettingsButtonClicked(View view) {
+        Intent intent = new Intent(this, HandyRulesActivity.class);
+        startActivity(intent);
     }
 }

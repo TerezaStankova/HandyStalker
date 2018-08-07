@@ -8,6 +8,9 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
 
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -29,21 +32,23 @@
 
         <activity
             android:name=".ui.PlacesActivity"
-            android:parentActivityName=".ui.MainActivity"></activity>
+            android:parentActivityName=".ui.MainActivity" />
         <activity
             android:name=".ui.RulesActivity"
-            android:parentActivityName=".ui.MainActivity"></activity>
+            android:parentActivityName=".ui.MainActivity" />
         <activity
             android:name=".ui.ContactsActivity"
-            android:parentActivityName=".ui.MainActivity"></activity>
+            android:parentActivityName=".ui.MainActivity" />
         <activity
             android:name=".ui.SmsRulesActivity"
-            android:parentActivityName=".ui.RulesActivity"></activity>
-        <activity
-            android:name=".ui.NotificationRulesActivity"
-            android:parentActivityName=".ui.RulesActivity"></activity>
-        <activity android:name=".ui.NewContactActivity"></activity>
-        <activity android:name=".ui.NewRuleActivity"></activity>
+            android:parentActivityName=".ui.RulesActivity" />
+        <activity android:name=".ui.HandyRulesActivity"
+            android:parentActivityName=".ui.RulesActivity" />
+
+        <activity android:name=".ui.NewContactActivity" android:parentActivityName=".ui.ContactsActivity"/>
+        <activity android:name=".ui.NewRuleActivity" android:parentActivityName=".ui.SmsRulesActivity"/>
+        <activity android:name=".ui.NewHandyRuleActivity" android:parentActivityName=".ui.HandyRulesActivity"/>
+
 
         <service android:name=".ui.StalkerService" />
 

@@ -93,7 +93,7 @@ public class NewContactActivity extends AppCompatActivity {
 
 
         if (name != null) {
-            final int contactsId = mComtact.getContactId();
+            final Integer contactsId = (Integer) mComtact.getContactId();
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {

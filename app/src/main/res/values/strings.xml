@@ -56,9 +56,24 @@
         <item>arrival to </item>
         <item>departure from </item>
     </string-array>
+
+    <string-array name="on_array">
+        <item> on </item>
+        <item> off </item>
+    </string-array>
+
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="add_new_rule">Add new rule</string>
     <string name="reached">You recently reached</string>
+    <string name="new_rule">New Rule</string>
+    <string name="mobile_data_permission">Mobile data Permission</string>
+    <string name="sound_permission">Sound Permission</string>
+    <string name="wifi_on_turn">Turn Wi-Fi ON.</string>
+    <string name="wifi_of_turn">Turn Wi-Fi OFF.</string>
+    <string name="sound_on_turn">Turn sound ON.</string>
+    <string name="sound_off_turn">Turn sound OFF.</string>
+    <string name="data_on_turn">Turn mobile data ON.</string>
+    <string name="data_off_turn">Turn mobile data OFF.</string>
 
 </resources>

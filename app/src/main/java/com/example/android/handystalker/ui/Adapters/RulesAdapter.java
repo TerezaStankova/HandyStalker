@@ -32,7 +32,14 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
     private List<RuleEntry> mRulesEntries;
     // Member variable for the Database
     private AppDatabase mDb;
+    private boolean handy = false;
 
+    private String WIFIOFF = "wifioff";
+    private String WIFI = "wifi";
+    private String SOUNDOFF = "soundoff";
+    private String SOUND = "sound";
+    private String NETOFF = "netoff";
+    private String NET = "net";
     /*
      *Constructor using the context and the db cursor
      * @param context the calling context/activity
@@ -65,10 +72,12 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
      */
     @Override
     public void onBindViewHolder(RulesAdapter.RuleViewHolder holder, final int position) {
-        String contactName = mRules.get(position).getName();
+
         String arrivalPlace = mRules.get(position).getArrivalPlace();
-        String departurePlace = mRules.get(position).getDeparturePlace();
         String typeRule = mRules.get(position).getType();
+        if (handy = false) {
+        String contactName = mRules.get(position).getName();
+        String departurePlace = mRules.get(position).getDeparturePlace();
         holder.nameTextView.setText("My Stalker: " + contactName);
 
         if(arrivalPlace != null){
@@ -77,8 +86,6 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
         } else {
             holder.arriveTextView.setVisibility(View.GONE);
         }
-
-
 
         if(departurePlace != null){
             holder.departTextView.setVisibility(View.VISIBLE);
@@ -91,6 +98,34 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
             holder.typeIcon.setImageResource(R.drawable.ic_sms_green_24dp);
         } else {
             holder.typeIcon.setImageResource(R.drawable.ic_notifications_active_green_24dp);
+        }
+        } else if (handy = true) {
+            holder.nameTextView.setText("Place: " + arrivalPlace);
+            holder.arriveTextView.setVisibility(View.VISIBLE);
+            if(typeRule.equals(WIFI) || typeRule.equals(WIFIOFF)){
+                holder.typeIcon.setImageResource(R.drawable.ic_wifi_green_24dp);
+                if(typeRule.equals(WIFI)){
+                    holder.arriveTextView.setText(R.string.wifi_on_turn);
+                }else{
+                    holder.arriveTextView.setText(R.string.wifi_of_turn);
+                }
+            } else if(typeRule.equals(SOUND) || typeRule.equals(SOUNDOFF)) {
+                holder.typeIcon.setImageResource(R.drawable.ic_volume_up_green_24dp);
+                if(typeRule.equals(WIFI)){
+                    holder.arriveTextView.setText(R.string.sound_on_turn);
+                }else{
+                    holder.arriveTextView.setText(R.string.sound_off_turn);
+                }
+            } else if(typeRule.equals(NET) || typeRule.equals(NETOFF)) {
+                holder.typeIcon.setImageResource(R.drawable.ic_net_green_24dp);
+                if(typeRule.equals(WIFI)){
+                    holder.arriveTextView.setText(R.string.data_on_turn);
+                }else{
+                    holder.arriveTextView.setText(R.string.data_off_turn);
+                }
+            }
+
+            holder.departTextView.setVisibility(View.GONE);
         }
 
         holder.deleteIcon.setOnClickListener(new View.OnClickListener()
@@ -109,6 +144,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
                 });
             }
         });
+
     }
 
 
@@ -147,6 +183,11 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
     public void setDatabase(AppDatabase myDatabase) {
         mDb = myDatabase;
     }
+
+    public void setHandy(boolean mHandy) {
+        handy = mHandy;
+    }
+
     public void setRules(List<Rule> rules) {
         mRules = rules;
         notifyDataSetChanged();
@@ -179,7 +220,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
 
                         final int id = ruleEntries.get(i).getId();
 
-                        final int idContact = ruleEntries.get(i).getContactId();
+                        final Integer idContact = ruleEntries.get(i).getContactId();
                         final Integer idArrival = ruleEntries.get(i).getArrivalId();
                         final Integer idDeparture = ruleEntries.get(i).getDepartureId();
 

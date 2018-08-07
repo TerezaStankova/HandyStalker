@@ -26,9 +26,7 @@
 
     <style name="mySpinnerStyle" parent="Base.Widget.AppCompat.DropDownItem.Spinner">
         <item name="android:textColor">@color/TextOnLight</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:background">@color/colorAccent</item>
     </style>
 
     <style name="mySpinnerStyleItem" parent="Widget.AppCompat.TextView.SpinnerItem">

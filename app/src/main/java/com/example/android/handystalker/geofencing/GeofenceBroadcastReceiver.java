@@ -11,8 +11,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 
 import android.graphics.Movie;
+import android.media.AudioManager;
 import android.net.Uri;
 
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 
@@ -77,7 +79,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
 
         if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
             Log.d("enter", "entered ");
-
+            final List<String> placeName = new ArrayList<String>();
             final PendingResult pendingResult = goAsync();
             @SuppressLint("StaticFieldLeak") AsyncTask<String, Void, List<String>> asyncTask = new AsyncTask<String, Void, List<String>>() {
                 @Override
@@ -104,18 +106,35 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                         for (int i = 0; i < rulesForThisPlace.size(); i++) {
                             if (rulesForThisPlace.get(i).getType().equals("sms")) {
 
+                                if (rulesForThisPlace.get(i).getDepartureId() != null){
                                 boolean active = rulesForThisPlace.get(i).getActive();
                                 if (active == true){
                                     rulesForThisPlace.get(i).setActive(false);
                                     mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
+                                    placeName.add(mDb.placeDao().findPlaceNameById(arrivalId));
                                     phoneNumbers.add(mDb.contactDao().findPhoneForContactId(rulesForThisPlace.get(i).getContactId()));}
+                                } else {
+                                    placeName.add(mDb.placeDao().findPlaceNameById(arrivalId));
+                                    phoneNumbers.add(mDb.contactDao().findPhoneForContactId(rulesForThisPlace.get(i).getContactId()));
+                                }
                             } else if (rulesForThisPlace.get(i).getType().equals("notify")){
                                 Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
-                                int contactId = rulesForThisPlace.get(i).getContactId();
+                                Integer contactId = (Integer) rulesForThisPlace.get(i).getContactId();
                                 sendNotification(context, contactId);
                                 ContactsEntry contactsEntry = mDb.contactDao().findContactsEntryfromContactId(contactId);
                                 contactsForThisPlace.add(new Contact(0, contactsEntry.getPhone(), contactsEntry.getName(), null));
-                            }
+                            } else if (rulesForThisPlace.get(i).getType().equals("wifi")) {
+                                Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                setWiFi(context, true);
+                            } else if (rulesForThisPlace.get(i).getType().equals("wifioff")) {
+                                Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                setWiFi(context, false);
+                            } else if (rulesForThisPlace.get(i).getType().equals("sound")) {
+                                Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                setSound(context, 2);}
+                         else if (rulesForThisPlace.get(i).getType().equals("soundoff")) {
+                            Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                            setSound(context, 0);}
                         }
                     }
 
@@ -130,7 +149,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                 protected void onPostExecute(List<String> phoneNumbers) {
                     if (phoneNumbers != null && phoneNumbers.size() != 0) {
                         for (int i = 0; i < phoneNumbers.size(); i++) {
-                            sendSMS(context, phoneNumbers.get(i));
+                            sendSMS(context, phoneNumbers.get(i), placeName.get(i));
                         }
                     }
                     pendingResult.finish();
@@ -172,16 +191,29 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
 
                         for (int i = 0; i < rulesForThisPlace.size(); i++) {
                             if (rulesForThisPlace.get(i).getType().equals("sms")) {
+                                if (rulesForThisPlace.get(i).getArrivalId() != null){
                                 rulesForThisPlace.get(i).setActive(true);
                                 mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
-                                phoneNumbers.add(mDb.contactDao().findPhoneForContactId(rulesForThisPlace.get(i).getContactId()));
-                                placeName.add(mDb.placeDao().findPlaceNameById(departureId));
+                                } else {
+                                    placeName.add(mDb.placeDao().findPlaceNameById(departureId));
+                                    phoneNumbers.add(mDb.contactDao().findPhoneForContactId(rulesForThisPlace.get(i).getContactId()));
+                                }
                             } else if (rulesForThisPlace.get(i).getType().equals("notify")){
                                 Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
                                 sendNotification(context, rulesForThisPlace.get(i).getContactId());
-                            }
+                            }  else if (rulesForThisPlace.get(i).getType().equals("wifi")) {
+                                Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                setWiFi(context, false);
+                            } else if (rulesForThisPlace.get(i).getType().equals("wifioff")) {
+                                Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                setWiFi(context, true);
+                            } else if (rulesForThisPlace.get(i).getType().equals("sound")) {
+                                Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                setSound(context, 0);}
+                            else if (rulesForThisPlace.get(i).getType().equals("soundoff")) {
+                                Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                setSound(context, 2);}
                         }
-
                     }
                     Log.d(TAG, "async finished");
                     return phoneNumbers;
@@ -213,7 +245,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
 
     //Sends an SMS to the number stated
 
-    protected void sendSMS(Context context, String phoneNumber) {
+    protected void sendSMS(Context context, String phoneNumber, String placeName) {
 
         Log.d("sentsms", "exited " + context);
         Log.d("sentsms", "Number " + phoneNumber);
@@ -222,7 +254,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
             try {
                 Log.d("sentsms", "now send " + context);
                 SmsManager smsManager = SmsManager.getDefault();
-                smsManager.sendTextMessage(phoneNumber, null, "Dorazila jsem", null, null);
+                smsManager.sendTextMessage(phoneNumber, null, "Hi! I just reached " + placeName + " safely! Have a wonderful day!", null, null);
                 //  smsManager.sendTextMessage(number,null,matn,null,null);
             } catch (Exception e) {
             }
@@ -238,10 +270,25 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
             try {
                 Log.d("sentsms", "now send " + context);
                 SmsManager smsManager = SmsManager.getDefault();
-                smsManager.sendTextMessage(phoneNumber, null, "Ahoj! Vyrazila jsem z místa" + placeName, null, null);
+                smsManager.sendTextMessage(phoneNumber, null, "Hi! I just departured from " + placeName, null, null);
                 //  smsManager.sendTextMessage(number,null,matn,null,null);
             } catch (Exception e) {
             }
+        }
+    }
+
+    private void setSound(Context context, int mode) {
+
+        //RINGER_MODE_SILENT - Ringer mode that will be silent and will not vibrate. (This overrides the vibrate setting.)
+        //Constant Value: 0 (0x00000000)
+        //RINGER_MODE_NORMAL - Ringer mode that may be audible and may vibrate. It will be audible if the volume before changing out of this mode was audible. It will vibrate if the vibrate setting is on.
+        //Constant Value: 2 (0x00000002)
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        // Check for DND permissions for API 24+
+        if (android.os.Build.VERSION.SDK_INT < 24 ||
+                (android.os.Build.VERSION.SDK_INT >= 24 && !notificationManager.isNotificationPolicyAccessGranted())) {
+            AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+            audioManager.setRingerMode(mode);
         }
     }
 
@@ -285,6 +332,17 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
         // Issue the notification
         mNotificationManager.notify(0, mBuilder.build());
     }
+
+    private void setWiFi(Context context, boolean mode) {
+        if (android.os.Build.VERSION.SDK_INT < 24 ||
+                (android.os.Build.VERSION.SDK_INT >= 24 && (ContextCompat.checkSelfPermission(context, Manifest.permission.CHANGE_WIFI_STATE) == PackageManager.PERMISSION_GRANTED))) {
+            try {
+                WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+                wifiManager.setWifiEnabled(mode);
+            } catch (Exception e) {
+            }
+        }
+   }
 
     /*protected void sendEmail() {
         Log.i("Send email", "");
@@ -336,7 +394,29 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
         email.setSubject(subject);
         email.setText(bodyText);
         return email;
-    }*/
+    }
+
+
+
+     private void setRingerMode(Context context, int mode) {
+        NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        // Check for DND permissions for API 24+
+        if (android.os.Build.VERSION.SDK_INT < 24 ||
+                (android.os.Build.VERSION.SDK_INT >= 24 && !nm.isNotificationPolicyAccessGranted())) {
+            AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+            audioManager.setRingerMode(mode);
+        }
+    }
+
+
+
+
+
+
+
+
+
+    */
 
 
 

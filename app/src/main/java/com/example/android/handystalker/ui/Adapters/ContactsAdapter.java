@@ -164,7 +164,7 @@ class ContactViewHolder extends RecyclerView.ViewHolder {
                 String name = contactsEntries.get(i).getName();
                 String phone = contactsEntries.get(i).getPhone();
                 String email = contactsEntries.get(i).getEmail();
-                int id = contactsEntries.get(i).getId();
+                int id = (int) contactsEntries.get(i).getId();
 
                 Contact newContact = new Contact(id, phone, name, email);
                 mContactDatabase.add(newContact);

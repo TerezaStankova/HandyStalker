@@ -16,6 +16,8 @@ public class PlaceRepository {
 
     private RuleDao mRuleDao;
     private LiveData<List<RuleEntry>> mAllRules;
+    private LiveData<List<RuleEntry>> mHandyRules;
+    private LiveData<List<RuleEntry>> mStalkerRules;
 
     public PlaceRepository(Application application) {
         AppDatabase db = AppDatabase.getInstance(application);
@@ -25,6 +27,8 @@ public class PlaceRepository {
         mAllContacts = mContactDao.loadAllContacts();
         mRuleDao = db.ruleDao();
         mAllRules = mRuleDao.loadAllRules();
+        mHandyRules = mRuleDao.loadHandyRules("wifi", "net", "sound", "wifioff", "netoff", "soundoff");
+        mStalkerRules = mRuleDao.loadSendingRules("sms", "notify");
     }
 
     // Room executes all queries on a separate thread.
@@ -39,6 +43,14 @@ public class PlaceRepository {
 
     public LiveData<List<RuleEntry>> getmAllRules() {
         return mAllRules;
+    }
+
+    public LiveData<List<RuleEntry>> getmHandyRules() {
+        return mHandyRules;
+    }
+
+    public LiveData<List<RuleEntry>> getmStalkerRules() {
+        return mStalkerRules;
     }
 }
 

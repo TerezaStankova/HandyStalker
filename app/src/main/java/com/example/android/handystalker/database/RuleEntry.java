@@ -35,7 +35,7 @@ public class RuleEntry {
     private Integer departureId;
 
     @ColumnInfo(name = "contact_id")
-    private int contactId;
+    private Integer contactId;
 
     @ColumnInfo(name = "type")
     @NonNull
@@ -49,7 +49,7 @@ public class RuleEntry {
     public RuleEntry() {
     }
 
-    public RuleEntry(Integer arrivalId, Integer departureId, int contactId, @NonNull String type,@NonNull boolean active) {
+    public RuleEntry(Integer arrivalId, Integer departureId, Integer contactId, @NonNull String type,@NonNull boolean active) {
         this.arrivalId = arrivalId;
         this.departureId = departureId;
         this.contactId = contactId;
@@ -78,8 +78,8 @@ public class RuleEntry {
         this.departureId = departureId;
     }
 
-    public int getContactId() { return contactId; }
-    public void setContactId(int contactId) {
+    public Integer getContactId() { return contactId; }
+    public void setContactId(Integer contactId) {
         this.contactId = contactId;
     }
 

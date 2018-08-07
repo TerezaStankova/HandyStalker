@@ -1,43 +1,36 @@
 package com.example.android.handystalker.ui;
 
 import android.Manifest;
+import android.app.NotificationManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Movie;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.Toast;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
-import com.example.android.handystalker.database.ContactsEntry;
 import com.example.android.handystalker.database.RuleEntry;
-import com.example.android.handystalker.model.Contact;
 import com.example.android.handystalker.model.Rule;
 import com.example.android.handystalker.ui.Adapters.RulesAdapter;
-import com.example.android.handystalker.utilities.AppExecutors;
-import com.example.android.handystalker.utilities.ContactsViewModel;
+import com.example.android.handystalker.utilities.HandyRulesViewModel;
 import com.example.android.handystalker.utilities.RulesViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.android.gms.common.util.ArrayUtils.newArrayList;
-
-public class SmsRulesActivity extends AppCompatActivity {
+public class HandyRulesActivity extends AppCompatActivity {
 
     // Member variables
     private RulesAdapter mAdapter;
@@ -51,7 +44,10 @@ public class SmsRulesActivity extends AppCompatActivity {
     private AppDatabase mDb;
     //List<Rule> mRuleDatabase = newArrayList();
 
-    private static final int PERMISSIONS_REQUEST = 2222;
+    private static final int PERMISSIONS_REQUEST = 2223;
+    private static final int MY_PERMISSIONS_REQUEST_NET = 1222;
+    private static final int MY_PERMISSIONS_REQUEST_SEND_NOTIFICATIONS = 1110;
+    private static final int MY_PERMISSIONS_REQUEST_WIFI = 1234;
 
     // Final String to store state information about the rules
     private static final String RULES = "rules";
@@ -61,11 +57,11 @@ public class SmsRulesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.send_rules);
-        setTitle("Stalking Rules");
+        setContentView(R.layout.handy_rules);
+        setTitle("Handy Rules");
 
         // Set up the recycler view
-        mRecyclerView = (RecyclerView) findViewById(R.id.sendrules_list_recycler_view);
+        mRecyclerView = (RecyclerView) findViewById(R.id.handyrules_list_recycler_view);
         layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         restoreLayoutManagerPosition();
@@ -76,8 +72,9 @@ public class SmsRulesActivity extends AppCompatActivity {
             //mRuleDatabase = savedInstanceState.getParcelableArrayList(RULES);
         }
 
+
         mAdapter = new RulesAdapter(this, null);
-        mAdapter.setHandy(false);
+        mAdapter.setHandy(true);
         mRecyclerView.setAdapter(mAdapter);
 
         mDb = AppDatabase.getInstance(getApplicationContext());
@@ -87,7 +84,7 @@ public class SmsRulesActivity extends AppCompatActivity {
     }
 
     public void onAddSendRulesButtonClicked(View view) {
-        Intent intent = new Intent(this, NewRuleActivity.class);
+        Intent intent = new Intent(this, NewHandyRuleActivity.class);
         startActivity(intent);
     }
 
@@ -103,7 +100,7 @@ public class SmsRulesActivity extends AppCompatActivity {
 
 
     private void setUpRulesViewModel() {
-        RulesViewModel viewModel = ViewModelProviders.of(this).get(RulesViewModel.class);
+        HandyRulesViewModel viewModel = ViewModelProviders.of(this).get(HandyRulesViewModel.class);
         viewModel.getRules().observe(this, new Observer<List<RuleEntry>>() {
             @Override
             public void onChanged(@Nullable List<RuleEntry> ruleEntries) {
@@ -114,37 +111,38 @@ public class SmsRulesActivity extends AppCompatActivity {
                 }
 
                 if (ruleEntries != null) {
-                        showContactsDataView();
-                        mAdapter.setHandy(false);
-                        mAdapter.setRulesFromDatabase(ruleEntries);
+                    showContactsDataView();
+                    mAdapter.setHandy(true);
+                    mAdapter.setRulesFromDatabase(ruleEntries);
                 }
             }
 
         });
     }
 
-    public void onSMSPermissionClicked(View view) {
-        ActivityCompat.requestPermissions(SmsRulesActivity.this,
-                new String[]{Manifest.permission.SEND_SMS},
-                PERMISSIONS_REQUEST);
-    }
-
-    public static void setmRulesDatabase(List<Rule> ruleDatabase) {
-        //mRuleDatabase = ruleDatabase;
-    }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        // Initialize location permissions checkbox
-        CheckBox smsPermissions = (CheckBox) findViewById(R.id.sms_permission_checkbox);
-        if (ActivityCompat.checkSelfPermission(SmsRulesActivity.this,
-                android.Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-            smsPermissions.setChecked(false);
+        // Initialize permissions checkbox
+        CheckBox soundPermissions = (CheckBox) findViewById(R.id.sound_permission_checkbox);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        // Check if the API supports such permission change and check if permission is granted
+        if (android.os.Build.VERSION.SDK_INT >= 24 && !notificationManager.isNotificationPolicyAccessGranted()) {
+            soundPermissions.setChecked(false);
         } else {
-            smsPermissions.setChecked(true);
-            smsPermissions.setEnabled(false);
+            soundPermissions.setChecked(true);
+            soundPermissions.setEnabled(false);
+        }
+
+        CheckBox wifiPermissions = (CheckBox) findViewById(R.id.wifi_permission_checkbox);
+        if (ActivityCompat.checkSelfPermission(HandyRulesActivity.this,
+                Manifest.permission.CHANGE_WIFI_STATE) != PackageManager.PERMISSION_GRANTED) {
+            wifiPermissions.setChecked(false);
+        } else {
+            wifiPermissions.setChecked(true);
+            wifiPermissions.setEnabled(false);
         }
 
         if (mListState != null) {
@@ -178,6 +176,21 @@ public class SmsRulesActivity extends AppCompatActivity {
         if(state != null)
             mListState = state.getParcelable(LIST_STATE_KEY);
     }
+
+    public void onSoundPermissionClicked(View view) {
+        Intent intent = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+        }
+        startActivity(intent);
+    }
+
+    public void onWifiPermissionClicked(View view) {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.CHANGE_WIFI_STATE},
+                MY_PERMISSIONS_REQUEST_WIFI);
+    }
+
 }
 
 
