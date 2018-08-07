@@ -53,13 +53,13 @@ public class NewRuleActivity  extends AppCompatActivity {
     //edit texts
     Spinner typeSpinner;
     Spinner contactNameSpinner;
-    Spinner contactName2Spinner;
+    Spinner contactNameDepSMSSpinner ;
     Spinner arrivalSpinner;
     Spinner departureSpinner;
-    Spinner departure2Spinner;
+    Spinner departureSMSPlaceSpinner;
 
     Spinner contactNameSpinnerNotify;
-    Spinner placeSpinner;
+    Spinner placeNotificationSpinner;
 
     Integer placeId = null;
     Integer arrivalId = null;
@@ -78,15 +78,19 @@ public class NewRuleActivity  extends AppCompatActivity {
         setContentView(R.layout.new_stalking_rule);
         setTitle("New Stalking Rule");
 
-        typeSpinner = (Spinner) findViewById(R.id.type_spinner);
+        //sms whole spinners
         contactNameSpinner = (Spinner) findViewById(R.id.name_spinner);
-        contactName2Spinner = (Spinner) findViewById(R.id.name_departure_spinner);
         arrivalSpinner = (Spinner) findViewById(R.id.arrival_spinner);
         departureSpinner = (Spinner) findViewById(R.id.departure_spinner);
-        departure2Spinner = (Spinner) findViewById(R.id.departure_place_rule_spinner);
 
+        //departure only spinners
+        departureSMSPlaceSpinner = (Spinner) findViewById(R.id.departure_place_rule_spinner);
+        contactNameDepSMSSpinner = (Spinner) findViewById(R.id.name_departure_spinner);
+
+        //notification spinners
+        typeSpinner = (Spinner) findViewById(R.id.type_spinner);
         contactNameSpinnerNotify = (Spinner) findViewById(R.id.name_spinner2);
-        placeSpinner = (Spinner) findViewById(R.id.place_spinner);
+        placeNotificationSpinner = (Spinner) findViewById(R.id.place_spinner);
 
         setupTypeSpinner();
         mDb = AppDatabase.getInstance(getApplicationContext());
@@ -168,7 +172,7 @@ public class NewRuleActivity  extends AppCompatActivity {
             }
         } else {
             // Permission has already been granted
-            String name = (String) contactName2Spinner.getSelectedItem();
+            String name = (String) contactNameDepSMSSpinner .getSelectedItem();
 
             if (name != null) {
                 final RuleEntry ruleEntry = new RuleEntry(null, departureId2, contactId2, type, false);
@@ -333,6 +337,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                 if (placeEntries != null && placeEntries.size() != 0) {
                     placeIds.clear();
                     placeNames.clear();
+                    placeNamesAnywhere.clear();
 
                     for (int i = 0; i < placeEntries.size(); i++) {
                         placeIds.add(placeEntries.get(i).getId());
@@ -341,22 +346,12 @@ public class NewRuleActivity  extends AppCompatActivity {
                         System.out.println("placeNames" + i + placeNames.get(i));
                     }
 
-                    ArrayAdapter<String> adapterPlace = new ArrayAdapter<String>(
-                            getApplicationContext(),
-                            android.R.layout.simple_spinner_item,
-                            placeNames
-                    );
 
-                    // Specify the layout to use when the list of choices appears
-                    adapterPlace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    // Apply the adapter to the spinner
-                    arrivalSpinner.setAdapter(adapterPlace);
-
-                    departure2Spinner.setAdapter(adapterPlace);
-                    placeSpinner.setAdapter(adapterPlace);
-
-                    placeNamesAnywhere = placeNames;
+                    Log.d("placeNames", " " + placeNames.get(0));
+                    placeNamesAnywhere.addAll(placeNames);
                     placeNamesAnywhere.add(0, "anywhere");
+                    Log.d("placeNames", " " + placeNames.get(0));
+
 
                     ArrayAdapter<String> adapterDepartureAnywherePlace = new ArrayAdapter<String>(
                             getApplicationContext(),
@@ -364,40 +359,88 @@ public class NewRuleActivity  extends AppCompatActivity {
                             placeNamesAnywhere
                     );
 
+                    ArrayAdapter<String> adapterPlace = new ArrayAdapter<String>(
+                            getApplicationContext(),
+                            android.R.layout.simple_spinner_item,
+                            placeNames
+                    );
+
+
+
+                    // Specify the layout to use when the list of choices appears
+                    adapterPlace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    adapterDepartureAnywherePlace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    // Apply the adapter to the spinner
+                    arrivalSpinner.setAdapter(adapterPlace);
+                    departureSMSPlaceSpinner.setAdapter(adapterPlace);
+                    placeNotificationSpinner.setAdapter(adapterPlace);
                     departureSpinner.setAdapter(adapterDepartureAnywherePlace);
+
+                    arrivalSpinner.setOnItemSelectedListener(new ArrivalSpinnerClass());
+                    departureSpinner.setOnItemSelectedListener(new DepartureAnywhereSpinnerClass());
+                    departureSMSPlaceSpinner.setOnItemSelectedListener(new DepartureSpinnerClass());
+                    placeNotificationSpinner.setOnItemSelectedListener(new PlaceSpinnerClass());
                 }
 
-                arrivalSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
-                        arrivalId = placeIds.get(position);
-                    }
-                    public void onNothingSelected(AdapterView<?> parent) {
-                        arrivalId = null;
-                    }
-                });
-
-                departureSpinner.setOnItemSelectedListener(new DepartureAnywhereSpinnerClass());
-
-                departure2Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
-                        departureId2 = placeIds.get(position);
-                    }
-                    public void onNothingSelected(AdapterView<?> parent) {
-                        departureId2 = null;
-                    }
-                });
-
-                placeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
-                        placeId = placeIds.get(position);
-                    }
-                    public void onNothingSelected(AdapterView<?> parent) {
-                        placeId = null;
-                    }
-                });
 
             }
         });
+    }
+
+    private void setupPlaces2ViewModel() {
+        PlacesViewModel viewModel = ViewModelProviders.of(this).get(PlacesViewModel.class);
+        viewModel.getPlaces().observe(this, new Observer<List<PlaceEntry>>() {
+            @Override
+            public void onChanged(@Nullable List<PlaceEntry> placeEntries) {
+                Log.d("message", "Updating list of places from LiveData in ViewModel"  + placeEntries.size() );
+                if (placeEntries.size() == 0) {
+                    return;
+                }
+                if (placeEntries != null && placeEntries.size() != 0) {
+                    placeIds.clear();
+                    placeNamesAnywhere.clear();
+
+                    for (int i = 0; i < placeEntries.size(); i++) {
+                        placeIds.add(placeEntries.get(i).getId());
+                        System.out.println("placeIds" + i + placeIds.get(i));
+                        placeNamesAnywhere.add(placeEntries.get(i).getPlaceName());
+                        System.out.println("placeNames" + i + placeNames.get(i));
+                    }
+
+
+                    Log.d("placeNames", " " + placeNamesAnywhere.get(0));
+                    placeNamesAnywhere.add(0, "anywhere");
+                    Log.d("placeNames", " " + placeNamesAnywhere.get(1));
+
+
+                    ArrayAdapter<String> adapterDepartureAnywherePlace = new ArrayAdapter<String>(
+                            getApplicationContext(),
+                            android.R.layout.simple_spinner_item,
+                            placeNamesAnywhere
+                    );
+
+
+                    // Specify the layout to use when the list of choices appears
+                    adapterDepartureAnywherePlace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    // Apply the adapter to the spinner
+                    departureSpinner.setAdapter(adapterDepartureAnywherePlace);
+
+                    departureSpinner.setOnItemSelectedListener(new DepartureAnywhereSpinnerClass());
+                }
+
+
+            }
+        });
+    }
+
+    class ArrivalSpinnerClass implements AdapterView.OnItemSelectedListener
+    {
+        public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
+        {  arrivalId = placeIds.get(position);
+        }
+        public void onNothingSelected(AdapterView<?> parent) {
+            arrivalId = null;
+        }
     }
 
     class DepartureAnywhereSpinnerClass implements AdapterView.OnItemSelectedListener
@@ -412,6 +455,28 @@ public class NewRuleActivity  extends AppCompatActivity {
             departureId = null;
         }
     }
+
+    class DepartureSpinnerClass implements AdapterView.OnItemSelectedListener
+    {
+        public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
+        {  departureId2 = placeIds.get(position);
+        }
+        public void onNothingSelected(AdapterView<?> parent) {
+            departureId2 = null;
+        }
+    }
+
+    class PlaceSpinnerClass implements AdapterView.OnItemSelectedListener
+    {
+        public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
+        {   placeId = placeIds.get(position);
+        }
+            public void onNothingSelected(AdapterView<?> parent) {
+            placeId = null;
+        }
+    }
+
+
 
     private void setupContactsViewModel() {
         ContactsViewModel viewModel = ViewModelProviders.of(this).get(ContactsViewModel.class);
@@ -443,7 +508,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                 adapterContacts.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 // Apply the adapter to the spinner
                 contactNameSpinner.setAdapter(adapterContacts);
-                contactName2Spinner.setAdapter(adapterContacts);
+                contactNameDepSMSSpinner .setAdapter(adapterContacts);
 
                 contactNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
@@ -454,7 +519,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                         }
                     });
 
-                contactName2Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                contactNameDepSMSSpinner .setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
                             contactId2 = mContactsId.get(position);
                         }

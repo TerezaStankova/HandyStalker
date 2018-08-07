@@ -75,7 +75,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
 
         String arrivalPlace = mRules.get(position).getArrivalPlace();
         String typeRule = mRules.get(position).getType();
-        if (handy = false) {
+        if (handy == false) {
         String contactName = mRules.get(position).getName();
         String departurePlace = mRules.get(position).getDeparturePlace();
         holder.nameTextView.setText("My Stalker: " + contactName);
@@ -99,7 +99,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
         } else {
             holder.typeIcon.setImageResource(R.drawable.ic_notifications_active_green_24dp);
         }
-        } else if (handy = true) {
+        } else if (handy == true) {
             holder.nameTextView.setText("Place: " + arrivalPlace);
             holder.arriveTextView.setVisibility(View.VISIBLE);
             if(typeRule.equals(WIFI) || typeRule.equals(WIFIOFF)){
