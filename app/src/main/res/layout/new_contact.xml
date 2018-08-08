@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
+        android:maxLength="50"
         android:hint="@string/name" />
 
     <EditText
@@ -19,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:maxLength="40"
         android:hint="@string/phone_number_cc"
         android:inputType="phone" />
 

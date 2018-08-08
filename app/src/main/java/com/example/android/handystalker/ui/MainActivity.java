@@ -2,33 +2,30 @@ package com.example.android.handystalker.ui;
 
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import android.util.Log;
+
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import com.google.android.gms.ads.AdView;
 
-import android.widget.Switch;
 
-import com.example.android.handystalker.geofencing.Geofencing;
 import com.example.android.handystalker.R;
-import com.example.android.handystalker.model.Place;
-import com.google.android.gms.location.GeofencingClient;
-import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.ads.AdRequest;
+
 
 public class MainActivity extends AppCompatActivity {
+
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
     }
 
       /** Called when the user taps the Place button */
@@ -48,6 +45,4 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, RulesActivity.class);
         startActivity(intent);
     }
-
-
 }

@@ -1,4 +1,4 @@
-package com.example.android.handystalker;
+package com.example.android.handystalker.utilities;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.example.android.handystalker.R;
 import com.example.android.handystalker.model.Contact;
 import com.example.android.handystalker.ui.MainActivity;
 import com.example.android.handystalker.ui.NewRuleActivity;

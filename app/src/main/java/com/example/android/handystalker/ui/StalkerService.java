@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.example.android.handystalker.R;
-import com.example.android.handystalker.StalkerWidgetProvider;
+import com.example.android.handystalker.utilities.StalkerWidgetProvider;
 import com.example.android.handystalker.model.Contact;
 
 import java.util.ArrayList;

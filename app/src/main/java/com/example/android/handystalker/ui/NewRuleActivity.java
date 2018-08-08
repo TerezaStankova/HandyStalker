@@ -428,7 +428,6 @@ public class NewRuleActivity  extends AppCompatActivity {
                     departureSpinner.setOnItemSelectedListener(new DepartureAnywhereSpinnerClass());
                 }
 
-
             }
         });
     }

@@ -28,7 +28,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBMB3g1ntUFEctWuKwBOLUThIqwVEPZ4CQ" />
+            android:value="AIzaSyBMB3g1ntUFEctWuKwBOLUThIqwVEPZ4CQ"/>
 
         <activity
             android:name=".ui.PlacesActivity"
@@ -54,7 +54,7 @@
 
 
         <receiver android:name=".geofencing.GeofenceBroadcastReceiver" />
-        <receiver android:name=".StalkerWidgetProvider">
+        <receiver android:name=".utilities.StalkerWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
