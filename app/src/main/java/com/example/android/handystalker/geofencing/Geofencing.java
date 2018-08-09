@@ -17,8 +17,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.util.ArrayList;
 import java.util.List;
 
-//Special THANK YOU! belongs to the creator of The ShushMe project which was used to get better understanding of Geofences
-// https://github.com/udacity/AdvancedAndroid_Shushme
+/*
+* Special THANK YOU! belongs to the creator of The ShushMe project which was used to get better understanding of Geofences
+* https://github.com/udacity/AdvancedAndroid_Shushme
+* Big thanks for the answers on https://stackoverflow.com/questions/48686772/geofencingapi-is-deprecated
+* More info on geofencing: https://developer.android.com/training/location/geofencing#java
+*/
 
 public class Geofencing {
 
@@ -44,14 +48,8 @@ public class Geofencing {
 
     /***
      * Registers the list of Geofences specified in mGeofenceList with Google Place Services
-     * Uses {@link #getGeofencingRequest} to get the list of Geofences to be registered
-     * Uses {@link #getGeofencePendingIntent} to get the pending intent to launch the IntentService
-     * when the Geofence is triggered
-     *
-     *
-     *https://stackoverflow.com/questions/48686772/geofencingapi-is-deprecated
-     *https://developer.android.com/training/location/geofencing#java
-     * */
+     * when the Geofence is triggered     *
+     */
     public void registerAllGeofences() {
         // Check that the list has Geofences in it
         if (mGeoClient == null || mGeofenceList == null || mGeofenceList.size() == 0) {
@@ -60,7 +58,11 @@ public class Geofencing {
         }
             try {
                 mGeoClient.addGeofences(
+
+                        //Get the list of Geofences to be registered
                         getGeofencingRequest(),
+
+                        //Get the pending intent to launch the IntentService
                         getGeofencePendingIntent()
                 ).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -83,9 +85,7 @@ public class Geofencing {
     }
 
     /***
-     * Unregisters all the Geofences created by this app from Google Place Services
-     * Uses {@link #getGeofencePendingIntent} to get the pending intent passed when
-     * registering the Geofences in the first place
+     * Unregisters all the Geofences
      */
     public void unRegisterAllGeofences() {
         // Check that there is GeoClient
@@ -120,10 +120,10 @@ public class Geofencing {
 
 
     /***
-     * Updates the local ArrayList of Geofences using data from the passed in list
+     * Updates the local ArrayList of Geofences
      * Uses the Place ID defined by the API as the Geofence object Id
      *
-     * @param places the PlaceBuffer result of the getPlaceById call
+     * @param places the PlaceBufferResponse result of the getPlaceById call
      */
     public void updateGeofencesList(PlaceBufferResponse places) {
         mGeofenceList = new ArrayList<>();
@@ -136,8 +136,11 @@ public class Geofencing {
             double placeLng = place.getLatLng().longitude;
             // Build a Geofence object
             Geofence geofence = new Geofence.Builder()
-                    // Set the request ID of the geofence. This is a string to identify this
-                    // geofence.
+                    /***
+                     *   Set the request ID of the geofence.
+                     * This is a string to identify this
+                     * geofence.
+                    */
                     .setRequestId(placeUID)
                     .setExpirationDuration(GEOFENCE_TIMEOUT)
                     .setCircularRegion(placeLat, placeLng, GEOFENCE_RADIUS)
@@ -150,8 +153,6 @@ public class Geofencing {
 
     /***
      * Specify the geofences to monitor and to set how related geofence events are triggered
-     * Creates a GeofencingRequest object using the mGeofenceList ArrayList of Geofences
-     * Used by {@code #registerGeofences}
      *
      * INITIAL_TRIGGER_ENTER is used to initialize an action immediately.
      * INITIAL_TRIGGER_DWELL would trigger events only when the user
@@ -167,10 +168,8 @@ public class Geofencing {
     }
 
     /***
-     * Creates a PendingIntent object using the GeofenceTransitionsIntentService class
-     * Used by {@code #registerGeofences}
-     *
-     * @return the PendingIntent object
+     * Creates a PendingIntent object used
+     * to register and unregister Geofences
      */
     private PendingIntent getGeofencePendingIntent() {
         // Reuse the PendingIntent if we already have it.

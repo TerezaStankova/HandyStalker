@@ -35,11 +35,6 @@ public class HandyRulesActivity extends AppCompatActivity {
     private Parcelable mListState;
     private LinearLayoutManager layoutManager;
 
-    //List<Rule> mRuleDatabase = newArrayList();
-
-    private static final int PERMISSIONS_REQUEST = 2223;
-    private static final int MY_PERMISSIONS_REQUEST_NET = 1222;
-    private static final int MY_PERMISSIONS_REQUEST_SEND_NOTIFICATIONS = 1110;
     private static final int MY_PERMISSIONS_REQUEST_WIFI = 1234;
 
     // Final String to store state information about the rules
@@ -56,15 +51,14 @@ public class HandyRulesActivity extends AppCompatActivity {
         // Set up the recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.handyrules_list_recycler_view);
         layoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(layoutManager);
         restoreLayoutManagerPosition();
+        mRecyclerView.setLayoutManager(layoutManager);
 
         if (savedInstanceState != null) {
-            // Load the saved state (the array of trailers) if there is one
+            // Load the saved state if there is one
+            restoreLayoutManagerPosition();
             showContactsDataView();
-            //mRuleDatabase = savedInstanceState.getParcelableArrayList(RULES);
         }
-
 
         mAdapter = new RulesAdapter(this, null);
         mAdapter.setHandy(true);
@@ -82,12 +76,12 @@ public class HandyRulesActivity extends AppCompatActivity {
     }
 
     private void showContactsDataView() {
-        /* Then, make sure the movie data is visible */
+        /* Then, make sure the data is visible */
         mRecyclerView.setVisibility(View.VISIBLE);
     }
 
     private void hideRulesDataView() {
-        /* Then, make sure the movie data is visible */
+        /* Then, make sure the data is invisible */
         mRecyclerView.setVisibility(View.GONE);
     }
 
@@ -158,7 +152,6 @@ public class HandyRulesActivity extends AppCompatActivity {
         // Save list state
         mListState = layoutManager.onSaveInstanceState();
         savedInstanceState.putParcelable(LIST_STATE_KEY, mListState);
-        //savedInstanceState.putParcelableArrayList(RULES, (ArrayList<Rule>) mRuleDatabase);
     }
 
     @Override

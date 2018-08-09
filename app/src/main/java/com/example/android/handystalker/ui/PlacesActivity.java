@@ -1,5 +1,6 @@
 package com.example.android.handystalker.ui;
 
+import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -53,8 +55,7 @@ import java.util.List;
 
 import static com.google.android.gms.location.places.ui.PlacePicker.getPlace;
 
-public class PlacesActivity extends AppCompatActivity
-        implements PlaceNameFragment.PlaceNameListener {
+public class PlacesActivity extends AppCompatActivity {
 
     // Constants
     public static final String TAG = PlacesActivity.class.getSimpleName();
@@ -70,6 +71,10 @@ public class PlacesActivity extends AppCompatActivity
     private String placeIdfromPicker;
     private String AddressfromPicker;
 
+    //Variable to save position in the list
+    private Parcelable mListState;
+    private LinearLayoutManager layoutManager;
+    private static final String LIST_STATE_KEY = "list_state";
 
     // Member variable for the Database
     private AppDatabase mDb;
@@ -81,7 +86,9 @@ public class PlacesActivity extends AppCompatActivity
 
         // Set up the recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.places_list_recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        layoutManager = new LinearLayoutManager(this);
+        restoreLayoutManagerPosition();
+        mRecyclerView.setLayoutManager(layoutManager);
         mAdapter = new PlacesAdapter(this, null);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -114,9 +121,6 @@ public class PlacesActivity extends AppCompatActivity
         setupViewModel();
     }
 
-    public void refreshPlacesData() {
-        setupViewModel();
-    }
 
     private void showPlacesDataView() {
         /* Then, make sure the data is visible */
@@ -160,7 +164,7 @@ public class PlacesActivity extends AppCompatActivity
                         public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
                             if (task.isSuccessful()) {
                                 PlaceBufferResponse places = task.getResult();
-                                mAdapter.swapPlaces(places, placeNames);
+                                mAdapter.refreshPlaces(places, placeNames);
                                 mGeofencing.updateGeofencesList(places);
                                 if (mIsEnabled) mGeofencing.registerAllGeofences();
                                // places.release();
@@ -176,8 +180,6 @@ public class PlacesActivity extends AppCompatActivity
 
     /***
      * Button Click event handler to handle clicking the "Add new location" Button
-     *
-     * @param view
      */
     public void onAddPlaceButtonClicked(View view) {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -187,7 +189,7 @@ public class PlacesActivity extends AppCompatActivity
         }
         try {
             // Start a new Activity for the Place Picker API, this will trigger {@code #onActivityResult}
-            // when a place is selected or with the user cancels.
+            // when a place is selected or the user cancels.
             PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
             Intent i = builder.build(this);
             startActivityForResult(i, PLACE_PICKER_REQUEST);
@@ -264,40 +266,6 @@ public class PlacesActivity extends AppCompatActivity
         alert11.show();
     }
 
-    public void showNamePlaceDialog(String placeId, String placeAddress) {
-        // Create an instance of the dialog fragment and show it
-        PlaceNameFragment dialog = new PlaceNameFragment();
-        dialog.setAddress(placeAddress);
-        dialog.setmPlaceId(placeId);
-        dialog.show(getSupportFragmentManager(), "PlaceNameFragment");
-    }
-
-    // The dialog fragment receives a reference to this Activity through the
-    // Fragment.onAttach() callback, which it uses to call the following methods
-    // defined by the NoticeDialogFragment.NoticeDialogListener interface
-    @Override
-    public void onDialogPositiveClick(DialogFragment dialog, String id, String name) {
-        // User touched the dialog's positive button
-
-        final PlaceEntry placeEntry = new PlaceEntry(id, name);
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                // insert new task
-                mDb.placeDao().insertPlace(placeEntry);
-            }
-        });
-    }
-
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-        // User touched the dialog's negative button
-    }
-
-
-
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -311,6 +279,16 @@ public class PlacesActivity extends AppCompatActivity
             locationPermissions.setChecked(true);
             locationPermissions.setEnabled(false);
         }
+
+        if (mListState != null) {
+            layoutManager.onRestoreInstanceState(mListState);
+        }
+    }
+
+    private void restoreLayoutManagerPosition() {
+        if (mListState != null) {
+            layoutManager.onRestoreInstanceState(mListState);
+        }
     }
 
     public void onLocationPermissionClicked(View view) {
@@ -318,4 +296,28 @@ public class PlacesActivity extends AppCompatActivity
                 new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                 PERMISSIONS_REQUEST_FINE_LOCATION);
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState)
+    {
+        super.onSaveInstanceState(savedInstanceState);
+
+        // Save list state
+        mListState = layoutManager.onSaveInstanceState();
+        savedInstanceState.putParcelable(LIST_STATE_KEY, mListState);
+    }
+
+
+    @Override
+    protected void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+
+        // Retrieve list state and list/item positions
+        if(state != null)
+            mListState = state.getParcelable(LIST_STATE_KEY);
+    }
+
 }
+
+
+

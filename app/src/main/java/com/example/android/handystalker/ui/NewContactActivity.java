@@ -22,23 +22,22 @@ import com.example.android.handystalker.utilities.AppExecutors;
 
 public class NewContactActivity extends AppCompatActivity {
 
-        // Member variable for the Database
+    // Member variable for the Database
     private AppDatabase mDb;
 
-    //edit texts
+    //Edit texts
     EditText nameEditText;
     EditText phoneEditText;
     Button saveButton;
 
     final int RESULT_PICK_CONTACT = 789;
     private Contact mComtact;
-    private boolean update;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_contact);
-
 
         nameEditText = (EditText) findViewById(R.id.name_editText);
         phoneEditText = (EditText) findViewById(R.id.phone_editText);
@@ -63,6 +62,7 @@ public class NewContactActivity extends AppCompatActivity {
         mDb = AppDatabase.getInstance(getApplicationContext());
     }
 
+    //After Save button is clicked save the contact
     public void onSaveContactClick(View view) {
 
         String name = nameEditText.getText().toString();
@@ -86,6 +86,7 @@ public class NewContactActivity extends AppCompatActivity {
 
     }
 
+    //After Update button is clicked update the contact
     public void onUpdateContactClick(View view) {
 
         final String name = nameEditText.getText().toString();
@@ -111,7 +112,6 @@ public class NewContactActivity extends AppCompatActivity {
 
     }
     }
-
 
 
     public void onAddFromContactsClicked(View view) {

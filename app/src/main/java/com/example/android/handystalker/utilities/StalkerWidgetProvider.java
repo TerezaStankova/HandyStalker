@@ -22,7 +22,8 @@ import java.util.ArrayList;
 /**
  * Implementation of App Widget functionality.
  *
- * Code for SMS found in https://google-developer-training.gitbooks.io/android-developer-phone-sms-course/content/Lesson%202/2_p_sending_sms_messages.html
+ * Code for SMS used from
+ * https://google-developer-training.gitbooks.io/android-developer-phone-sms-course/content/Lesson%202/2_p_sending_sms_messages.html
  */
 public class StalkerWidgetProvider extends AppWidgetProvider {
 
@@ -58,15 +59,11 @@ public class StalkerWidgetProvider extends AppWidgetProvider {
                     if (contactPhone.substring(0,1).contains("+")){
                         String contactPhoneWA = contactPhone.substring(1);
                         intent2.setData(Uri.parse("http://api.whatsapp.com/send?phone=" + contactPhoneWA +"&text=" + text));
-                        if (a == 1) {
+
                             PendingIntent waPendingIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent2, PendingIntent.FLAG_UPDATE_CURRENT);
                             mEventsItem.setViewVisibility(R.id.wapp_widget_button, View.VISIBLE);
                             mEventsItem.setOnClickPendingIntent(R.id.wapp_widget_button, waPendingIntent);
-                        } else {
-                            PendingIntent waPendingIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent2, PendingIntent.FLAG_UPDATE_CURRENT);
-                            mEventsItem.setViewVisibility(R.id.wapp_widget_button, View.VISIBLE);
-                            mEventsItem.setOnClickPendingIntent(R.id.wapp_widget_button, waPendingIntent);
-                        }
+
                     } else {
                         mEventsItem.setViewVisibility(R.id.wapp_widget_button, View.GONE);
                     }
@@ -85,8 +82,6 @@ public class StalkerWidgetProvider extends AppWidgetProvider {
                     smsIntent.putExtra("sms_body", text);
 
 
-
-                    if (a == 1) {
                     //Widgets allow click handlers to only launch pending intents
 
                         PendingIntent callPendingIntent = PendingIntent.getActivity(context, (a*10+1), callIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -97,17 +92,7 @@ public class StalkerWidgetProvider extends AppWidgetProvider {
                         mEventsItem.setViewVisibility(R.id.call_widget_button, View.VISIBLE);
                         mEventsItem.setViewVisibility(R.id.sms_widget_button, View.VISIBLE);
                         views.addView(R.id.stalker_actions_widget_linear_layout, mEventsItem);
-                    } else
-                    {
-                        PendingIntent callPendingIntent2 = PendingIntent.getActivity(context, (a*10), callIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                        PendingIntent smsPendingIntent2 = PendingIntent.getActivity(context, (a*20), smsIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                        mEventsItem.setOnClickPendingIntent(R.id.call_widget_button, callPendingIntent2);
-                        mEventsItem.setOnClickPendingIntent(R.id.sms_widget_button, smsPendingIntent2);
-                        mEventsItem.setViewVisibility(R.id.call_widget_button, View.VISIBLE);
-                        mEventsItem.setViewVisibility(R.id.sms_widget_button, View.VISIBLE);
-                        views.addView(R.id.stalker_actions_widget_linear_layout, mEventsItem);
-                    }
                     a++;
                 }
             }
@@ -115,11 +100,11 @@ public class StalkerWidgetProvider extends AppWidgetProvider {
             Log.d("widget", "This fragment has a null list of events");
         }
 
-        //Create an Intent to launch NewRuleActivity when clicked
+        //Create an Intent to launch the app when clicked
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
-        //Widgets allow click handlers to only launch pending intents
+        //Create pending intent - Widgets allow click handlers to only launch pending intents
         views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
 
         // Instruct the widget manager to update the widget

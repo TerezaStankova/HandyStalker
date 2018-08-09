@@ -14,7 +14,7 @@ import java.util.List;
 public class HandyRulesViewModel extends AndroidViewModel {
 
     // Constant for logging
-    private static final String TAG = RulesViewModel.class.getSimpleName();
+    private static final String TAG = HandyRulesViewModel.class.getSimpleName();
 
     private LiveData<List<RuleEntry>> rules;
 

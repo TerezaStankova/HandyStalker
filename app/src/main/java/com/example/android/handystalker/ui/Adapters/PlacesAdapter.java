@@ -24,9 +24,8 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
     private AppDatabase mDb;
     List<String> mNames;
 
-    //private Task<PlaceBufferResponse> mPlaces;
     /**
-     * Constructor using the context and the db cursor
+     * Constructor using the context and PlaceBufferResponse places
      *
      * @param context the calling context/activity
      */
@@ -52,6 +51,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
 
     /**
      * Binds the data from a particular position in the cursor to the corresponding view holder
+     * The delete icon deletes data from database for the specific place
      *
      * @param holder   The PlaceViewHolder instance corresponding to the required position
      * @param position The current position that needs to be loaded with data
@@ -67,7 +67,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
             @Override
             public void onClick(View v)
             {
-                final String placeId = mPlaces.get(position).getId().toString();
+                final String placeId = mPlaces.get(position).getId();
                 // Delete from database
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
@@ -80,7 +80,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
         });
     }
 
-    public void swapPlaces(PlaceBufferResponse newPlaces, List<String> names){
+    public void refreshPlaces(PlaceBufferResponse newPlaces, List<String> names){
         mNames = names;
         mPlaces = newPlaces;
         if (mPlaces != null) {
@@ -90,9 +90,9 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
     }
 
     /**
-     * Returns the number of items in the cursor
+     * Returns the number of places
      *
-     * @return Number of items in the cursor, or 0 if null
+     * @return Number of places, or 0 if null
      */
     @Override
     public int getItemCount() {
@@ -118,6 +118,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
 
     }
 
+    //Set the database
     public void setDatabase(AppDatabase myDatabase) {
         mDb = myDatabase;
     }

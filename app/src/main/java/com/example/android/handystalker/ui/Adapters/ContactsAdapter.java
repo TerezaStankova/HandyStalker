@@ -29,9 +29,8 @@ private List<Contact> mContacts;
 private AppDatabase mDb;
 private final String CONTACTS = "contacts";
 
-//private Task<PlaceBufferResponse> mPlaces;
 /**
- * Constructor using the context and the db cursor
+ * Constructor using the context and list of contacts
  *
  * @param context the calling context/activity
  */
@@ -45,7 +44,7 @@ public ContactsAdapter(Context context, List<Contact> contacts) {
  *
  * @param parent   The ViewGroup into which the new View will be added
  * @param viewType The view type of the new View
- * @return A new PlaceViewHolder that holds a View with the item_place_card layout
+ * @return A new PlaceViewHolder that holds a View with the contact_item layout
  */
     @Override
     public ContactViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -58,7 +57,7 @@ public ContactsAdapter(Context context, List<Contact> contacts) {
 /**
  * Binds the data from a particular position in the cursor to the corresponding view holder
  *
- * @param holder   The PlaceViewHolder instance corresponding to the required position
+ * @param holder   The ContactViewHolder instance corresponding to the required position
  * @param position The current position that needs to be loaded with data
  */
 @Override
@@ -114,9 +113,9 @@ public ContactsAdapter(Context context, List<Contact> contacts) {
 
 
 /**
- * Returns the number of items in the cursor
+ * Returns the number of items in the list
  *
- * @return Number of items in the cursor, or 0 if null
+ * @return Number of items in the list, or 0 if null
  */
 @Override
 public int getItemCount() {
@@ -125,7 +124,7 @@ public int getItemCount() {
         }
 
 /**
- * PlaceViewHolder class for the recycler view item
+ * ContactViewHolder class for the recycler view item
  */
 class ContactViewHolder extends RecyclerView.ViewHolder {
 
@@ -145,6 +144,9 @@ class ContactViewHolder extends RecyclerView.ViewHolder {
     }
 }
 
+    /**
+     * Setters to set database and list of contacts
+     */
     public void setDatabase(AppDatabase myDatabase) {
         mDb = myDatabase;
     }
@@ -153,6 +155,10 @@ class ContactViewHolder extends RecyclerView.ViewHolder {
         notifyDataSetChanged();
     }
 
+
+    /**
+     * Retrieve List of Contact objects from List of ContactEntries
+     */
     public void setContactsFromDatabase(List<ContactsEntry> contactsEntries) {
         if (contactsEntries != null) {
             List<Contact> mContactDatabase = newArrayList();

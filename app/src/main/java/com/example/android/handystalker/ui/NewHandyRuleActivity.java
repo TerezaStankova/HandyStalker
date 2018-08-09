@@ -34,13 +34,11 @@ public class NewHandyRuleActivity extends AppCompatActivity {
     List<String> placeNames = new ArrayList<String>();
 
     private static final int MY_PERMISSIONS_REQUEST_WIFI = 1234;
-    private static final int MY_PERMISSIONS_REQUEST_SEND_NOTIFICATIONS = 1110;
 
     // Member variable for the Database
     private AppDatabase mDb;
 
     private String WIFI = "wifi";
-
 
     //edit texts
     Spinner onOfWifiSpinner;
@@ -86,21 +84,14 @@ public class NewHandyRuleActivity extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED) {
 
             // Permission is not granted
-            // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.CHANGE_WIFI_STATE)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
+                // Show an explanation to the user *asynchronously*
             } else {
                 // No explanation needed; request the permission
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.CHANGE_WIFI_STATE},
                         MY_PERMISSIONS_REQUEST_WIFI);
-
-                // MY_PERMISSIONS_REQUEST_SEND_SMS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
         } else {
             // Permission has already been granted
@@ -147,7 +138,7 @@ public class NewHandyRuleActivity extends AppCompatActivity {
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
-                    // insert new contact
+                    // Insert new rule
                     mDb.ruleDao().insertRule(ruleEntry);
                 }
             });
@@ -166,21 +157,14 @@ public class NewHandyRuleActivity extends AppCompatActivity {
                     != PackageManager.PERMISSION_GRANTED) {
 
                 // Permission is not granted
-                // Should we show an explanation?
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                         Manifest.permission.CHANGE_WIFI_STATE)) {
-                    // Show an explanation to the user *asynchronously* -- don't block
-                    // this thread waiting for the user's response! After the user
-                    // sees the explanation, try again to request the permission.
+                    // Show an explanation to the user *asynchronously*
                 } else {
-                    // No explanation needed; request the permission
+                    // No explanation needed, request the permission
                     ActivityCompat.requestPermissions(this,
                             new String[]{Manifest.permission.CHANGE_WIFI_STATE},
                             MY_PERMISSIONS_REQUEST_WIFI);
-
-                    // MY_PERMISSIONS_REQUEST_SEND_SMS is an
-                    // app-defined int constant. The callback method gets the
-                    // result of the request.
                 }
             } else {
                 // Permission has already been granted
@@ -189,7 +173,7 @@ public class NewHandyRuleActivity extends AppCompatActivity {
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
                     public void run() {
-                        // insert new contact
+                        // Insert new rule
                         mDb.ruleDao().insertRule(ruleEntry);
 
                     }
@@ -214,7 +198,7 @@ public class NewHandyRuleActivity extends AppCompatActivity {
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
-                    // insert new contact
+                    // Insert new rule
                     mDb.ruleDao().insertRule(ruleEntry);
 
                 }
@@ -234,14 +218,11 @@ public class NewHandyRuleActivity extends AppCompatActivity {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted
+                    // Permission was granted
                     saveRule();
                 } else {
                 }
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request.
         }
     }
 
@@ -249,7 +230,6 @@ public class NewHandyRuleActivity extends AppCompatActivity {
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.on_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         onOfWifiSpinner.setAdapter(adapter);
@@ -320,7 +300,6 @@ public class NewHandyRuleActivity extends AppCompatActivity {
                             android.R.layout.simple_spinner_item,
                             placeNames
                     );
-                    // Specify the layout to use when the list of choices appears
                     adapterPlace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     // Apply the adapter to the spinner
                     soundPlaceSpinner.setAdapter(adapterPlace);

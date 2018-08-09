@@ -27,10 +27,12 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
     private List<RuleEntry> mRulesEntries;
     // Member variable for the Database
     private AppDatabase mDb;
+
+    //Boolean to distinguish between handy and stalking rules
     private boolean handy = false;
 
     /*
-     *Constructor using the context and the db cursor
+     *Constructor using the context and list of Rules
      * @param context the calling context/activity
      */
     public RulesAdapter(Context context, List<Rule> rules) {
@@ -43,7 +45,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
      *
      * @param parent   The ViewGroup into which the new View will be added
      * @param viewType The view type of the new View
-     * @return A new PlaceViewHolder that holds a View with the item_place_card layout
+     * @return A new RuleViewHolder that holds a View with the rule_item layout
      */
     @Override
     public RulesAdapter.RuleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -56,7 +58,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
     /**
      * Binds the data from a particular position in the cursor to the corresponding view holder
      *
-     * @param holder   The PlaceViewHolder instance corresponding to the required position
+     * @param holder   The RuleViewHolder instance corresponding to the required position
      * @param position The current position that needs to be loaded with data
      */
     @Override
@@ -64,6 +66,8 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
 
         String arrivalPlace = mRules.get(position).getArrivalPlace();
         String typeRule = mRules.get(position).getType();
+
+        //Set the View for stalking rules
         if (!handy) {
         String contactName = mRules.get(position).getName();
         String departurePlace = mRules.get(position).getDeparturePlace();
@@ -91,7 +95,9 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
         } else {
             holder.typeIcon.setImageResource(R.drawable.ic_notifications_active_green_24dp);
         }
-        } else if (handy) {
+        }
+        //Set the View for handy rules
+        else if (handy) {
             String myPlace = mContext.getString(R.string.place) +" "+ arrivalPlace;
             holder.nameTextView.setText(myPlace);
             holder.arriveTextView.setVisibility(View.VISIBLE);
@@ -148,9 +154,9 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
 
 
     /**
-     * Returns the number of items in the cursor
+     * Returns the number of rules
      *
-     * @return Number of items in the cursor, or 0 if null
+     * @return Number of rules, or 0 if null
      */
     @Override
     public int getItemCount() {
@@ -159,7 +165,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
     }
 
     /**
-     * PlaceViewHolder class for the recycler view item
+     * RuleViewHolder class for the recycler view item
      */
     class RuleViewHolder extends RecyclerView.ViewHolder {
 
@@ -179,10 +185,11 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
         }
     }
 
+
+    //Setters to set the database, handy boolean and List of Rules
     public void setDatabase(AppDatabase myDatabase) {
         mDb = myDatabase;
     }
-
     public void setHandy(boolean mHandy) {
         handy = mHandy;
     }
@@ -193,6 +200,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
     }
 
 
+    //List of Rules is retrieved from the database using AsyncTask
     public void setRulesFromDatabase(final List<RuleEntry> ruleEntries) {
         if (ruleEntries != null) {
         mRulesEntries = ruleEntries;

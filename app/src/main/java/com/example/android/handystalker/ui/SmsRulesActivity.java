@@ -35,7 +35,6 @@ public class SmsRulesActivity extends AppCompatActivity {
     private Parcelable mListState;
     private LinearLayoutManager layoutManager;
 
-    //List<Rule> mRuleDatabase = newArrayList();
 
     private static final int PERMISSIONS_REQUEST = 2222;
 
@@ -53,13 +52,12 @@ public class SmsRulesActivity extends AppCompatActivity {
         // Set up the recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.sendrules_list_recycler_view);
         layoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(layoutManager);
         restoreLayoutManagerPosition();
+        mRecyclerView.setLayoutManager(layoutManager);
 
         if (savedInstanceState != null) {
             // Load the saved state (the array of trailers) if there is one
             showContactsDataView();
-            //mRuleDatabase = savedInstanceState.getParcelableArrayList(RULES);
         }
 
         mAdapter = new RulesAdapter(this, null);
@@ -153,7 +151,6 @@ public class SmsRulesActivity extends AppCompatActivity {
         // Save list state
         mListState = layoutManager.onSaveInstanceState();
         savedInstanceState.putParcelable(LIST_STATE_KEY, mListState);
-        //savedInstanceState.putParcelableArrayList(RULES, (ArrayList<Rule>) mRuleDatabase);
     }
 
     @Override

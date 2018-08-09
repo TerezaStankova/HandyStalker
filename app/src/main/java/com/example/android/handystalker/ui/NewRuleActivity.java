@@ -77,16 +77,16 @@ public class NewRuleActivity  extends AppCompatActivity {
         setContentView(R.layout.new_stalking_rule);
         setTitle("New Stalking Rule");
 
-        //sms whole spinners
+        //SMS for arrival spinners
         contactNameSpinner = (Spinner) findViewById(R.id.name_spinner);
         arrivalSpinner = (Spinner) findViewById(R.id.arrival_spinner);
         departureSpinner = (Spinner) findViewById(R.id.departure_spinner);
 
-        //departure only spinners
+        //Departure SMS spinners
         departureSMSPlaceSpinner = (Spinner) findViewById(R.id.departure_place_rule_spinner);
         contactNameDepSMSSpinner = (Spinner) findViewById(R.id.name_departure_spinner);
 
-        //notification spinners
+        //Notification spinners
         typeSpinner = (Spinner) findViewById(R.id.type_spinner);
         contactNameSpinnerNotify = (Spinner) findViewById(R.id.name_spinner2);
         placeNotificationSpinner = (Spinner) findViewById(R.id.place_spinner);
@@ -106,21 +106,14 @@ public class NewRuleActivity  extends AppCompatActivity {
                     != PackageManager.PERMISSION_GRANTED) {
 
                 // Permission is not granted
-                // Should we show an explanation?
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                         Manifest.permission.SEND_SMS)) {
-                    // Show an explanation to the user *asynchronously* -- don't block
-                    // this thread waiting for the user's response! After the user
-                    // sees the explanation, try again to request the permission.
+                    // Show an explanation to the user *asynchronously*
                 } else {
-                    // No explanation needed; request the permission
+                    // No explanation needed
                     ActivityCompat.requestPermissions(this,
                             new String[]{Manifest.permission.SEND_SMS},
                             MY_PERMISSIONS_REQUEST_SEND_SMS);
-
-                    // MY_PERMISSIONS_REQUEST_SEND_SMS is an
-                    // app-defined int constant. The callback method gets the
-                    // result of the request.
                 }
             } else {
                 // Permission has already been granted
@@ -132,7 +125,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                     AppExecutors.getInstance().diskIO().execute(new Runnable() {
                         @Override
                         public void run() {
-                            // insert new contact
+                            // Insert new rule
                             mDb.ruleDao().insertRule(ruleEntry);
 
                         }
@@ -153,21 +146,13 @@ public class NewRuleActivity  extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED) {
 
             // Permission is not granted
-            // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.SEND_SMS)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
+                // Show an explanation to the user
             } else {
-                // No explanation needed; request the permission
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.SEND_SMS},
                         MY_PERMISSIONS_REQUEST_SEND_SMS);
-
-                // MY_PERMISSIONS_REQUEST_SEND_SMS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
         } else {
             // Permission has already been granted
@@ -179,7 +164,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
                     public void run() {
-                        // insert new contact
+                        // Insert new rule
                         mDb.ruleDao().insertRule(ruleEntry);
 
                     }
@@ -201,7 +186,7 @@ public class NewRuleActivity  extends AppCompatActivity {
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
-                    // insert new contact
+                    // Insert new rule
                     mDb.ruleDao().insertRule(ruleEntry);
 
                 }});
@@ -211,7 +196,7 @@ public class NewRuleActivity  extends AppCompatActivity {
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
-                    // insert new contact
+                    // Insert new rule
                     mDb.ruleDao().insertRule(ruleEntry);
 
                 }});
@@ -227,21 +212,13 @@ public class NewRuleActivity  extends AppCompatActivity {
                     != PackageManager.PERMISSION_GRANTED) {
 
                 // Permission is not granted
-                // Should we show an explanation?
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                         Manifest.permission.SEND_SMS)) {
-                    // Show an explanation to the user *asynchronously* -- don't block
-                    // this thread waiting for the user's response! After the user
-                    // sees the explanation, try again to request the permission.
                 } else {
-                    // No explanation needed; request the permission
+                    // No explanation needed
                     ActivityCompat.requestPermissions(this,
                             new String[]{Manifest.permission.SEND_SMS},
                             MY_PERMISSIONS_REQUEST_SEND_SMS);
-
-                    // MY_PERMISSIONS_REQUEST_SEND_SMS is an
-                    // app-defined int constant. The callback method gets the
-                    // result of the request.
                 }
             } else {
                 // Permission has already been granted
@@ -258,7 +235,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                         @Override
                         public void run() {
-                            // insert new contact
+                            // Insert new rule
                             mDb.ruleDao().insertRule(ruleEntry);
                         }
                     });
@@ -280,16 +257,8 @@ public class NewRuleActivity  extends AppCompatActivity {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                     saveRule();
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    //Intent intent = new Intent(this, SmsRulesActivity.class);
-                    //startActivity(intent);
                 }
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request.
         }
     }
 
@@ -385,51 +354,6 @@ public class NewRuleActivity  extends AppCompatActivity {
         });
     }
 
-    private void setupPlaces2ViewModel() {
-        PlacesViewModel viewModel = ViewModelProviders.of(this).get(PlacesViewModel.class);
-        viewModel.getPlaces().observe(this, new Observer<List<PlaceEntry>>() {
-            @Override
-            public void onChanged(@Nullable List<PlaceEntry> placeEntries) {
-                Log.d("message", "Updating list of places from LiveData in ViewModel"  + placeEntries.size() );
-                if (placeEntries.size() == 0) {
-                    return;
-                }
-                if (placeEntries != null && placeEntries.size() != 0) {
-                    placeIds.clear();
-                    placeNamesAnywhere.clear();
-
-                    for (int i = 0; i < placeEntries.size(); i++) {
-                        placeIds.add(placeEntries.get(i).getId());
-                        System.out.println("placeIds" + i + placeIds.get(i));
-                        placeNamesAnywhere.add(placeEntries.get(i).getPlaceName());
-                        System.out.println("placeNames" + i + placeNames.get(i));
-                    }
-
-
-                    Log.d("placeNames", " " + placeNamesAnywhere.get(0));
-                    placeNamesAnywhere.add(0, "anywhere");
-                    Log.d("placeNames", " " + placeNamesAnywhere.get(1));
-
-
-                    ArrayAdapter<String> adapterDepartureAnywherePlace = new ArrayAdapter<String>(
-                            getApplicationContext(),
-                            android.R.layout.simple_spinner_item,
-                            placeNamesAnywhere
-                    );
-
-
-                    // Specify the layout to use when the list of choices appears
-                    adapterDepartureAnywherePlace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    // Apply the adapter to the spinner
-                    departureSpinner.setAdapter(adapterDepartureAnywherePlace);
-
-                    departureSpinner.setOnItemSelectedListener(new DepartureAnywhereSpinnerClass());
-                }
-
-            }
-        });
-    }
-
     class ArrivalSpinnerClass implements AdapterView.OnItemSelectedListener
     {
         public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
@@ -472,7 +396,6 @@ public class NewRuleActivity  extends AppCompatActivity {
             placeId = null;
         }
     }
-
 
 
     private void setupContactsViewModel() {

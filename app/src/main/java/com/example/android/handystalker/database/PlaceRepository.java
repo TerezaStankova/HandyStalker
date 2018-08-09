@@ -41,10 +41,12 @@ public class PlaceRepository {
         return mAllRules;
     }
 
+    //Returns only rules from Handy category
     public LiveData<List<RuleEntry>> getmHandyRules() {
         return mHandyRules;
     }
 
+    //Returns only Slaking rules - sms and notifications
     public LiveData<List<RuleEntry>> getmStalkerRules() {
         return mStalkerRules;
     }

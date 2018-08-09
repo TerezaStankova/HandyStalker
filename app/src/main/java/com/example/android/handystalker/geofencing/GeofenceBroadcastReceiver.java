@@ -92,6 +92,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                     List<RuleEntry> rulesForThisPlace = mDb.ruleDao().findRulesForArrivalPlace(arrivalId);
                     List<String> phoneNumbers = new ArrayList<String>();
                     ArrayList<Contact> contactsForThisPlace = new ArrayList<Contact>();
+                    List<String> contactNames = new ArrayList<String>();
 
 
                     if (rulesForThisPlace != null && rulesForThisPlace.size() != 0 ) {
@@ -117,7 +118,8 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                             } else if (rulesForThisPlace.get(i).getType().equals("notify")){
                                 Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
                                 Integer contactId = (Integer) rulesForThisPlace.get(i).getContactId();
-                                sendNotification(context, contactId);
+                                Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                contactNames.add(mDb.contactDao().findNameForContactId(rulesForThisPlace.get(i).getContactId()));
                                 ContactsEntry contactsEntry = mDb.contactDao().findContactsEntryfromContactId(contactId);
                                 contactsForThisPlace.add(new Contact(0, contactsEntry.getPhone(), contactsEntry.getName(), null));
                             } else if (rulesForThisPlace.get(i).getType().equals("wifi")) {
@@ -139,6 +141,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                     // Must call finish() so the BroadcastReceiver can be recycled.
                     //pendingResult.finish();
                     StalkerService.startActionAddEvents(context, namePlace, contactsForThisPlace);
+                    sendNotification(context, contactNames, true);
                     return phoneNumbers;
                 }
 
@@ -176,6 +179,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                     Log.d(TAG, "triggeringGeofence.size()" + triggeringGeofence.size() + " " + departureId);
                     List<RuleEntry> rulesForThisPlace = mDb.ruleDao().findRulesForDeparturePlace(departureId);
                     List<String> phoneNumbers = new ArrayList<String>();
+                    List<String> contactNames = new ArrayList<String>();
 
                     if (rulesForThisPlace != null && rulesForThisPlace.size() != 0 ) {
 
@@ -197,7 +201,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                                 }
                             } else if (rulesForThisPlace.get(i).getType().equals("notify")){
                                 Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
-                                sendNotification(context, rulesForThisPlace.get(i).getContactId());
+                                contactNames.add(mDb.contactDao().findNameForContactId(rulesForThisPlace.get(i).getContactId()));
                             }  else if (rulesForThisPlace.get(i).getType().equals("wifi")) {
                                 Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
                                 setWiFi(context, false);
@@ -212,7 +216,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                                 setSound(context, 2);}
                         }
                     }
-                    Log.d(TAG, "async finished");
+                    sendNotification(context, contactNames, false);
                     return phoneNumbers;
                 }
 
@@ -254,6 +258,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                 smsManager.sendTextMessage(phoneNumber, null, "Hi! I just reached " + placeName + " safely! Have a wonderful day!", null, null);
                 //  smsManager.sendTextMessage(number,null,matn,null,null);
             } catch (Exception e) {
+                return;
             }
         }
     }
@@ -268,8 +273,8 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                 Log.d("sentsms", "now send " + context);
                 SmsManager smsManager = SmsManager.getDefault();
                 smsManager.sendTextMessage(phoneNumber, null, "Hi! I just departured from " + placeName, null, null);
-                //  smsManager.sendTextMessage(number,null,matn,null,null);
             } catch (Exception e) {
+                return;
             }
         }
     }
@@ -289,133 +294,70 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
         }
     }
 
-    public void openWhatsApp(){
-        try {
-            String text = "Hi, I arrived safely!";// Replace with your message.
 
-            String toNumber = "+420736604152"; // Replace with mobile phone number without +Sign or leading zeros.
+    private void sendNotification(Context context, List<String> contactNames, boolean arrival) {
+        if (contactNames != null && contactNames.size()!= 0) {
+            StringBuilder nameList = new StringBuilder(contactNames.get(0));
+            for (int i = 1; i < contactNames.size(); i++) {
+                nameList.append(", ").append(contactNames.get(i));
+            }
 
+            if (arrival) {
+                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.ic_place_green_24dp)
+                        .setContentTitle("You arrived!")
+                        .setContentText("Safely there!")
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText("Let " + nameList + " know that you are safe."))
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("http://api.whatsapp.com/send?phone="+toNumber +"&text="+text));
-            //startActivity(intent);
-        }
-        catch (Exception e){
-            e.printStackTrace();
+                // Dismiss notification once the user touches it.
+                mBuilder.setAutoCancel(true);
+
+                // Get an instance of the Notification manager
+                NotificationManager mNotificationManager =
+                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+                // Issue the notification
+                if (mNotificationManager != null) {
+                    mNotificationManager.notify(0, mBuilder.build());
+                }
+
+            } else {
+                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.ic_place_green_24dp)
+                        .setContentTitle("You just departured!")
+                        .setContentText("Safely on my way!")
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText("Let " + nameList + " know."))
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+                // Dismiss notification once the user touches it.
+                mBuilder.setAutoCancel(true);
+
+                // Get an instance of the Notification manager
+                NotificationManager mNotificationManager =
+                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+                // Issue the notification
+                if (mNotificationManager != null) {
+                    mNotificationManager.notify(0, mBuilder.build());
+                }
+            }
         }
     }
 
-
-    private void sendNotification(Context context, int contactId) {
-
-        Log.d("notify", "now" + context);
-
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_place_green_24dp)
-                .setContentTitle("You arrived!")
-                .setContentText("Let your beloved ones know that you are safe.")
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText("Safely there!"))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-
-        // Dismiss notification once the user touches it.
-        mBuilder.setAutoCancel(true);
-
-        // Get an instance of the Notification manager
-        NotificationManager mNotificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Issue the notification
-        mNotificationManager.notify(0, mBuilder.build());
-    }
 
     private void setWiFi(Context context, boolean mode) {
         if (android.os.Build.VERSION.SDK_INT < 24 ||
                 (android.os.Build.VERSION.SDK_INT >= 24 && (ContextCompat.checkSelfPermission(context, Manifest.permission.CHANGE_WIFI_STATE) == PackageManager.PERMISSION_GRANTED))) {
             try {
                 WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-                wifiManager.setWifiEnabled(mode);
+                if (wifiManager != null) {
+                wifiManager.setWifiEnabled(mode);}
             } catch (Exception e) {
             }
         }
    }
-
-    /*protected void sendEmail() {
-        Log.i("Send email", "");
-        String[] TO = {""};
-        String[] CC = {""};
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
-
-        emailIntent.setData(Uri.parse("mailto:"));
-        emailIntent.setType("text/plain");
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-        emailIntent.putExtra(Intent.EXTRA_CC, CC);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your subject");
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
-
-        try {
-            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-            //finish();
-            Log.i("Finished sending email...", "");
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(MainActivity.this, "There is no email client installed.", Toast.LENGTH_SHORT).show();
-        }
-    }*/
-
-
-
-    /**
-     * Create a MimeMessage using the parameters provided.
-     *
-     * @param to email address of the receiver
-     * @param from email address of the sender, the mailbox account
-     * @param subject subject of the email
-     * @param bodyText body text of the email
-     * @return the MimeMessage to be used to send email
-     * @throws MessagingException
-     */
-    /*public static MimeMessage createEmail(String to,
-                                          String from,
-                                          String subject,
-                                          String bodyText)
-            throws MessagingException {
-        Properties props = new Properties();
-        Session session = Session.getDefaultInstance(props, null);
-
-        MimeMessage email = new MimeMessage(session);
-
-        email.setFrom(new InternetAddress(from));
-        email.addRecipient(javax.mail.Message.RecipientType.TO,
-                new InternetAddress(to));
-        email.setSubject(subject);
-        email.setText(bodyText);
-        return email;
-    }
-
-
-
-     private void setRingerMode(Context context, int mode) {
-        NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        // Check for DND permissions for API 24+
-        if (android.os.Build.VERSION.SDK_INT < 24 ||
-                (android.os.Build.VERSION.SDK_INT >= 24 && !nm.isNotificationPolicyAccessGranted())) {
-            AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-            audioManager.setRingerMode(mode);
-        }
-    }
-
-
-
-
-
-
-
-
-
-    */
-
-
-
 
 }

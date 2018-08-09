@@ -3,6 +3,7 @@ package com.example.android.handystalker.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+//Class for Parcelable Object creation - Contact
 public class Contact implements Parcelable {
     private int id;
     private String phone;

@@ -24,7 +24,7 @@ public class ContactsViewModel extends AndroidViewModel {
         super(application);
         PlaceRepository mRepository = new PlaceRepository(application);
         AppDatabase database = AppDatabase.getInstance(this.getApplication());
-        Log.d(TAG, "Actively retrieving the tasks from the DataBase");
+        Log.d(TAG, "Actively retrieving the contacts from the DataBase");
         contacts = mRepository.getmAllContacts();
     }
 

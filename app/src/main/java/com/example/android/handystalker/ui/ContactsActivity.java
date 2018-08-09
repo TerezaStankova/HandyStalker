@@ -44,13 +44,8 @@ public class ContactsActivity  extends AppCompatActivity {
     }
 
     private void showContactsDataView() {
-        /* Then, make sure the movie data is visible */
+        /* Then, make sure the contacts data is visible */
         mRecyclerView.setVisibility(View.VISIBLE);
-    }
-
-    private void hidePlacesDataView() {
-        /* Then, make sure the movie data is visible */
-        mRecyclerView.setVisibility(View.GONE);
     }
 
 

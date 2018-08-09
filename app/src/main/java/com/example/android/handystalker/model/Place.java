@@ -4,6 +4,8 @@ package com.example.android.handystalker.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+//Class for Parcelable Object creation - Place
+
 public class Place implements Parcelable {
     private String id;
     private String name;
