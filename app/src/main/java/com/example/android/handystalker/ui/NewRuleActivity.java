@@ -17,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
@@ -287,7 +286,6 @@ public class NewRuleActivity  extends AppCompatActivity {
                     //Intent intent = new Intent(this, SmsRulesActivity.class);
                     //startActivity(intent);
                 }
-                return;
             }
 
             // other 'case' lines to check for other

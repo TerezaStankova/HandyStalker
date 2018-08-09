@@ -2,30 +2,26 @@ package com.example.android.handystalker.database;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
-import android.arch.persistence.room.Dao;
 
 import java.util.List;
 
 public class PlaceRepository {
 
-    private PlaceDao mPlaceDao;
     private LiveData<List<PlaceEntry>> mAllPlaces;
 
-    private ContactDao mContactDao;
     private LiveData<List<ContactsEntry>> mAllContacts;
 
-    private RuleDao mRuleDao;
     private LiveData<List<RuleEntry>> mAllRules;
     private LiveData<List<RuleEntry>> mHandyRules;
     private LiveData<List<RuleEntry>> mStalkerRules;
 
     public PlaceRepository(Application application) {
         AppDatabase db = AppDatabase.getInstance(application);
-        mPlaceDao = db.placeDao();
+        PlaceDao mPlaceDao = db.placeDao();
         mAllPlaces = mPlaceDao.loadAllPlaces();
-        mContactDao = db.contactDao();
+        ContactDao mContactDao = db.contactDao();
         mAllContacts = mContactDao.loadAllContacts();
-        mRuleDao = db.ruleDao();
+        RuleDao mRuleDao = db.ruleDao();
         mAllRules = mRuleDao.loadAllRules();
         mHandyRules = mRuleDao.loadHandyRules("wifi", "net", "sound", "wifioff", "netoff", "soundoff");
         mStalkerRules = mRuleDao.loadSendingRules("sms", "notify");

@@ -5,37 +5,25 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Movie;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.Toast;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
-import com.example.android.handystalker.database.ContactsEntry;
 import com.example.android.handystalker.database.RuleEntry;
-import com.example.android.handystalker.model.Contact;
 import com.example.android.handystalker.model.Rule;
 import com.example.android.handystalker.ui.Adapters.RulesAdapter;
-import com.example.android.handystalker.utilities.AppExecutors;
-import com.example.android.handystalker.utilities.ContactsViewModel;
 import com.example.android.handystalker.utilities.RulesViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static com.google.android.gms.common.util.ArrayUtils.newArrayList;
 
 public class SmsRulesActivity extends AppCompatActivity {
 
@@ -47,8 +35,6 @@ public class SmsRulesActivity extends AppCompatActivity {
     private Parcelable mListState;
     private LinearLayoutManager layoutManager;
 
-    // Member variable for the Database
-    private AppDatabase mDb;
     //List<Rule> mRuleDatabase = newArrayList();
 
     private static final int PERMISSIONS_REQUEST = 2222;
@@ -80,7 +66,7 @@ public class SmsRulesActivity extends AppCompatActivity {
         mAdapter.setHandy(false);
         mRecyclerView.setAdapter(mAdapter);
 
-        mDb = AppDatabase.getInstance(getApplicationContext());
+        AppDatabase mDb = AppDatabase.getInstance(getApplicationContext());
         mAdapter.setDatabase(mDb);
 
         setUpRulesViewModel();

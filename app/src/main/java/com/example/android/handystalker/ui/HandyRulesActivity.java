@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -17,16 +16,12 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.Switch;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.RuleEntry;
-import com.example.android.handystalker.model.Rule;
 import com.example.android.handystalker.ui.Adapters.RulesAdapter;
 import com.example.android.handystalker.utilities.HandyRulesViewModel;
-import com.example.android.handystalker.utilities.RulesViewModel;
 
 import java.util.List;
 
@@ -40,8 +35,6 @@ public class HandyRulesActivity extends AppCompatActivity {
     private Parcelable mListState;
     private LinearLayoutManager layoutManager;
 
-    // Member variable for the Database
-    private AppDatabase mDb;
     //List<Rule> mRuleDatabase = newArrayList();
 
     private static final int PERMISSIONS_REQUEST = 2223;
@@ -77,7 +70,7 @@ public class HandyRulesActivity extends AppCompatActivity {
         mAdapter.setHandy(true);
         mRecyclerView.setAdapter(mAdapter);
 
-        mDb = AppDatabase.getInstance(getApplicationContext());
+        AppDatabase mDb = AppDatabase.getInstance(getApplicationContext());
         mAdapter.setDatabase(mDb);
 
         setUpRulesViewModel();

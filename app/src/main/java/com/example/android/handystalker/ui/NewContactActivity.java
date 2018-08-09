@@ -33,7 +33,6 @@ public class NewContactActivity extends AppCompatActivity {
     final int RESULT_PICK_CONTACT = 789;
     private Contact mComtact;
     private boolean update;
-    private final String CONTACTS = "contacts";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +44,7 @@ public class NewContactActivity extends AppCompatActivity {
         phoneEditText = (EditText) findViewById(R.id.phone_editText);
         saveButton = (Button) findViewById(R.id.save_contact_button);
 
+        String CONTACTS = "contacts";
         if (getIntent().getParcelableExtra(CONTACTS) != null){
             mComtact = getIntent().getParcelableExtra(CONTACTS);
             saveButton.setText(R.string.update_contact);
@@ -139,6 +139,7 @@ public class NewContactActivity extends AppCompatActivity {
                         phoneNumber = cursor.getString(phoneIndex);
                         nameEditText.setText(name);
                         phoneEditText.setText(phoneNumber);
+                        cursor.close();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

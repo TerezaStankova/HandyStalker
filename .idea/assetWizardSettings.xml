@@ -33,6 +33,8 @@
                                   </option>
                                   <option name="values">
                                     <map>
+                                      <entry key="backgroundAssetType" value="COLOR" />
+                                      <entry key="backgroundColor" value="76ff03" />
                                       <entry key="foregroundImage" value="C:\Users\Lenovo\Desktop\handy_stalker4-01.svg" />
                                     </map>
                                   </option>

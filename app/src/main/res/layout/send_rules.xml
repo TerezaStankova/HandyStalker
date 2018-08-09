@@ -25,7 +25,9 @@
                 android:paddingBottom="4dp"
                 android:paddingRight="8dp"
                 android:paddingTop="4dp"
-                app:srcCompat="@drawable/ic_sms_green_24dp" />
+                android:contentDescription="@string/sms_icon"
+                app:srcCompat="@drawable/ic_sms_green_24dp"
+                android:paddingEnd="8dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -53,7 +55,6 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/add_fab_sendrule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
@@ -62,7 +63,7 @@
             android:contentDescription="@string/add_new_contact"
             android:elevation="6dp"
             android:onClick="onAddSendRulesButtonClicked"
-            android:text="New Rule" />
+            android:text="@string/new_rule" />
 
 
         <android.support.v7.widget.RecyclerView

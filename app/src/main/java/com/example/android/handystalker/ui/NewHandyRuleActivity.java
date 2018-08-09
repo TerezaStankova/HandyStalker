@@ -28,8 +28,6 @@ import com.example.android.handystalker.utilities.PlacesViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.android.gms.common.util.ArrayUtils.newArrayList;
-
 public class NewHandyRuleActivity extends AppCompatActivity {
 
     List<Integer> placeIds = new ArrayList<Integer>();
@@ -41,10 +39,7 @@ public class NewHandyRuleActivity extends AppCompatActivity {
     // Member variable for the Database
     private AppDatabase mDb;
 
-    private String WIFIOFF = "wifioff";
     private String WIFI = "wifi";
-    private String SOUNDOFF = "soundoff";
-    private String SOUND = "sound";
 
 
     //edit texts
@@ -82,7 +77,9 @@ public class NewHandyRuleActivity extends AppCompatActivity {
 
     public void onSaveWifiRuleClick(View view) {
 
-        if (onWifi == true) {type = WIFI;} else {type = WIFIOFF;}
+        if (onWifi) {type = WIFI;} else {
+            String WIFIOFF = "wifioff";
+            type = WIFIOFF;}
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CHANGE_WIFI_STATE)
@@ -125,7 +122,11 @@ public class NewHandyRuleActivity extends AppCompatActivity {
     }
 
     public void onSaveSoundRuleClick(View view) {
-        if (onSound == true) {type = SOUND;} else {type = SOUNDOFF;}
+        if (onSound) {
+            String SOUND = "sound";
+            type = SOUND;} else {
+            String SOUNDOFF = "soundoff";
+            type = SOUNDOFF;}
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         // Check if the API supports such permission change and check if permission is granted
@@ -237,7 +238,6 @@ public class NewHandyRuleActivity extends AppCompatActivity {
                     saveRule();
                 } else {
                 }
-                return;
             }
 
             // other 'case' lines to check for other

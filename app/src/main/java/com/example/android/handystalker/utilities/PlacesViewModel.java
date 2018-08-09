@@ -16,13 +16,12 @@ public class PlacesViewModel extends AndroidViewModel {
     // Constant for logging
     private static final String TAG = PlacesViewModel.class.getSimpleName();
 
-    private PlaceRepository mRepository;
     private LiveData<List<PlaceEntry>> places;
 
 
     public PlacesViewModel(Application application) {
         super(application);
-        mRepository = new PlaceRepository(application);
+        PlaceRepository mRepository = new PlaceRepository(application);
         AppDatabase database = AppDatabase.getInstance(this.getApplication());
         Log.d(TAG, "Actively retrieving the places from the DataBase");
         places = mRepository.getAllPlaces();

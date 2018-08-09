@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:textAlignment="center">
@@ -27,12 +27,11 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/wifi_text_info"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="Turn Wi-Fi " />
+                android:text="@string/turn_wi_fi" />
 
             <Spinner
                 android:id="@+id/on_wifi_spinner"
@@ -51,11 +50,10 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/while_text_info"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="while in" />
+                android:text="@string/while_in" />
 
             <Spinner
                 android:id="@+id/place_wifi_spinner"
@@ -67,7 +65,6 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/save_wifi_rule"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
@@ -77,8 +74,9 @@
             android:onClick="onSaveWifiRuleClick"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:text="Save Wi-fi Rule"
-            app:srcCompat="@android:drawable/ic_menu_save" />
+            android:text="@string/save_wi_fi_rule"
+            app:srcCompat="@android:drawable/ic_menu_save"
+            android:focusable="true" />
     </LinearLayout>
 
 
@@ -95,12 +93,11 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/sound_text_info"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="Turn sound " />
+                android:text="@string/turn_sound" />
 
             <Spinner
                 android:id="@+id/sound_on_spinner"
@@ -118,11 +115,10 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/sound_text_while"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="while in " />
+                android:text="@string/while_in" />
 
             <Spinner
                 android:id="@+id/place_sound_spinner"
@@ -136,7 +132,6 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/save_sound_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
@@ -146,8 +141,9 @@
             android:onClick="onSaveSoundRuleClick"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:text="Save Sound Rule"
-            app:srcCompat="@android:drawable/ic_menu_save" />
+            android:text="@string/save_sound_rule"
+            app:srcCompat="@android:drawable/ic_menu_save"
+            android:focusable="true" />
     </LinearLayout>
 
 

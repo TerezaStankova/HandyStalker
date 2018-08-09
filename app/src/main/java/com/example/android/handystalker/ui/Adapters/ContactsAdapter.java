@@ -14,7 +14,6 @@ import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.ContactsEntry;
 import com.example.android.handystalker.model.Contact;
-import com.example.android.handystalker.ui.ContactsActivity;
 import com.example.android.handystalker.ui.NewContactActivity;
 import com.example.android.handystalker.utilities.AppExecutors;
 

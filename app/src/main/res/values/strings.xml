@@ -1,17 +1,11 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Handy Stalker</string>
     <string name="policies_privacy">http://www.google.com/policies/privacy</string>
     <string name="add_new_location">Add new location</string>
-    <string name="location_list">Locations</string>
 
     <string name="setting_enabled" translatable="false">EnabledSetting</string>
-    <string name="settings_label">Settings</string>
 
-    <string name="privacy">http://www.google.com/policies/privacy</string>
-
-    <string name="silent_mode_activated">Silent mode activated</string>
-    <string name="touch_to_relaunch">Touch to launch the app.</string>
-    <string name="back_to_normal">Back to normal</string>
+    <string name="privacy" tools:keep="@string/privacy">http://www.google.com/policies/privacy</string>
 
     <!--MainActivity Buttons -->
     <string name="my_places">My Places</string>
@@ -22,7 +16,6 @@
     <string name="send_sms">Send SMS</string>
 
     <string name="send_rules">Stalking Rules</string>
-    <string name="e_mail">E-mail</string>
     <string name="settings_rules">Handy Rules</string>
 
 
@@ -34,18 +27,12 @@
 
     <!--Permissions -->
     <string name="sms_permission">SMS Permission</string>
-    <string name="e_mail_permission">E-mail Permission</string>
-    <string name="ringer_permissions">Ringer Permissions</string>
-    <string name="location_permissions">Location Permissions</string>
-    <string name="enable_geofences">Enable Geofences</string>
 
     <string name="need_location_permission_message">You need to enable location permissions first</string>
-    <string name="location_permissions_granted_message">Location Permissions Granted</string>
 
     <!--Contacts-->
     <string name="phone_number_cc">phone number (with country code)</string>
     <string name="name">name</string>
-    <string name="e_mail_address">e-mail address (mystalker@gmail.com)</string>
 
     <string name="add_new_contact">Add new contact</string>
     <string name="save_my_stalker">Save my stalker</string>
@@ -62,12 +49,9 @@
         <item> off </item>
     </string-array>
 
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
     <string name="add_new_rule">Add new rule</string>
     <string name="reached">You recently reached</string>
     <string name="new_rule">New Rule</string>
-    <string name="mobile_data_permission">Mobile data Permission</string>
     <string name="sound_permission">Sound Permission</string>
     <string name="wifi_on_turn">Turn Wi-Fi ON.</string>
     <string name="wifi_of_turn">Turn Wi-Fi OFF.</string>
@@ -78,5 +62,45 @@
 
     <!--Ads-->
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="app_image">Eye with location in the middle</string>
+    <string name="go_to_app">Go to app!</string>
+    <string name="sms_icon">SMS icon</string>
+    <string name="location_icon">Location icon</string>
+    <string name="geofencing_icon">Geofencing icon</string>
+    <string name="powered_by_google">Powered by Google</string>
+    <string name="delete_icon">Delete icon</string>
+    <string name="edit_icon">Edit icon</string>
+    <string name="volume_icon">Volume icon</string>
+    <string name="wifi_icon">Wifi icon</string>
+    <string name="location_permission">Location Permission</string>
+    <string name="enable_stalking">Enable Stalking</string>
+    <string name="place_icon">Place icon</string>
+    <string name="send_sms_to">Send SMS to</string>
+    <string name="after_reaching">after reaching</string>
+    <string name="from">from</string>
+    <string name="save_sms_rule">Save SMS Rule</string>
+    <string name="while_departuring_from">while departuring from</string>
+    <string name="save_departuring_sms_rule">Save departuring SMS Rule</string>
+    <string name="notify_me_to_let">Notify me to let</string>
+    <string name="know_about_my_safe">know about my safe</string>
+    <string name="save_notification_rule">Save Notification Rule</string>
+    <string name="rule_icon">Rule icon</string>
+    <string name="arrival">Arrival</string>
+    <string name="depart_from">Depart from</string>
+    <string name="call">Call</string>
+    <string name="whatsapp">WhatsApp</string>
+    <string name="contact_icon">Contact icon</string>
+    <string name="phone">phone</string>
+    <string name="email">email@</string>
+    <string name="turn_wi_fi">Turn Wi-Fi</string>
+    <string name="while_in">while in</string>
+    <string name="save_wi_fi_rule">Save Wi-fi Rule</string>
+    <string name="turn_sound">Turn sound</string>
+    <string name="save_sound_rule">Save Sound Rule</string>
+    <string name="wifi_permission">WiFi Permission</string>
+    <string name="my_stalker">My Stalker:</string>
+    <string name="arrival_to">Arrival:</string>
+    <string name="departure_to">Departure:</string>
+    <string name="place">Place:</string>
 
 </resources>

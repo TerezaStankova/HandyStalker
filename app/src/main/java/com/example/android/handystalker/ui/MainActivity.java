@@ -16,13 +16,11 @@ import com.google.android.gms.ads.AdRequest;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AdView mAdView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mAdView = findViewById(R.id.adView);
+        AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
@@ -34,13 +32,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    /** Called when the user taps the Place button */
+    /** Called when the user taps the Contacts button */
     public void onContactsButtonClicked(View view) {
         Intent intent = new Intent(this, ContactsActivity.class);
         startActivity(intent);
     }
 
-    /** Called when the user taps the Place button */
+    /** Called when the user taps the Rules button */
     public void onRulesButtonClicked(View view) {
         Intent intent = new Intent(this, RulesActivity.class);
         startActivity(intent);

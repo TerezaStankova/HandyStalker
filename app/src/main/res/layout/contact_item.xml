@@ -12,14 +12,13 @@
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:contentDescription="Contact icon"
+        android:contentDescription="@string/contact_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/star_big_on" />
 
     <LinearLayout
-        android:id="@+id/place_info_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -38,19 +37,19 @@
             android:id="@+id/contact_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Name" />
+            android:text="@string/name" />
 
         <TextView
             android:id="@+id/contact_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="email@" />
+            android:text="@string/email" />
 
         <TextView
             android:id="@+id/contact_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="phone" />
+            android:text="@string/phone" />
 
     </LinearLayout>
 
@@ -65,6 +64,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/delete_icon"
         app:srcCompat="@android:drawable/ic_delete" />
 
     <ImageView
@@ -78,5 +78,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/delete_contact_icon"
         app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/edit_icon"
         app:srcCompat="@android:drawable/ic_menu_edit" />
 </android.support.constraint.ConstraintLayout>

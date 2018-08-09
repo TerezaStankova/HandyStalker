@@ -17,13 +17,12 @@ public class ContactsViewModel extends AndroidViewModel {
     // Constant for logging
     private static final String TAG = ContactsViewModel.class.getSimpleName();
 
-    private PlaceRepository mRepository;
     private LiveData<List<ContactsEntry>> contacts;
 
 
     public ContactsViewModel(Application application) {
         super(application);
-        mRepository = new PlaceRepository(application);
+        PlaceRepository mRepository = new PlaceRepository(application);
         AppDatabase database = AppDatabase.getInstance(this.getApplication());
         Log.d(TAG, "Actively retrieving the tasks from the DataBase");
         contacts = mRepository.getmAllContacts();

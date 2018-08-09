@@ -10,7 +10,6 @@ import android.content.Intent;
 
 import android.content.pm.PackageManager;
 
-import android.graphics.Movie;
 import android.media.AudioManager;
 import android.net.Uri;
 
@@ -19,10 +18,8 @@ import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.util.Log;
-import android.view.View;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
@@ -30,7 +27,7 @@ import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.ContactsEntry;
 import com.example.android.handystalker.database.RuleEntry;
 import com.example.android.handystalker.model.Contact;
-import com.example.android.handystalker.ui.StalkerService;
+import com.example.android.handystalker.utilities.StalkerService;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
@@ -108,7 +105,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
 
                                 if (rulesForThisPlace.get(i).getDepartureId() != null){
                                 boolean active = rulesForThisPlace.get(i).getActive();
-                                if (active == true){
+                                if (active){
                                     rulesForThisPlace.get(i).setActive(false);
                                     mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
                                     placeName.add(mDb.placeDao().findPlaceNameById(arrivalId));
@@ -318,7 +315,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                 .setContentTitle("You arrived!")
                 .setContentText("Let your beloved ones know that you are safe.")
                 .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText("Safely there!" + contactId))
+                        .bigText("Safely there!"))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
 
@@ -337,7 +334,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
         if (android.os.Build.VERSION.SDK_INT < 24 ||
                 (android.os.Build.VERSION.SDK_INT >= 24 && (ContextCompat.checkSelfPermission(context, Manifest.permission.CHANGE_WIFI_STATE) == PackageManager.PERMISSION_GRANTED))) {
             try {
-                WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+                WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
                 wifiManager.setWifiEnabled(mode);
             } catch (Exception e) {
             }

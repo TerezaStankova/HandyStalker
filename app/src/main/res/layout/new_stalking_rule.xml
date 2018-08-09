@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:textAlignment="center">
@@ -28,12 +28,11 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/name_text_info"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="Send SMS to" />
+                android:text="@string/send_sms_to" />
 
             <Spinner
                 android:id="@+id/name_spinner"
@@ -53,11 +52,10 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/arrival_text_info"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="after reaching" />
+            android:text="@string/after_reaching" />
 
         <Spinner
             android:id="@+id/arrival_spinner"
@@ -76,12 +74,11 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/dep_text_info"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="from " />
+                android:text="@string/from" />
 
             <Spinner
                 android:id="@+id/departure_spinner"
@@ -93,7 +90,6 @@
         </LinearLayout>
 
     <Button
-        android:id="@+id/save_rule_FAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
@@ -103,8 +99,9 @@
         android:onClick="onSaveSendingRuleClick"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:text="Save SMS Rule"
-        app:srcCompat="@android:drawable/ic_menu_save" />
+        android:text="@string/save_sms_rule"
+        app:srcCompat="@android:drawable/ic_menu_save"
+        android:focusable="true" />
 </LinearLayout>
 
         <LinearLayout
@@ -123,12 +120,11 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/name_departure_text_info"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="start"
-                    android:text="Send SMS to" />
+                    android:text="@string/send_sms_to" />
 
                 <Spinner
                     android:id="@+id/name_departure_spinner"
@@ -148,12 +144,11 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/departure_text_info"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="start"
-                    android:text="while departuring from " />
+                    android:text="@string/while_departuring_from" />
 
                 <Spinner
                     android:id="@+id/departure_place_rule_spinner"
@@ -165,7 +160,6 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/save_departure_rule_FAB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
@@ -175,8 +169,9 @@
                 android:onClick="onSaveSendingRuleDepClick"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:text="Save departuring SMS Rule"
-                app:srcCompat="@android:drawable/ic_menu_save" />
+                android:text="@string/save_departuring_sms_rule"
+                app:srcCompat="@android:drawable/ic_menu_save"
+                android:focusable="true" />
         </LinearLayout>
 
 
@@ -196,11 +191,10 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/name_text_info2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Notify me to let" />
+                android:text="@string/notify_me_to_let" />
 
             <Spinner
                 android:id="@+id/name_spinner2"
@@ -221,11 +215,10 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/arrival_text_info2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="know about my safe " />
+                android:text="@string/know_about_my_safe" />
 
             <Spinner
                 android:id="@+id/type_spinner"
@@ -246,7 +239,6 @@
             android:minHeight="12dp" />
 
         <Button
-            android:id="@+id/save_notification_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
@@ -256,8 +248,9 @@
             android:onClick="onSaveNotifyRuleClick"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:text="Save Notification Rule"
-            app:srcCompat="@android:drawable/ic_menu_save" />
+            android:text="@string/save_notification_rule"
+            app:srcCompat="@android:drawable/ic_menu_save"
+            android:focusable="true" />
     </LinearLayout>
 
 

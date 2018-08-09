@@ -1,4 +1,4 @@
-package com.example.android.handystalker.ui;
+package com.example.android.handystalker.utilities;
 
 import android.app.IntentService;
 import android.appwidget.AppWidgetManager;
@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.example.android.handystalker.R;
-import com.example.android.handystalker.utilities.StalkerWidgetProvider;
 import com.example.android.handystalker.model.Contact;
 
 import java.util.ArrayList;

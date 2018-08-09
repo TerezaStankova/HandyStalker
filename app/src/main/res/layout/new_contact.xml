@@ -32,7 +32,6 @@
     <Button
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:id="@+id/new_contact_picker"
         android:layout_margin="8dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"

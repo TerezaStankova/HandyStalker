@@ -65,7 +65,6 @@ public class PlacesActivity extends AppCompatActivity
     private PlacesAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private boolean mIsEnabled;
-    private GeofencingClient mGeoClient;
     private GeoDataClient mGeoDataClient;
     private Geofencing mGeofencing;
     private String placeIdfromPicker;
@@ -86,7 +85,7 @@ public class PlacesActivity extends AppCompatActivity
         mAdapter = new PlacesAdapter(this, null);
         mRecyclerView.setAdapter(mAdapter);
 
-        mGeoClient = LocationServices.getGeofencingClient(this);
+        GeofencingClient mGeoClient = LocationServices.getGeofencingClient(this);
 
         mGeofencing = new Geofencing(this, mGeoClient);
         mGeoDataClient = Places.getGeoDataClient(this);
@@ -104,7 +103,7 @@ public class PlacesActivity extends AppCompatActivity
                 SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
                 editor.putBoolean(getString(R.string.setting_enabled), isChecked);
                 mIsEnabled = isChecked;
-                editor.commit();
+                editor.apply();
                 if (isChecked) mGeofencing.registerAllGeofences();
                 else mGeofencing.unRegisterAllGeofences();
             }});

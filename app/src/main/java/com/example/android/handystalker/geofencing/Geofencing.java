@@ -5,11 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.android.handystalker.ui.MainActivity;
-import com.google.android.gms.common.api.Result;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
@@ -21,15 +17,18 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.util.ArrayList;
 import java.util.List;
 
+//Special THANK YOU! belongs to the creator of The ShushMe project which was used to get better understanding of Geofences
+// https://github.com/udacity/AdvancedAndroid_Shushme
+
 public class Geofencing {
 
     // Constants
     public static final String TAG = Geofencing.class.getSimpleName();
 
-    private static final float GEOFENCE_RADIUS = 500; // 500 meters
+    private static final float GEOFENCE_RADIUS = 300; // 300 meters
     //for getting best results from your geofences set a minimum radius of 100 meters
 
-    private static final long GEOFENCE_TIMEOUT = 24 * 60 * 60 * 1000 * 7; // 7 days
+    private static final long GEOFENCE_TIMEOUT = 24 * 60 * 60 * 1000 * 365 * 10; // 10 years
 
     private List<Geofence> mGeofenceList;
     private PendingIntent mGeofencePendingIntent;
@@ -154,6 +153,7 @@ public class Geofencing {
      * Creates a GeofencingRequest object using the mGeofenceList ArrayList of Geofences
      * Used by {@code #registerGeofences}
      *
+     * INITIAL_TRIGGER_ENTER is used to initialize an action immediately.
      * INITIAL_TRIGGER_DWELL would trigger events only when the user
      * stops for a defined duration within a geofence.
      *

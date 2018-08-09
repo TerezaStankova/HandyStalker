@@ -2,7 +2,6 @@ package com.example.android.handystalker.ui.Adapters;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.annotation.UiThread;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,14 +12,10 @@ import android.widget.TextView;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
-import com.example.android.handystalker.database.ContactsEntry;
 import com.example.android.handystalker.database.RuleEntry;
-import com.example.android.handystalker.model.Contact;
 import com.example.android.handystalker.model.Rule;
-import com.example.android.handystalker.ui.SmsRulesActivity;
 import com.example.android.handystalker.utilities.AppExecutors;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.android.gms.common.util.ArrayUtils.newArrayList;
@@ -34,12 +29,6 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
     private AppDatabase mDb;
     private boolean handy = false;
 
-    private String WIFIOFF = "wifioff";
-    private String WIFI = "wifi";
-    private String SOUNDOFF = "soundoff";
-    private String SOUND = "sound";
-    private String NETOFF = "netoff";
-    private String NET = "net";
     /*
      *Constructor using the context and the db cursor
      * @param context the calling context/activity
@@ -75,21 +64,24 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
 
         String arrivalPlace = mRules.get(position).getArrivalPlace();
         String typeRule = mRules.get(position).getType();
-        if (handy == false) {
+        if (!handy) {
         String contactName = mRules.get(position).getName();
         String departurePlace = mRules.get(position).getDeparturePlace();
-        holder.nameTextView.setText("My Stalker: " + contactName);
+        String myStalker = mContext.getString(R.string.my_stalker) + " " + contactName;
+        holder.nameTextView.setText(myStalker);
 
         if(arrivalPlace != null){
             holder.arriveTextView.setVisibility(View.VISIBLE);
-            holder.arriveTextView.setText("Arrival: " + arrivalPlace);
+            String myArrival = mContext.getString(R.string.arrival_to) +" "+ arrivalPlace;
+            holder.arriveTextView.setText(myArrival);
         } else {
             holder.arriveTextView.setVisibility(View.GONE);
         }
 
         if(departurePlace != null){
             holder.departTextView.setVisibility(View.VISIBLE);
-            holder.departTextView.setText("Departure: " + departurePlace);
+            String myDeparture = mContext.getString(R.string.departure_to) + " " + departurePlace;
+            holder.departTextView.setText(myDeparture);
         } else {
             holder.departTextView.setVisibility(View.GONE);
         }
@@ -99,9 +91,16 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
         } else {
             holder.typeIcon.setImageResource(R.drawable.ic_notifications_active_green_24dp);
         }
-        } else if (handy == true) {
-            holder.nameTextView.setText("Place: " + arrivalPlace);
+        } else if (handy) {
+            String myPlace = mContext.getString(R.string.place) +" "+ arrivalPlace;
+            holder.nameTextView.setText(myPlace);
             holder.arriveTextView.setVisibility(View.VISIBLE);
+            String NET = "net";
+            String NETOFF = "netoff";
+            String SOUND = "sound";
+            String SOUNDOFF = "soundoff";
+            String WIFI = "wifi";
+            String WIFIOFF = "wifioff";
             if(typeRule.equals(WIFI) || typeRule.equals(WIFIOFF)){
                 holder.typeIcon.setImageResource(R.drawable.ic_wifi_green_24dp);
                 if(typeRule.equals(WIFI)){

@@ -7,20 +7,28 @@
     android:layout_gravity="center">
 
     <LinearLayout
-        android:id="@+id/rules_buttons"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="48dp"
         android:layout_gravity="center"
         android:orientation="vertical"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent"
         ads:layout_constraintBottom_toTopOf="@+id/adViewRules"
         ads:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/message_button"
             style="@style/myButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="44dp"
+            android:layout_marginBottom="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="44dp"
+            android:layout_marginRight="44dp"
+            android:layout_marginStart="8dp"
             android:background="@drawable/rounded_button"
             android:maxWidth="@dimen/button_width"
             android:onClick="onSMSButtonClicked"
@@ -28,11 +36,14 @@
 
 
         <Button
-            android:id="@+id/notification_button"
             style="@style/myButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="44dp"
+            android:layout_marginBottom="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="44dp"
+            android:layout_marginRight="44dp"
+            android:layout_marginStart="8dp"
             android:background="@drawable/rounded_button"
             android:maxWidth="@dimen/button_width"
             android:onClick="onSettingsButtonClicked"
@@ -53,5 +64,5 @@
         ads:adUnitId="@string/banner_ad_unit_id"
         ads:layout_constraintBottom_toBottomOf="parent"
         ads:layout_constraintEnd_toEndOf="parent"
-        ads:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
+        ads:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

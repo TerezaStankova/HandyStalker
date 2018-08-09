@@ -12,14 +12,13 @@
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:contentDescription="Rule icon"
+        android:contentDescription="@string/rule_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/star_big_on" />
 
     <LinearLayout
-        android:id="@+id/rule_info_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -34,7 +33,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/delete_rule_icon"
         app:layout_constraintStart_toEndOf="@+id/type_icon"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingStart="16dp">
 
         <TextView
             android:id="@+id/rule_contact_name"
@@ -45,13 +45,13 @@
             android:id="@+id/rule_arrival"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Arrival" />
+            android:text="@string/arrival" />
 
         <TextView
             android:id="@+id/rule_depart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Depart from" />
+            android:text="@string/depart_from" />
 
     </LinearLayout>
 
@@ -66,6 +66,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/delete_icon"
         app:srcCompat="@android:drawable/ic_delete" />
 
 </android.support.constraint.ConstraintLayout>

@@ -25,9 +25,6 @@ public class ContactsActivity  extends AppCompatActivity {
     private ContactsAdapter mAdapter;
     private RecyclerView mRecyclerView;
 
-    // Member variable for the Database
-    private AppDatabase mDb;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +37,7 @@ public class ContactsActivity  extends AppCompatActivity {
         mAdapter = new ContactsAdapter(this, null);
         mRecyclerView.setAdapter(mAdapter);
 
-        mDb = AppDatabase.getInstance(getApplicationContext());
+        AppDatabase mDb = AppDatabase.getInstance(getApplicationContext());
         mAdapter.setDatabase(mDb);
 
         setupViewModel();

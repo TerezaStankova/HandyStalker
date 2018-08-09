@@ -29,9 +29,12 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
+
+            resValue "string", "GOOGLE_PLACES_ANDROID_API_KEY", API_KEY
         }
         debug {
-            signingConfig signingConfigs.config
+            resValue "string", "GOOGLE_PLACES_ANDROID_API_KEY", API_KEY
+
         }
     }
 }
