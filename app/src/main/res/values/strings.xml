@@ -114,5 +114,6 @@
 
     <!--Dialog-->
     <string name="set_place_name">Set name of your place</string>
+    <string name="text_message">Hi, I arrived safely!</string>
 
 </resources>

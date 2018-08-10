@@ -50,7 +50,7 @@ public class SmsRulesActivity extends AppCompatActivity {
         setTitle("Stalking Rules");
 
         // Set up the recycler view
-        mRecyclerView = (RecyclerView) findViewById(R.id.sendrules_list_recycler_view);
+        mRecyclerView = findViewById(R.id.sendrules_list_recycler_view);
         layoutManager = new LinearLayoutManager(this);
         restoreLayoutManagerPosition();
         mRecyclerView.setLayoutManager(layoutManager);
@@ -113,16 +113,12 @@ public class SmsRulesActivity extends AppCompatActivity {
                 PERMISSIONS_REQUEST);
     }
 
-    public static void setmRulesDatabase(List<Rule> ruleDatabase) {
-        //mRuleDatabase = ruleDatabase;
-    }
-
     @Override
     public void onResume() {
         super.onResume();
 
         // Initialize location permissions checkbox
-        CheckBox smsPermissions = (CheckBox) findViewById(R.id.sms_permission_checkbox);
+        CheckBox smsPermissions = findViewById(R.id.sms_permission_checkbox);
         if (ActivityCompat.checkSelfPermission(SmsRulesActivity.this,
                 android.Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
             smsPermissions.setChecked(false);

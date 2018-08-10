@@ -111,9 +111,9 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
 
         public PlaceViewHolder(View itemView) {
             super(itemView);
-            deleteIcon = (ImageView) itemView.findViewById(R.id.delete_icon);
-            nameTextView = (TextView) itemView.findViewById(R.id.place_name);
-            addressTextView = (TextView) itemView.findViewById(R.id.place_address);
+            deleteIcon = itemView.findViewById(R.id.delete_icon);
+            nameTextView = itemView.findViewById(R.id.place_name);
+            addressTextView = itemView.findViewById(R.id.place_address);
         }
 
     }

@@ -177,11 +177,11 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
 
         public RuleViewHolder(View itemView) {
             super(itemView);
-            deleteIcon = (ImageView) itemView.findViewById(R.id.delete_rule_icon);
-            typeIcon = (ImageView) itemView.findViewById(R.id.type_icon);
-            nameTextView = (TextView) itemView.findViewById(R.id.rule_contact_name);
-            arriveTextView = (TextView) itemView.findViewById(R.id.rule_arrival);
-            departTextView = (TextView) itemView.findViewById(R.id.rule_depart);
+            deleteIcon = itemView.findViewById(R.id.delete_rule_icon);
+            typeIcon = itemView.findViewById(R.id.type_icon);
+            nameTextView = itemView.findViewById(R.id.rule_contact_name);
+            arriveTextView = itemView.findViewById(R.id.rule_arrival);
+            departTextView = itemView.findViewById(R.id.rule_depart);
         }
     }
 
@@ -209,11 +209,6 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
     }
 
         class FetchRulesTask extends AsyncTask<String, Void, List<Rule>> {
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-            }
 
             @Override
         protected List<Rule> doInBackground(String... params){

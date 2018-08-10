@@ -61,12 +61,12 @@ public class NewHandyRuleActivity extends AppCompatActivity {
         setTitle("New Handy Rule");
 
         //on-of spinners
-        onOfWifiSpinner = (Spinner) findViewById(R.id.on_wifi_spinner);
-        onOfSoundSpinner = (Spinner) findViewById(R.id.sound_on_spinner);
+        onOfWifiSpinner = findViewById(R.id.on_wifi_spinner);
+        onOfSoundSpinner = findViewById(R.id.sound_on_spinner);
 
         //place spinners
-        soundPlaceSpinner = (Spinner) findViewById(R.id.place_sound_spinner);
-        wifiPlaceSpinner = (Spinner) findViewById(R.id.place_wifi_spinner);
+        soundPlaceSpinner = findViewById(R.id.place_sound_spinner);
+        wifiPlaceSpinner = findViewById(R.id.place_wifi_spinner);
 
         setupTypeSpinner();
         mDb = AppDatabase.getInstance(getApplicationContext());

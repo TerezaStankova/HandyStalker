@@ -49,7 +49,7 @@ public class HandyRulesActivity extends AppCompatActivity {
         setTitle("Handy Rules");
 
         // Set up the recycler view
-        mRecyclerView = (RecyclerView) findViewById(R.id.handyrules_list_recycler_view);
+        mRecyclerView = findViewById(R.id.handyrules_list_recycler_view);
         layoutManager = new LinearLayoutManager(this);
         restoreLayoutManagerPosition();
         mRecyclerView.setLayoutManager(layoutManager);
@@ -113,7 +113,7 @@ public class HandyRulesActivity extends AppCompatActivity {
         super.onResume();
 
         // Initialize permissions checkbox
-        CheckBox soundPermissions = (CheckBox) findViewById(R.id.sound_permission_checkbox);
+        CheckBox soundPermissions = findViewById(R.id.sound_permission_checkbox);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         // Check if the API supports such permission change and check if permission is granted
         if (android.os.Build.VERSION.SDK_INT >= 24 && !notificationManager.isNotificationPolicyAccessGranted()) {
@@ -123,7 +123,7 @@ public class HandyRulesActivity extends AppCompatActivity {
             soundPermissions.setEnabled(false);
         }
 
-        CheckBox wifiPermissions = (CheckBox) findViewById(R.id.wifi_permission_checkbox);
+        CheckBox wifiPermissions = findViewById(R.id.wifi_permission_checkbox);
         if (ActivityCompat.checkSelfPermission(HandyRulesActivity.this,
                 Manifest.permission.CHANGE_WIFI_STATE) != PackageManager.PERMISSION_GRANTED) {
             wifiPermissions.setChecked(false);

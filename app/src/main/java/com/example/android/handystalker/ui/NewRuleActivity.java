@@ -78,18 +78,18 @@ public class NewRuleActivity  extends AppCompatActivity {
         setTitle("New Stalking Rule");
 
         //SMS for arrival spinners
-        contactNameSpinner = (Spinner) findViewById(R.id.name_spinner);
-        arrivalSpinner = (Spinner) findViewById(R.id.arrival_spinner);
-        departureSpinner = (Spinner) findViewById(R.id.departure_spinner);
+        contactNameSpinner = findViewById(R.id.name_spinner);
+        arrivalSpinner = findViewById(R.id.arrival_spinner);
+        departureSpinner = findViewById(R.id.departure_spinner);
 
         //Departure SMS spinners
-        departureSMSPlaceSpinner = (Spinner) findViewById(R.id.departure_place_rule_spinner);
-        contactNameDepSMSSpinner = (Spinner) findViewById(R.id.name_departure_spinner);
+        departureSMSPlaceSpinner = findViewById(R.id.departure_place_rule_spinner);
+        contactNameDepSMSSpinner = findViewById(R.id.name_departure_spinner);
 
         //Notification spinners
-        typeSpinner = (Spinner) findViewById(R.id.type_spinner);
-        contactNameSpinnerNotify = (Spinner) findViewById(R.id.name_spinner2);
-        placeNotificationSpinner = (Spinner) findViewById(R.id.place_spinner);
+        typeSpinner = findViewById(R.id.type_spinner);
+        contactNameSpinnerNotify = findViewById(R.id.name_spinner2);
+        placeNotificationSpinner = findViewById(R.id.place_spinner);
 
         setupTypeSpinner();
         mDb = AppDatabase.getInstance(getApplicationContext());

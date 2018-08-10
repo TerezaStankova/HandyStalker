@@ -1,6 +1,5 @@
 package com.example.android.handystalker.ui;
 
-import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 
@@ -14,7 +13,6 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -87,7 +85,7 @@ public class PlacesActivity extends AppCompatActivity {
         setContentView(R.layout.places);
 
         // Set up the recycler view
-        mRecyclerView = (RecyclerView) findViewById(R.id.places_list_recycler_view);
+        mRecyclerView = findViewById(R.id.places_list_recycler_view);
         layoutManager = new LinearLayoutManager(this);
         restoreLayoutManagerPosition();
         mRecyclerView.setLayoutManager(layoutManager);
@@ -103,7 +101,7 @@ public class PlacesActivity extends AppCompatActivity {
         Log.d("Preference","getPref" + mIsEnabled);
 
         // Initialize the switch state and Handle enable/disable switch change
-        Switch onOffSwitch = (Switch) findViewById(R.id.enable_switch2);
+        Switch onOffSwitch = findViewById(R.id.enable_switch2);
 
         onOffSwitch.setChecked(mIsEnabled);
         onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -240,8 +238,8 @@ public class PlacesActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         View placeLayout = inflater.inflate(R.layout.place_name_dialog, null);
-        TextView address = (TextView) placeLayout.findViewById(R.id.address_textView);
-        final EditText nameEdit= (EditText) placeLayout.findViewById(R.id.my_place_name);
+        TextView address = placeLayout.findViewById(R.id.address_textView);
+        final EditText nameEdit= placeLayout.findViewById(R.id.my_place_name);
         address.setText(AddressfromPicker);
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
@@ -278,7 +276,7 @@ public class PlacesActivity extends AppCompatActivity {
         super.onResume();
 
         // Initialize location permissions checkbox
-        CheckBox locationPermissions = (CheckBox) findViewById(R.id.location_permission_checkbox);
+        CheckBox locationPermissions = findViewById(R.id.location_permission_checkbox);
         if (ActivityCompat.checkSelfPermission(PlacesActivity.this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             locationPermissions.setChecked(false);

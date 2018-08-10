@@ -39,9 +39,9 @@ public class NewContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_contact);
 
-        nameEditText = (EditText) findViewById(R.id.name_editText);
-        phoneEditText = (EditText) findViewById(R.id.phone_editText);
-        saveButton = (Button) findViewById(R.id.save_contact_button);
+        nameEditText = findViewById(R.id.name_editText);
+        phoneEditText = findViewById(R.id.phone_editText);
+        saveButton = findViewById(R.id.save_contact_button);
 
         String CONTACTS = "contacts";
         if (getIntent().getParcelableExtra(CONTACTS) != null){
@@ -94,7 +94,7 @@ public class NewContactActivity extends AppCompatActivity {
 
 
         if (name != null) {
-            final Integer contactsId = (Integer) mComtact.getContactId();
+            final Integer contactsId = mComtact.getContactId();
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {

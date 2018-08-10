@@ -7,15 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import android.os.Build;
-import android.provider.Telephony;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.model.Contact;
-import com.example.android.handystalker.ui.MainActivity;
 import com.example.android.handystalker.ui.RulesActivity;
 
 import java.util.ArrayList;
@@ -55,7 +52,7 @@ public class StalkerWidgetProvider extends AppWidgetProvider {
 
                     //Create an Intent to launch WhatsAppActivity when clicked
                     Intent intent2 = new Intent(Intent.ACTION_VIEW);
-                    String text = "Hi, I arrived safely!";
+                    String text = context.getString(R.string.text_message);
                     String contactPhone = contact.getPhone();
                     if (contactPhone.substring(0,1).contains("+")){
                         String contactPhoneWA = contactPhone.substring(1);

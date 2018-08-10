@@ -136,11 +136,11 @@ class ContactViewHolder extends RecyclerView.ViewHolder {
 
     public ContactViewHolder(View itemView) {
         super(itemView);
-        deleteIcon = (ImageView) itemView.findViewById(R.id.delete_contact_icon);
-        updateIcon = (ImageView) itemView.findViewById(R.id.edit_contact_icon);
-        nameTextView = (TextView) itemView.findViewById(R.id.contact_name);
-        emailTextView = (TextView) itemView.findViewById(R.id.contact_email);
-        phoneTextView = (TextView) itemView.findViewById(R.id.contact_phone);
+        deleteIcon = itemView.findViewById(R.id.delete_contact_icon);
+        updateIcon = itemView.findViewById(R.id.edit_contact_icon);
+        nameTextView = itemView.findViewById(R.id.contact_name);
+        emailTextView = itemView.findViewById(R.id.contact_email);
+        phoneTextView = itemView.findViewById(R.id.contact_phone);
     }
 }
 
@@ -169,7 +169,7 @@ class ContactViewHolder extends RecyclerView.ViewHolder {
                 String name = contactsEntries.get(i).getName();
                 String phone = contactsEntries.get(i).getPhone();
                 String email = contactsEntries.get(i).getEmail();
-                int id = (int) contactsEntries.get(i).getId();
+                int id = contactsEntries.get(i).getId();
 
                 Contact newContact = new Contact(id, phone, name, email);
                 mContactDatabase.add(newContact);
