@@ -1,8 +1,6 @@
 # Handy Stalker
 ## Android Developer Nanodegree: Capstone Project
 
-Are you in **mood to bake**? Do you feel like trying **something new**? This app is exactly for you! Try it now and find your inspiration. 
-
 Is your mother also worried sick every time you forget to let her know about your safe arrival? 
 Does your boyfriend freak out if you don´t remember to call him after you reached your travel destination? 
 Do you have to let your parents know every time you get to the school? 
