@@ -24,10 +24,10 @@
                 android:layout_gravity="center"
                 android:paddingBottom="4dp"
                 android:paddingRight="8dp"
+                android:paddingEnd="8dp"
                 android:paddingTop="4dp"
                 android:contentDescription="@string/sms_icon"
-                app:srcCompat="@drawable/ic_sms_green_24dp"
-                android:paddingEnd="8dp" />
+                app:srcCompat="@drawable/ic_sms_green_24dp"/>
 
             <TextView
                 android:layout_width="wrap_content"

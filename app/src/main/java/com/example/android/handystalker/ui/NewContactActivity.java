@@ -78,7 +78,7 @@ public class NewContactActivity extends AppCompatActivity {
 
                 }
             });
-            Toast.makeText(getApplicationContext(), "New stalker saved successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.new_stalker_toast, Toast.LENGTH_SHORT).show();
         }
 
         Intent intent = new Intent(this, ContactsActivity.class);
@@ -105,7 +105,7 @@ public class NewContactActivity extends AppCompatActivity {
                     mDb.contactDao().updateContact(contactEntry);
                 }
             });
-            Toast.makeText(getApplicationContext(), "Stalker updated successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.stalker_update_toast, Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(this, ContactsActivity.class);
         startActivity(intent);

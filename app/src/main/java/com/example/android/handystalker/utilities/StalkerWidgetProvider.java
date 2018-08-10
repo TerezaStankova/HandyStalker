@@ -16,6 +16,7 @@ import android.widget.RemoteViews;
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.model.Contact;
 import com.example.android.handystalker.ui.MainActivity;
+import com.example.android.handystalker.ui.RulesActivity;
 
 import java.util.ArrayList;
 
@@ -101,7 +102,7 @@ public class StalkerWidgetProvider extends AppWidgetProvider {
         }
 
         //Create an Intent to launch the app when clicked
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = new Intent(context, RulesActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         //Create pending intent - Widgets allow click handlers to only launch pending intents

@@ -101,6 +101,10 @@ public class NewRuleActivity  extends AppCompatActivity {
         depRule = false;
         type = "sms";
 
+
+        //There is a library out there that helps you taking permissions.
+        //https://github.com/googlesamples/easypermissions
+
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.SEND_SMS)
                     != PackageManager.PERMISSION_GRANTED) {

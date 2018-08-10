@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
+import android.os.Build;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -52,6 +53,7 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.google.android.gms.location.places.ui.PlacePicker.getPlace;
 
@@ -220,7 +222,12 @@ public class PlacesActivity extends AppCompatActivity {
 
             // Extract the place information from the API
             String placeName = place.getName().toString();
-            AddressfromPicker = place.getAddress().toString();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                AddressfromPicker = Objects.requireNonNull(place.getAddress()).toString();
+            } else {
+                AddressfromPicker = place.getAddress().toString();
+            }
             placeIdfromPicker = place.getId();
 
             buildDialog();
@@ -238,7 +245,7 @@ public class PlacesActivity extends AppCompatActivity {
         address.setText(AddressfromPicker);
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
-        builder.setTitle("Set name of your place")
+        builder.setTitle(R.string.set_place_name)
                 .setView(placeLayout)
                 .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
