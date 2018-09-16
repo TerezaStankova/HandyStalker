@@ -30,7 +30,7 @@ public class Geofencing {
     // Constants
     public static final String TAG = Geofencing.class.getSimpleName();
 
-    private static final float GEOFENCE_RADIUS = 300; // 300 meters
+    private static final float GEOFENCE_RADIUS = 150; // 150 meters
     //for getting best results from your geofences set a minimum radius of 100 meters
 
     private static final long GEOFENCE_TIMEOUT = 24 * 60 * 60 * 1000 * 365 * 10; // 10 years
