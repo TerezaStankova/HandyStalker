@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Užitečný Stalker</string>
+    <string name="policies_privacy">http://www.google.com/policies/privacy</string>
+    <string name="add_new_location">Přidat nové místečko</string>
+
+    <string name="setting_enabled" translatable="false">EnabledSetting</string>
+
+    <!--MainActivity Buttons -->
+    <string name="my_places">Moje místečka</string>
+    <string name="contacts">Kontakty</string>
+    <string name="my_rules">Moje pravidla</string>
+
+    <!--Rules Buttons -->
+    <string name="send_sms">Odeslat SMS</string>
+    <string name="send_rules">SMS a upozornění</string>
+    <string name="settings_rules">Nastavení telefonu</string>
+
+    <!--Dialog -->
+    <string name="save">Uložit</string>
+    <string name="cancel">Zrušit</string>
+
+    <string name="enter_name">Zadejte název místa.</string>
+
+    <!--Permissions -->
+    <string name="sms_permission">Povolení SMS </string>
+    <string name="sound_permission">Povolení zvuku </string>
+    <string name="location_permission">Povolení přístupu k poloze</string>
+    <string name="enable_stalking">Povolit stalkování</string>
+    <string name="need_location_permission_message">Nejprve povolte přístup k Vaší poloze.</string>
+
+    <!--Contacts-->
+    <string name="phone_number_cc">telefonní číslo +420 xxx xxx xxx</string>
+    <string name="name">jméno</string>
+    <string name="phone">telefon</string>
+    <string name="email">email@seznam.cz</string>
+    <string name="add_new_contact">Přidat nový kontakt</string>
+    <string name="save_my_stalker">Uložit mého stalkera</string>
+    <string name="browse_my_contacts">Procházet kontakty</string>
+    <string name="update_contact">Upravit kontakt</string>
+
+    <string-array name="type_array">
+        <item>příjezdu do </item>
+        <item>odjezdu z </item>
+    </string-array>
+
+    <string-array name="on_array">
+        <item> zapnout </item>
+        <item> vypnout </item>
+    </string-array>
+
+    <string name="add_new_rule">Přidat nové pravidlo</string>
+    <string name="new_rule">Nové pravidlo</string>
+
+    <!--Ads-->
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
+
+    <!--Layout description-->
+    <string name="app_image">Eye with location in the middle</string>
+    <string name="sms_icon">SMS icon</string>
+    <string name="location_icon">Location icon</string>
+    <string name="geofencing_icon">Geofencing icon</string>
+    <string name="powered_by_google">Powered by Google</string>
+    <string name="delete_icon">Delete icon</string>
+    <string name="edit_icon">Edit icon</string>
+    <string name="volume_icon">Volume icon</string>
+    <string name="wifi_icon">Wifi icon</string>
+    <string name="place_icon">Place icon</string>
+    <string name="contact_icon">Contact icon</string>
+    <string name="rule_icon">Rule icon</string>
+
+    <!--Stalking Rules-->
+    <string name="send_sms_to">Pošli SMS pro </string>
+    <string name="after_reaching">, když dorazím do </string>
+    <string name="from">z</string>
+    <string name="save_sms_rule">Ulož SMS pravidlo</string>
+    <string name="while_departuring_from">, jakmile vyrazím z</string>
+    <string name="save_departuring_sms_rule">Uložit pravidlo</string>
+    <string name="notify_me_to_let">Upozorni mne, abych kontaktoval </string>
+    <string name="know_about_my_safe"> ohledně mého bezpečného </string>
+    <string name="save_notification_rule">Uložit pravidlo</string>
+    <string name="arrival">Příjezd</string>
+    <string name="depart_from">Odjezd z</string>
+
+    <!--Handy Rules-->
+    <string name="turn_wi_fi">Wi-Fi</string>
+    <string name="while_in">while in</string>
+    <string name="save_wi_fi_rule">Uložit pravidlo</string>
+    <string name="turn_sound">Zvuk</string>
+    <string name="save_sound_rule">Uložit pravidlo</string>
+    <string name="wifi_permission">Povolení WiFi</string>
+
+    <string name="wifi_on_turn">Zapnout Wi-Fi.</string>
+    <string name="wifi_of_turn">Vypnout Wi-Fi.</string>
+    <string name="sound_on_turn">Zapnout sound ON.</string>
+    <string name="sound_off_turn">Vypnout sound.</string>
+
+    <!--Widget-->
+    <string name="call">Hovor</string>
+    <string name="whatsapp">WhatsApp</string>
+    <string name="go_to_app">Nastavit nová pravidla!</string>
+    <string name="reached">Nedávno jste se vyskytnuli v </string>
+
+    <!--List Item Description-->
+    <string name="my_stalker">Můj stalker:</string>
+    <string name="arrival_to">Příjezd:</string>
+    <string name="departure_to">Odjezd:</string>
+    <string name="place">Lokalita:</string>
+
+    <string name="stalker_update_toast">Stalker úspěšně změněn!</string>
+    <string name="new_stalker_toast">Nový stalker úspěšně uložen</string>
+
+    <!--Dialog-->
+    <string name="set_place_name">Zadejte jméno pro toto místo</string>
+    <string name="text_message">Ahoj, jsem v pořádku na místě!</string>
+
+</resources>

@@ -18,7 +18,7 @@ public class StalkerService extends IntentService {
     private static final String EVENTS = "com.example.android.handystalker.events";
 
     public StalkerService() {
-        super("IngredientsService");
+        super("StalkerService");
     }
 
 

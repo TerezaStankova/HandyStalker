@@ -38,7 +38,10 @@ public class NewHandyRuleActivity extends AppCompatActivity {
     // Member variable for the Database
     private AppDatabase mDb;
 
-    private String WIFI = "wifi";
+    private String WIFI = getString(R.string.wifi);
+    private String WIFIOFF = getString(R.string.wifioff);
+    private String SOUND = getString(R.string.soundon);
+    private String SOUNDOFF = getString(R.string.soundoff);
 
     //edit texts
     Spinner onOfWifiSpinner;
@@ -76,7 +79,6 @@ public class NewHandyRuleActivity extends AppCompatActivity {
     public void onSaveWifiRuleClick(View view) {
 
         if (onWifi) {type = WIFI;} else {
-            String WIFIOFF = "wifioff";
             type = WIFIOFF;}
 
         if (ContextCompat.checkSelfPermission(this,
@@ -114,9 +116,7 @@ public class NewHandyRuleActivity extends AppCompatActivity {
 
     public void onSaveSoundRuleClick(View view) {
         if (onSound) {
-            String SOUND = "sound";
             type = SOUND;} else {
-            String SOUNDOFF = "soundoff";
             type = SOUNDOFF;}
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -229,8 +229,8 @@ public class NewHandyRuleActivity extends AppCompatActivity {
     private void setupTypeSpinner() {
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.on_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.array.on_array, R.layout.spinner_item);
+        adapter.setDropDownViewResource(R.layout.spinner_item);
         // Apply the adapter to the spinner
         onOfWifiSpinner.setAdapter(adapter);
         onOfSoundSpinner.setAdapter(adapter);
@@ -240,11 +240,11 @@ public class NewHandyRuleActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
                 switch (position) {
                     case 0:
-                        // Chosen arrival
+                        // Chosen ON
                         onWifi = true;
                         break;
                     case 1:
-                        // Chosen departure
+                        // Chosen OFF
                         onWifi = false;
                         break;
                 }
@@ -259,11 +259,11 @@ public class NewHandyRuleActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
                 switch (position) {
                     case 0:
-                        // Chosen arrival
+                        // Chosen ON
                         onSound = true;
                         break;
                     case 1:
-                        // Chosen departure
+                        // Chosen OFF
                         onSound = false;
                         break;
                 }
@@ -297,10 +297,10 @@ public class NewHandyRuleActivity extends AppCompatActivity {
 
                     ArrayAdapter<String> adapterPlace = new ArrayAdapter<String>(
                             getApplicationContext(),
-                            android.R.layout.simple_spinner_item,
+                            R.layout.spinner_item,
                             placeNames
                     );
-                    adapterPlace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    adapterPlace.setDropDownViewResource(R.layout.spinner_item);
                     // Apply the adapter to the spinner
                     soundPlaceSpinner.setAdapter(adapterPlace);
                     wifiPlaceSpinner.setAdapter(adapterPlace);

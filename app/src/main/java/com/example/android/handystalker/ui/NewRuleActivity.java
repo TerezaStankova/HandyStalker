@@ -269,9 +269,9 @@ public class NewRuleActivity  extends AppCompatActivity {
     private void setupTypeSpinner() {
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.type_array, android.R.layout.simple_spinner_item);
+                R.array.type_array, R.layout.spinner_item);
         // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.spinner_item);
         // Apply the adapter to the spinner
         typeSpinner.setAdapter(adapter);
 
@@ -326,21 +326,21 @@ public class NewRuleActivity  extends AppCompatActivity {
 
                     ArrayAdapter<String> adapterDepartureAnywherePlace = new ArrayAdapter<String>(
                             getApplicationContext(),
-                            android.R.layout.simple_spinner_item,
+                            R.layout.spinner_item,
                             placeNamesAnywhere
                     );
 
                     ArrayAdapter<String> adapterPlace = new ArrayAdapter<String>(
                             getApplicationContext(),
-                            android.R.layout.simple_spinner_item,
+                            R.layout.spinner_item,
                             placeNames
                     );
 
 
 
                     // Specify the layout to use when the list of choices appears
-                    adapterPlace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    adapterDepartureAnywherePlace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    adapterPlace.setDropDownViewResource(R.layout.spinner_item);
+                    adapterDepartureAnywherePlace.setDropDownViewResource(R.layout.spinner_item);
                     // Apply the adapter to the spinner
                     arrivalSpinner.setAdapter(adapterPlace);
                     departureSMSPlaceSpinner.setAdapter(adapterPlace);
@@ -425,11 +425,11 @@ public class NewRuleActivity  extends AppCompatActivity {
 
                 ArrayAdapter<String> adapterContacts = new ArrayAdapter<String>(
                         getApplicationContext(),
-                        android.R.layout.simple_spinner_item,
+                        R.layout.spinner_item,
                         mContactsName
                 );
                 // Specify the layout to use when the list of choices appears
-                adapterContacts.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                adapterContacts.setDropDownViewResource(R.layout.spinner_item);
                 // Apply the adapter to the spinner
                 contactNameSpinner.setAdapter(adapterContacts);
                 contactNameDepSMSSpinner .setAdapter(adapterContacts);

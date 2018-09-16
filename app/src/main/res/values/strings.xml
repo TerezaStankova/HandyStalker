@@ -115,5 +115,9 @@
     <!--Dialog-->
     <string name="set_place_name">Set name of your place</string>
     <string name="text_message">Hi, I arrived safely!</string>
+    <string name="wifioff">wifioff</string>
+    <string name="soundon">sound</string>
+    <string name="soundoff">soundoff</string>
+    <string name="wifi">wifi</string>
 
 </resources>

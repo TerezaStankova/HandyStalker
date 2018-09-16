@@ -6,9 +6,12 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SEND_SMS" />
 
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     
 
     <application
@@ -50,11 +53,8 @@
         <activity android:name=".ui.NewRuleActivity" android:parentActivityName=".ui.SmsRulesActivity"/>
         <activity android:name=".ui.NewHandyRuleActivity" android:parentActivityName=".ui.HandyRulesActivity"/>
 
-
         <service android:name=".utilities.StalkerService" />
 
-
-        <receiver android:name=".geofencing.GeofenceBroadcastReceiver" />
         <receiver android:name=".utilities.StalkerWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -64,6 +64,17 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/stalker_widget_info" />
         </receiver>
+
+
+        <receiver
+            android:name=".geofencing.GeofenceBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".utilities.GeofenceTransitionsIntentService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
     </application>
 
 </manifest>

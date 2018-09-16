@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -6,9 +6,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="spinnerDropDownItemStyle">@style/mySpinnerStyle</item>
+        <item name="spinnerDropDownItemStyle">@style/spinnerItemStyle2</item>
         <item name="android:spinnerItemStyle">@style/mySpinnerStyleItem</item>
     </style>
+
 
     <style name="myDetailTitleStyle" parent="TextAppearance.AppCompat.Title">
         <item name="android:textColor">@color/colorAccent</item>
@@ -31,6 +32,10 @@
     <style name="mySpinnerStyleItem" parent="Widget.AppCompat.TextView.SpinnerItem">
         <item name="android:textColor">@color/TextOnLight</item>
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="spinnerItemStyle2" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
+        <item name="android:textColor">@color/TextOnLight</item>
     </style>
 
 </resources>

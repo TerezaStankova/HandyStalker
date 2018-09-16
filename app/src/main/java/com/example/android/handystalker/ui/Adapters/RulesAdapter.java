@@ -116,7 +116,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
                 }
             } else if(typeRule.equals(SOUND) || typeRule.equals(SOUNDOFF)) {
                 holder.typeIcon.setImageResource(R.drawable.ic_volume_up_green_24dp);
-                if(typeRule.equals(WIFI)){
+                if(typeRule.equals(SOUND)){
                     holder.arriveTextView.setText(R.string.sound_on_turn);
                 }else{
                     holder.arriveTextView.setText(R.string.sound_off_turn);
