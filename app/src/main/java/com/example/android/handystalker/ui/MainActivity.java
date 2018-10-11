@@ -1,19 +1,19 @@
 package com.example.android.handystalker.ui;
 
 
-import android.app.job.JobInfo;
+/*import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.app.job.JobService;
-import android.content.ComponentName;
+import android.content.ComponentName;*/
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 
-import android.util.Log;
+//import android.util.Log;
 import android.view.View;
 
-import com.example.android.handystalker.utilities.StalkerJobService;
+//import com.example.android.handystalker.utilities.StalkerJobService;
 import com.google.android.gms.ads.AdView;
 
 
@@ -28,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        AdView mAdView = findViewById(R.id.adView);
+        /*AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        mAdView.loadAd(adRequest);*/
 
     }
 

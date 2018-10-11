@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.PlaceEntry;
+import com.example.android.handystalker.geofencing.AddingGeofencesService;
 import com.example.android.handystalker.geofencing.Geofencing;
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.ui.Adapters.PlacesAdapter;
@@ -95,6 +96,7 @@ public class PlacesActivity extends AppCompatActivity {
         GeofencingClient mGeoClient = LocationServices.getGeofencingClient(this);
 
         mGeofencing = new Geofencing(this, mGeoClient);
+        AddingGeofencesService.setGeofencing(mGeofencing);
         mGeoDataClient = Places.getGeoDataClient(this);
 
         mIsEnabled = getPreferences(MODE_PRIVATE).getBoolean(getString(R.string.setting_enabled), false);
