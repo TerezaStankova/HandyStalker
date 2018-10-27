@@ -12,19 +12,19 @@ import com.example.android.handystalker.model.Contact;
 
 import java.util.ArrayList;
 
-public class StalkerService extends IntentService {
+public class StalkerWidgetService extends IntentService {
 
     private static final String NAME = "com.example.android.handystalker.ui.name";
     private static final String EVENTS = "com.example.android.handystalker.events";
 
-    public StalkerService() {
-        super("StalkerService");
+    public StalkerWidgetService() {
+        super("StalkerWidgetService");
     }
 
 
     public static void startActionAddEvents(Context context, String name, ArrayList<Contact> contacts) {
         Log.d("Start Widget", "widget started");
-        Intent intent = new Intent(context, StalkerService.class);
+        Intent intent = new Intent(context, StalkerWidgetService.class);
         intent.putExtra(NAME, name);
         intent.putParcelableArrayListExtra(EVENTS, contacts);
         context.startService(intent);
@@ -34,7 +34,7 @@ public class StalkerService extends IntentService {
      * Starts this service to perform UpdateWidgets action with the given parameters.
      */
     public static void startActionUpdateWidgets(Context context) {
-        Intent intent = new Intent(context, StalkerService.class);
+        Intent intent = new Intent(context, StalkerWidgetService.class);
         Log.d("Start Widget", "Update");
         context.startService(intent);
     }

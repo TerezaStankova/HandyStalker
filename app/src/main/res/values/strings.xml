@@ -119,5 +119,11 @@
     <string name="soundon">sound</string>
     <string name="soundoff">soundoff</string>
     <string name="wifi">wifi</string>
+    <string name="you_arrived">You arrived!</string>
+    <string name="safely_there">Safely there!</string>
+    <string name="let">Let</string>
+    <string name="know_about_you">know that you are safe.</string>
+    <string name="you_departured">You just departured!</string>
+    <string name="know">know.</string>
 
 </resources>

@@ -2,15 +2,14 @@ package com.example.android.handystalker.utilities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.IntentService;
 import android.app.NotificationManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
@@ -21,7 +20,6 @@ import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.ContactsEntry;
 import com.example.android.handystalker.database.RuleEntry;
-import com.example.android.handystalker.geofencing.GeofenceBroadcastReceiver;
 import com.example.android.handystalker.model.Contact;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
@@ -44,7 +42,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
     }
 
 
-    protected void onHandleWork(Intent intent) {
+    protected void onHandleWork(@NonNull Intent intent) {
 
         final Context context = getApplicationContext();
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
@@ -142,7 +140,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                             Log.d(TAG, "async finished");
                             // Must call finish() so the BroadcastReceiver can be recycled.
                             //pendingResult.finish();
-                            StalkerService.startActionAddEvents(context, namePlace, contactsForThisPlace);
+                            StalkerWidgetService.startActionAddEvents(context, namePlace, contactsForThisPlace);
                             sendNotification(context, contactNames, true);
                             return phoneNumbers;
                         }
@@ -294,6 +292,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
         //Constant Value: 2 (0x00000002)
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         // Check for DND permissions for API 24+
+        assert notificationManager != null;
         if (android.os.Build.VERSION.SDK_INT < 24 ||
                 (android.os.Build.VERSION.SDK_INT >= 24 && !notificationManager.isNotificationPolicyAccessGranted())) {
             AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
@@ -312,10 +311,10 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
             if (arrival) {
                 NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_place_green_24dp)
-                        .setContentTitle("You arrived!")
-                        .setContentText("Safely there!")
+                        .setContentTitle(getString(R.string.you_arrived))
+                        .setContentText(getString(R.string.safely_there))
                         .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText("Let " + nameList + " know that you are safe."))
+                                .bigText(getString(R.string.let) + nameList + getString(R.string.know_about_you)))
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
                 // Dismiss notification once the user touches it.
@@ -333,10 +332,10 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
             } else {
                 NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_place_green_24dp)
-                        .setContentTitle("You just departured!")
+                        .setContentTitle(getString(R.string.you_departured))
                         .setContentText("Safely on my way!")
                         .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText("Let " + nameList + " know."))
+                                .bigText(getString(R.string.let) + nameList + getString(R.string.know)))
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
                 // Dismiss notification once the user touches it.
@@ -362,6 +361,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                 if (wifiManager != null) {
                     wifiManager.setWifiEnabled(mode);}
             } catch (Exception e) {
+                Log.d("wifi", "wifi not enabled");
             }
         }
     }

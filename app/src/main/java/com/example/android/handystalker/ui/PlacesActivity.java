@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.PlaceEntry;
 import com.example.android.handystalker.geofencing.AddingGeofencesService;
+import com.example.android.handystalker.geofencing.GeofenceStorage;
 import com.example.android.handystalker.geofencing.Geofencing;
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.ui.Adapters.PlacesAdapter;
@@ -72,6 +73,8 @@ public class PlacesActivity extends AppCompatActivity {
     private String placeIdfromPicker;
     private String AddressfromPicker;
 
+    private GeofenceStorage mGeofenceStorage;
+
     //Variable to save position in the list
     private Parcelable mListState;
     private LinearLayoutManager layoutManager;
@@ -85,6 +88,9 @@ public class PlacesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.places);
 
+        // Instantiate a new geofence storage area.
+        mGeofenceStorage = new GeofenceStorage(this);
+
         // Set up the recycler view
         mRecyclerView = findViewById(R.id.places_list_recycler_view);
         layoutManager = new LinearLayoutManager(this);
@@ -96,7 +102,6 @@ public class PlacesActivity extends AppCompatActivity {
         GeofencingClient mGeoClient = LocationServices.getGeofencingClient(this);
 
         mGeofencing = new Geofencing(this, mGeoClient);
-        AddingGeofencesService.setGeofencing(mGeofencing);
         mGeoDataClient = Places.getGeoDataClient(this);
 
         mIsEnabled = getPreferences(MODE_PRIVATE).getBoolean(getString(R.string.setting_enabled), false);
@@ -104,18 +109,7 @@ public class PlacesActivity extends AppCompatActivity {
 
         // Initialize the switch state and Handle enable/disable switch change
         Switch onOffSwitch = findViewById(R.id.enable_switch2);
-
-        onOffSwitch.setChecked(mIsEnabled);
-        onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
-                editor.putBoolean(getString(R.string.setting_enabled), isChecked);
-                mIsEnabled = isChecked;
-                editor.apply();
-                if (isChecked) mGeofencing.registerAllGeofences();
-                else mGeofencing.unRegisterAllGeofences();
-            }});
+        setCheckedPrivacy(onOffSwitch);
 
 
         mDb = AppDatabase.getInstance(getApplicationContext());
@@ -123,7 +117,28 @@ public class PlacesActivity extends AppCompatActivity {
         setupViewModel();
     }
 
+    private void setCheckedPrivacy(Switch onOffSwitch){
+        onOffSwitch.setChecked(mIsEnabled);
+        onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+                editor.putBoolean(getString(R.string.setting_enabled), isChecked);
+                mIsEnabled = isChecked;
 
+                //TODO: is it right?
+                //AddingGeofencesService.setmIsEnabled(mIsEnabled);
+                mGeofenceStorage.setIsEnabled(mIsEnabled);
+
+                editor.apply();
+                if (isChecked) mGeofencing.registerAllGeofences();
+                else mGeofencing.unRegisterAllGeofences();
+            }});
+    }
+
+
+    //TODO: Loading bar
+    //TODO: register Geofences boolean
     private void showPlacesDataView() {
         /* Then, make sure the data is visible */
         mRecyclerView.setVisibility(View.VISIBLE);
@@ -134,6 +149,7 @@ public class PlacesActivity extends AppCompatActivity {
         mRecyclerView.setVisibility(View.GONE);
     }
 
+    //TODO: coarse location in manifest
 
     private void setupViewModel() {
         showPlacesDataView();
@@ -148,7 +164,7 @@ public class PlacesActivity extends AppCompatActivity {
                 }
                 if (placeEntries != null || placeEntries.size() != 0) {
                     showPlacesDataView();
-                    List<String> placeIds = new ArrayList<String>();
+                    final List<String> placeIds = new ArrayList<String>();
                     final List<String> placeNames = new ArrayList<String>();
 
                     for (int i = 0; i < placeEntries.size(); i++) {
@@ -161,6 +177,8 @@ public class PlacesActivity extends AppCompatActivity {
 
                     Log.d("PreferenceView","success" + mIsEnabled);
 
+                    mGeofenceStorage.setGeofence(placeIds);
+
                     mGeoDataClient.getPlaceById(placeIds.toArray(new String[placeIds.size()])).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
                         @Override
                         public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
@@ -168,6 +186,7 @@ public class PlacesActivity extends AppCompatActivity {
                                 PlaceBufferResponse places = task.getResult();
                                 mAdapter.refreshPlaces(places, placeNames);
                                 mGeofencing.updateGeofencesList(places);
+
                                 if (mIsEnabled) mGeofencing.registerAllGeofences();
                                // places.release();
                             } else {
@@ -221,15 +240,14 @@ public class PlacesActivity extends AppCompatActivity {
             }
 
             // Extract the place information from the API
-            String placeName = place.getName().toString();
+            //String placeName = place.getName().toString();
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 AddressfromPicker = Objects.requireNonNull(place.getAddress()).toString();
             } else {
-                AddressfromPicker = place.getAddress().toString();
+                if (place.getAddress() != null) AddressfromPicker = place.getAddress().toString();
             }
             placeIdfromPicker = place.getId();
-
             buildDialog();
         }
     }
@@ -271,6 +289,12 @@ public class PlacesActivity extends AppCompatActivity {
 
         AlertDialog alert11 = builder.create();
         alert11.show();
+
+        /*
+        Intent serviceIntent = new Intent(AddingGeofencesService.class.getName());
+        serviceIntent.putExtra("UserID", (Parcelable) mGeofencing);
+        this.startService(serviceIntent);*/
+
     }
 
     @Override
@@ -323,7 +347,6 @@ public class PlacesActivity extends AppCompatActivity {
         if(state != null)
             mListState = state.getParcelable(LIST_STATE_KEY);
     }
-
 }
 
 

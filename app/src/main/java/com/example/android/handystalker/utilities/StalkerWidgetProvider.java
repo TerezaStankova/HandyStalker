@@ -119,7 +119,7 @@ public class StalkerWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         //Start the intent service update widget action, the service takes care of updating the widgets UI
-        StalkerService.startActionUpdateWidgets(context);
+        StalkerWidgetService.startActionUpdateWidgets(context);
     }
 
     @Override
