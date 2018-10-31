@@ -38,10 +38,10 @@ public class NewHandyRuleActivity extends AppCompatActivity {
     // Member variable for the Database
     private AppDatabase mDb;
 
-    private String WIFI = getString(R.string.wifi);
-    private String WIFIOFF = getString(R.string.wifioff);
-    private String SOUND = getString(R.string.soundon);
-    private String SOUNDOFF = getString(R.string.soundoff);
+    private String WIFI = "wifi";
+    private String WIFIOFF = "wifioff";
+    private String SOUND = "sound";
+    private String SOUNDOFF = "soundoff";
 
     //edit texts
     Spinner onOfWifiSpinner;
@@ -280,11 +280,11 @@ public class NewHandyRuleActivity extends AppCompatActivity {
         viewModel.getPlaces().observe(this, new Observer<List<PlaceEntry>>() {
             @Override
             public void onChanged(@Nullable List<PlaceEntry> placeEntries) {
+                if (placeEntries != null){
                 Log.d("message", "Updating list of places from LiveData in ViewModel"  + placeEntries.size() );
                 if (placeEntries.size() == 0) {
                     return;
                 }
-                if (placeEntries != null && placeEntries.size() != 0) {
                     placeIds.clear();
                     placeNames.clear();
 

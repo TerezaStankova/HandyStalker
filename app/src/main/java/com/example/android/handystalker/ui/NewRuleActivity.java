@@ -301,11 +301,12 @@ public class NewRuleActivity  extends AppCompatActivity {
         viewModel.getPlaces().observe(this, new Observer<List<PlaceEntry>>() {
             @Override
             public void onChanged(@Nullable List<PlaceEntry> placeEntries) {
+                if (placeEntries != null){
                 Log.d("message", "Updating list of places from LiveData in ViewModel"  + placeEntries.size() );
                 if (placeEntries.size() == 0) {
                     return;
                 }
-                if (placeEntries != null && placeEntries.size() != 0) {
+                    placeEntries.size();
                     placeIds.clear();
                     placeNames.clear();
                     placeNamesAnywhere.clear();
@@ -335,7 +336,6 @@ public class NewRuleActivity  extends AppCompatActivity {
                             R.layout.spinner_item,
                             placeNames
                     );
-
 
 
                     // Specify the layout to use when the list of choices appears

@@ -19,7 +19,6 @@ import android.widget.CheckBox;
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.RuleEntry;
-import com.example.android.handystalker.model.Rule;
 import com.example.android.handystalker.ui.Adapters.RulesAdapter;
 import com.example.android.handystalker.utilities.RulesViewModel;
 

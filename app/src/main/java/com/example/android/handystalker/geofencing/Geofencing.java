@@ -53,7 +53,7 @@ public class Geofencing {
     public void registerAllGeofences() {
         // Check that the list has Geofences in it
         if (mGeoClient == null || mGeofenceList == null || mGeofenceList.size() == 0) {
-            Log.d("noList","fail" + mGeofenceList.size());
+            Log.d("noList","fail");
             return;
         }
             try {
@@ -68,14 +68,14 @@ public class Geofencing {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d("register","success"+ mGeofenceList.size());
-                        // your success code
+                        // success code
                     }
                 })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                // your fail code;
-                                Log.d("register","fail"+ mGeofenceList.size());
+                                // fail code
+                                Log.d("register","fail "+ mGeofenceList.size());
                             }
                         });
             } catch (SecurityException securityException) {
@@ -149,6 +149,7 @@ public class Geofencing {
             // Add it to the list
             mGeofenceList.add(geofence);
         }
+        //places.release();
     }
 
     /***

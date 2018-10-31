@@ -91,19 +91,18 @@ public class HandyRulesActivity extends AppCompatActivity {
         viewModel.getRules().observe(this, new Observer<List<RuleEntry>>() {
             @Override
             public void onChanged(@Nullable List<RuleEntry> ruleEntries) {
-                Log.d("message", "Updating list of rules from LiveData in ViewModel"  + ruleEntries.size() );
-                if (ruleEntries.size() == 0) {
-                    hideRulesDataView();
-                    return;
-                }
-
                 if (ruleEntries != null) {
-                    showContactsDataView();
-                    mAdapter.setHandy(true);
-                    mAdapter.setRulesFromDatabase(ruleEntries);
+                    Log.d("message", "Updating list of rules from LiveData in ViewModel" + ruleEntries.size());
+                    if (ruleEntries.size() == 0) {
+                        hideRulesDataView();
+                        return;
+                    }
+                        showContactsDataView();
+                        mAdapter.setHandy(true);
+                        mAdapter.setRulesFromDatabase(ruleEntries);
+
                 }
             }
-
         });
     }
 

@@ -23,7 +23,7 @@
 
     <!--Permissions -->
     <string name="sms_permission">SMS Permission</string>
-    <string name="sound_permission">Sound Permission</string>
+    <string name="sound_permission">Sound Permission</string>   `
     <string name="location_permission">Location Permission</string>
     <string name="enable_stalking">Enable Stalking</string>
     <string name="need_location_permission_message">You need to enable location permissions first</string>
@@ -115,10 +115,14 @@
     <!--Dialog-->
     <string name="set_place_name">Set name of your place</string>
     <string name="text_message">Hi, I arrived safely!</string>
-    <string name="wifioff">wifioff</string>
-    <string name="soundon">sound</string>
-    <string name="soundoff">soundoff</string>
-    <string name="wifi">wifi</string>
+
+
+    <!--Helpres for rule setting-->
+    <string name="wifioff" translatable="false">wifioff</string>
+    <string name="soundon" translatable="false">sound</string>
+    <string name="soundoff" translatable="false">soundoff</string>
+    <string name="wifi" translatable="false">wifi</string>
+
     <string name="you_arrived">You arrived!</string>
     <string name="safely_there">Safely there!</string>
     <string name="let">Let</string>

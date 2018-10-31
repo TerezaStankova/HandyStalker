@@ -296,7 +296,8 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
         if (android.os.Build.VERSION.SDK_INT < 24 ||
                 (android.os.Build.VERSION.SDK_INT >= 24 && !notificationManager.isNotificationPolicyAccessGranted())) {
             AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-            audioManager.setRingerMode(mode);
+            if (audioManager != null){
+            audioManager.setRingerMode(mode);}
         }
     }
 

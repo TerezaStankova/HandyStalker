@@ -4,7 +4,6 @@
     <string name="policies_privacy">http://www.google.com/policies/privacy</string>
     <string name="add_new_location">Přidat nové místečko</string>
 
-    <string name="setting_enabled" translatable="false">EnabledSetting</string>
 
     <!--MainActivity Buttons -->
     <string name="my_places">Moje místečka</string>
@@ -96,6 +95,9 @@
     <string name="sound_on_turn">Zapnout sound ON.</string>
     <string name="sound_off_turn">Vypnout sound.</string>
 
+    <string name="data_on_turn">Zapni data.</string>
+    <string name="data_off_turn">Vypni data.</string>
+
     <!--Widget-->
     <string name="call">Hovor</string>
     <string name="whatsapp">WhatsApp</string>
@@ -114,5 +116,12 @@
     <!--Dialog-->
     <string name="set_place_name">Zadejte jméno pro toto místo</string>
     <string name="text_message">Ahoj, jsem v pořádku na místě!</string>
+
+    <string name="you_arrived">Dorazili jste!</string>
+    <string name="safely_there">Bezpečně tady!</string>
+    <string name="let">Dej</string>
+    <string name="know_about_you">vědět, že jsi v pořádku.</string>
+    <string name="you_departured">Vyrazili jste! Dejte o tom vědět.</string>
+    <string name="know">know.</string>
 
 </resources>

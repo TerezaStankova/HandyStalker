@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.util.Log;
 
-import com.example.android.handystalker.utilities.GeofenceTransitionsIntentService;
-
 public class ProviderChangedBroadcastReceiver extends BroadcastReceiver {
     boolean isGpsEnabled;
     boolean isNetworkEnabled;

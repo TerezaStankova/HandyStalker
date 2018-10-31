@@ -61,7 +61,6 @@
             android:layout_margin="16dp"
             android:background="@drawable/rounded_button"
             android:contentDescription="@string/add_new_contact"
-            android:elevation="6dp"
             android:onClick="onAddSendRulesButtonClicked"
             android:text="@string/new_rule" />
 

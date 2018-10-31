@@ -14,11 +14,9 @@ import android.os.Bundle;
 import android.view.View;
 
 //import com.example.android.handystalker.utilities.StalkerJobService;
-import com.google.android.gms.ads.AdView;
 
 
 import com.example.android.handystalker.R;
-import com.google.android.gms.ads.AdRequest;
 
 
 public class MainActivity extends AppCompatActivity {

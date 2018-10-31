@@ -1,25 +1,13 @@
 package com.example.android.handystalker.geofencing;
 
-import android.app.Activity;
 import android.app.IntentService;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.example.android.handystalker.R;
-import android.content.SharedPreferences;
-
-import com.example.android.handystalker.ui.PlacesActivity;
-import com.example.android.handystalker.utilities.GeofenceTransitionsIntentService;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.GeoDataClient;
@@ -93,7 +81,7 @@ public class AddingGeofencesService extends IntentService implements GoogleApiCl
                         PlaceBufferResponse places = task.getResult();
                         mGeofencing.updateGeofencesList(places);
                         if (mIsEnabled) mGeofencing.registerAllGeofences();
-                        // places.release(); / release in Geofencing?
+                        places.release(); // release in Geofencing? Adapter not responding - changed Adapter no Adress
                     } else {
                         Log.e(TAG, "Place not found.");
                     }

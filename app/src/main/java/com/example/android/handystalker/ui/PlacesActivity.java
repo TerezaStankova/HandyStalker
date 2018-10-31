@@ -30,7 +30,6 @@ import android.widget.Toast;
 
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.PlaceEntry;
-import com.example.android.handystalker.geofencing.AddingGeofencesService;
 import com.example.android.handystalker.geofencing.GeofenceStorage;
 import com.example.android.handystalker.geofencing.Geofencing;
 import com.example.android.handystalker.R;
@@ -96,7 +95,7 @@ public class PlacesActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         restoreLayoutManagerPosition();
         mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new PlacesAdapter(this, null);
+        mAdapter = new PlacesAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
         GeofencingClient mGeoClient = LocationServices.getGeofencingClient(this);
@@ -157,12 +156,12 @@ public class PlacesActivity extends AppCompatActivity {
         viewModel.getPlaces().observe(this, new Observer<List<PlaceEntry>>() {
             @Override
             public void onChanged(@Nullable List<PlaceEntry> placeEntries) {
+                if (placeEntries != null){
                 Log.d("message", "Updating list of places from LiveData in ViewModel"  + placeEntries.size() );
                 if (placeEntries.size() == 0) {
                     hidePlacesDataView();
                     return;
                 }
-                if (placeEntries != null || placeEntries.size() != 0) {
                     showPlacesDataView();
                     final List<String> placeIds = new ArrayList<String>();
                     final List<String> placeNames = new ArrayList<String>();
@@ -176,6 +175,7 @@ public class PlacesActivity extends AppCompatActivity {
                     }
 
                     Log.d("PreferenceView","success" + mIsEnabled);
+                    mAdapter.refreshPlaces(placeIds, placeNames);
 
                     mGeofenceStorage.setGeofence(placeIds);
 
@@ -184,18 +184,17 @@ public class PlacesActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
                             if (task.isSuccessful()) {
                                 PlaceBufferResponse places = task.getResult();
-                                mAdapter.refreshPlaces(places, placeNames);
                                 mGeofencing.updateGeofencesList(places);
 
                                 if (mIsEnabled) mGeofencing.registerAllGeofences();
-                               // places.release();
+                                places.release();
                             } else {
                                 Log.e(TAG, "Place not found.");
                             }
                         }
                     });
-                }
-            }
+
+                }}
         });
     }
 

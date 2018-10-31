@@ -19,19 +19,19 @@ import java.util.List;
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewHolder> {
 
     private Context mContext;
-    private PlaceBufferResponse mPlaces;
+    //private PlaceBufferResponse mPlaces;
     // Member variable for the Database
     private AppDatabase mDb;
     List<String> mNames;
+    List<String> mPlaceIds;
 
     /**
      * Constructor using the context and PlaceBufferResponse places
      *
      * @param context the calling context/activity
      */
-    public PlacesAdapter(Context context, PlaceBufferResponse places) {
+    public PlacesAdapter(Context context) {
         this.mContext = context;
-        this.mPlaces = places;
     }
 
     /**
@@ -59,15 +59,15 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
     @Override
     public void onBindViewHolder(PlaceViewHolder holder, final int position) {
         String placeName = mNames.get(position);
-        String placeAddress = mPlaces.get(position).getAddress().toString();
+        //String placeAddress = mPlaces.get(position).getAddress().toString();
         holder.nameTextView.setText(placeName);
-        holder.addressTextView.setText(placeAddress);
+        //holder.addressTextView.setText(placeAddress);
         holder.deleteIcon.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                final String placeId = mPlaces.get(position).getId();
+                final String placeId = mPlaceIds.get(position);
                 // Delete from database
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
@@ -80,10 +80,10 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
         });
     }
 
-    public void refreshPlaces(PlaceBufferResponse newPlaces, List<String> names){
+    public void refreshPlaces(List<String> placeIds, List<String> names){
         mNames = names;
-        mPlaces = newPlaces;
-        if (mPlaces != null) {
+        mPlaceIds = placeIds;
+        if (mPlaceIds != null) {
             // Force the RecyclerView to refresh
             this.notifyDataSetChanged();
         }
@@ -96,8 +96,8 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
      */
     @Override
     public int getItemCount() {
-        if(mPlaces==null) return 0;
-        return mPlaces.getCount();
+        if(mPlaceIds==null) return 0;
+        return mPlaceIds.size();
     }
 
     /**

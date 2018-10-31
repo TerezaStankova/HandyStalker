@@ -132,6 +132,7 @@ public class NewContactActivity extends AppCompatActivity {
                         String phoneNumber = null ;
                         String name = null;
                         Uri uri = data.getData();
+                        if (uri != null){
                         cursor = getContentResolver().query(uri, null, null, null, null);
                         cursor.moveToFirst();
                         int  phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
@@ -139,7 +140,7 @@ public class NewContactActivity extends AppCompatActivity {
                         phoneNumber = cursor.getString(phoneIndex);
                         nameEditText.setText(name);
                         phoneEditText.setText(phoneNumber);
-                        cursor.close();
+                        cursor.close();}
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
