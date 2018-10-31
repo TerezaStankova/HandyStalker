@@ -140,7 +140,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                             Log.d(TAG, "async finished");
                             // Must call finish() so the BroadcastReceiver can be recycled.
                             //pendingResult.finish();
-                            StalkerWidgetService.startActionAddEvents(context, namePlace, contactsForThisPlace);
+
                             sendNotification(context, contactNames, true);
                             return phoneNumbers;
                         }
