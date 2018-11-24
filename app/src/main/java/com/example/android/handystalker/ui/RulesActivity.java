@@ -26,7 +26,17 @@ public class RulesActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onSettingsButtonClicked(View view) {
+    public void onNotificationButtonClicked(View view) {
+        Intent intent = new Intent(this, HandyRulesActivity.class);
+        startActivity(intent);
+    }
+
+    public void onSoundSettingsButtonClicked(View view) {
+        Intent intent = new Intent(this, HandyRulesActivity.class);
+        startActivity(intent);
+    }
+
+    public void onWifiButtonClicked(View view) {
         Intent intent = new Intent(this, HandyRulesActivity.class);
         startActivity(intent);
     }

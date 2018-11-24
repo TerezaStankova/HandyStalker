@@ -60,9 +60,18 @@
                 android:layout_marginBottom="32dp"
                 android:background="@drawable/rounded_button"
                 android:maxWidth="@dimen/button_width"
-                android:onClick="onNotificationButtonClicked"
-                android:text="@string/notification"
+                android:onClick="onSoundSettingsButtonClicked"
+                android:text="@string/soundon"
                 android:textAppearance="@style/myButtonStyleSmall" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:orientation="vertical">
 
             <Button
                 android:layout_width="match_parent"
@@ -74,9 +83,10 @@
                 android:layout_marginBottom="32dp"
                 android:background="@drawable/rounded_button"
                 android:maxWidth="@dimen/button_width"
-                android:onClick="onSoundSettingsButtonClicked"
-                android:textAppearance="@style/myButtonStyleSmall"
-                android:text="@string/soundon" />
+                android:onClick="onNotificationButtonClicked"
+                android:text="@string/notification"
+                android:textAppearance="@style/myButtonStyleSmall" />
+
 
             <Button
                 android:layout_width="match_parent"
@@ -89,16 +99,18 @@
                 android:background="@drawable/rounded_button"
                 android:maxWidth="@dimen/button_width"
                 android:onClick="onWifiButtonClicked"
-                android:textAppearance="@style/myButtonStyleSmall"
-                android:text="@string/wifi" />
+                android:text="@string/wifi"
+                android:textAppearance="@style/myButtonStyleSmall" />
 
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1" >
+    </LinearLayout>
 
     </LinearLayout>
+
+
 
 </android.support.constraint.ConstraintLayout>

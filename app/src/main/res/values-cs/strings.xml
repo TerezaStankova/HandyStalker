@@ -130,4 +130,8 @@
     <string name="my_text_messages">Zprávy</string>
     <string name="save_text">Uložit zprávu</string>
 
+    <!--Rule Buttons-->
+    <string name="notification">Notifikace</string>
+    <string name="text_message_button">SMS zprávy</string>
+
 </resources>

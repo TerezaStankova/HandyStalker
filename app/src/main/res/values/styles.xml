@@ -19,6 +19,7 @@
 
     <style name="myButtonStyle" parent="TextAppearance.AppCompat.Button">
         <item name="android:textColor">@color/text_color_primary</item>
+        <item name="android:padding">8dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">24sp</item>
         <item name="android:layout_gravity">center_horizontal</item>
