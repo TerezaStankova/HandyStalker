@@ -5,6 +5,7 @@
         <!-- Customize the theme. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryLight">@color/colorPrimaryLight</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="spinnerDropDownItemStyle">@style/spinnerItemStyle2</item>
         <item name="android:spinnerItemStyle">@style/mySpinnerStyleItem</item>
@@ -18,9 +19,9 @@
     </style>
 
     <style name="myButtonStyle" parent="TextAppearance.AppCompat.Button">
-        <item name="android:textColor">@color/TextOnLight</item>
+        <item name="android:textColor">@color/text_color_primary</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:layout_gravity">center_horizontal</item>
     </style>
 

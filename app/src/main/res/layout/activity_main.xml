@@ -5,24 +5,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.MainActivity"
+    tools:layout_editor_absoluteY="81dp">
 
     <LinearLayout
+        android:id="@+id/enable_stalking_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingLeft="8dp"
+        android:paddingEnd="8dp"
         android:paddingRight="8dp"
-        android:paddingEnd="8dp">
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="4dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="4dp"
             android:contentDescription="@string/geofencing_icon"
+            android:paddingLeft="8dp"
+            android:paddingTop="4dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="4dp"
             app:srcCompat="@drawable/ic_public_green_24dp" />
 
         <Switch
@@ -38,28 +45,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="32dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="48dp"
+        android:baselineAligned="false"
         android:orientation="horizontal"
+        android:padding="8dp"
         ads:layout_constraintBottom_toBottomOf="parent"
         ads:layout_constraintEnd_toEndOf="parent"
         ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toBottomOf="@+id/enable_stalking_layout"
         app:layout_constraintTop_toTopOf="parent">
 
-    <LinearLayout
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        />
-
         <LinearLayout
-            android:layout_weight="2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical">
 
             <Button
                 style="@style/myButtonStyle"
@@ -71,14 +78,10 @@
                 android:layout_marginRight="44dp"
                 android:layout_marginBottom="32dp"
                 android:background="@drawable/rounded_button"
-                android:fontFamily="sans-serif"
                 android:maxWidth="@dimen/button_width"
                 android:onClick="onPlaceButtonClicked"
                 android:text="@string/my_places"
-                android:textAllCaps="true"
-                android:textColor="@android:color/primary_text_dark"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textAppearance="@style/myButtonStyle" />
 
 
             <Button
@@ -91,21 +94,17 @@
                 android:layout_marginRight="44dp"
                 android:layout_marginBottom="32dp"
                 android:background="@drawable/rounded_button"
-                android:fontFamily="sans-serif"
                 android:maxWidth="@dimen/button_width"
                 android:onClick="onRulesButtonClicked"
                 android:text="@string/my_rules"
-                android:textColor="@android:color/primary_text_dark"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textAppearance="@style/myButtonStyle" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            />
+            android:layout_weight="1" />
 
     </LinearLayout>
 
