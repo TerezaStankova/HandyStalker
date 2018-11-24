@@ -129,5 +129,9 @@
     <string name="know_about_you">know that you are safe.</string>
     <string name="you_departured">You just departured!</string>
     <string name="know">know.</string>
+    <string name="hi_i_am_home">Hi, I am home.</string>
+    <string name="add_a_text_message">Add a Text Message</string>
+    <string name="my_text_messages">My Text Messages</string>
+    <string name="save_text">Save Text</string>
 
 </resources>

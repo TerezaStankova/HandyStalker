@@ -124,4 +124,10 @@
     <string name="you_departured">Vyrazili jste! Dejte o tom vědět.</string>
     <string name="know">know.</string>
 
+    <!--SMS-->
+    <string name="hi_i_am_home">Ahoj, jsem doma.</string>
+    <string name="add_a_text_message">Přidejte zprávu</string>
+    <string name="my_text_messages">Zprávy</string>
+    <string name="save_text">Uložit zprávu</string>
+
 </resources>

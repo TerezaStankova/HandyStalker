@@ -74,11 +74,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    /** Called when the user taps the Contacts button */
+    /** Called when the user taps the Contacts button
     public void onContactsButtonClicked(View view) {
         Intent intent = new Intent(this, ContactsActivity.class);
         startActivity(intent);
-    }
+    }*/
 
     /** Called when the user taps the Rules button */
     public void onRulesButtonClicked(View view) {
