@@ -53,6 +53,8 @@
         <activity android:name=".ui.HandyRulesActivity"
             android:parentActivityName=".ui.RulesActivity" />
 
+        <activity android:name=".ui.NewTextRuleActivity" android:parentActivityName=".ui.SmsRulesActivity" android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity android:name=".ui.NewContactActivity" android:parentActivityName=".ui.ContactsActivity"/>
         <activity android:name=".ui.NewRuleActivity" android:parentActivityName=".ui.SmsRulesActivity"/>
         <activity android:name=".ui.NewHandyRuleActivity" android:parentActivityName=".ui.HandyRulesActivity"/>

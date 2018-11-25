@@ -70,7 +70,7 @@ public class SmsRulesActivity extends AppCompatActivity {
     }
 
     public void onAddSendRulesButtonClicked(View view) {
-        Intent intent = new Intent(this, NewRuleActivity.class);
+        Intent intent = new Intent(this, NewTextRuleActivity.class);
         startActivity(intent);
     }
 
