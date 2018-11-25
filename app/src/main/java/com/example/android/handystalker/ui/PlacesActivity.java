@@ -68,7 +68,7 @@ public class PlacesActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private boolean mIsEnabled;
     private GeoDataClient mGeoDataClient;
-    private Geofencing mGeofencing;
+    private static Geofencing mGeofencing;
     private String placeIdfromPicker;
     private String AddressfromPicker;
 
@@ -106,9 +106,6 @@ public class PlacesActivity extends AppCompatActivity {
         mIsEnabled = getPreferences(MODE_PRIVATE).getBoolean(getString(R.string.setting_enabled), false);
         Log.d("Preference","getPref" + mIsEnabled);
 
-        // Initialize the switch state and Handle enable/disable switch change
-        Switch onOffSwitch = findViewById(R.id.enable_switch2);
-        setCheckedPrivacy(onOffSwitch);
 
 
         mDb = AppDatabase.getInstance(getApplicationContext());
@@ -116,7 +113,7 @@ public class PlacesActivity extends AppCompatActivity {
         setupViewModel();
     }
 
-    private void setCheckedPrivacy(Switch onOffSwitch){
+    /*public void setCheckedPrivacy(Switch onOffSwitch){
         onOffSwitch.setChecked(mIsEnabled);
         onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -133,7 +130,7 @@ public class PlacesActivity extends AppCompatActivity {
                 if (isChecked) mGeofencing.registerAllGeofences();
                 else mGeofencing.unRegisterAllGeofences();
             }});
-    }
+    }*/
 
 
     //TODO: Loading bar
