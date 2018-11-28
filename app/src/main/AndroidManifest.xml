@@ -58,6 +58,7 @@
         <activity android:name=".ui.NewContactActivity" android:parentActivityName=".ui.ContactsActivity"/>
         <activity android:name=".ui.NewRuleActivity" android:parentActivityName=".ui.SmsRulesActivity"/>
         <activity android:name=".ui.NewHandyRuleActivity" android:parentActivityName=".ui.HandyRulesActivity"/>
+        <activity android:name=".ui.AddMessageActivity" android:parentActivityName=".ui.SmsRulesActivity"/>
 
         <service android:name=".geofencing.AddingGeofencesService"/>
 

@@ -156,6 +156,11 @@ public class SmsRulesActivity extends AppCompatActivity {
         if(state != null)
             mListState = state.getParcelable(LIST_STATE_KEY);
     }
+
+    public void onMessagesButtonClicked(View view) {
+        Intent intent = new Intent(this, AddMessageActivity.class);
+        startActivity(intent);
+    }
 }
 
 

@@ -71,7 +71,8 @@
             android:onClick="onAddPlaceButtonClicked"
             android:padding="8dp"
             android:text="@string/add_new_location"
-            android:textAppearance="@style/myButtonStyleSmall" />
+            android:textAppearance="@style/myButtonStyleSmall"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
     <TextView

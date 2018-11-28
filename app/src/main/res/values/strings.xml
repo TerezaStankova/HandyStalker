@@ -135,5 +135,6 @@
     <string name="save_text">Save Text</string>
     <string name="notification">Notification</string>
     <string name="text_message_button">Text Message</string>
+    <string name="my_texts">My Texts</string>
 
 </resources>

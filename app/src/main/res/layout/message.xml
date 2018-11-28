@@ -51,7 +51,7 @@
             android:background="@drawable/rounded_button"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onSaveContactClick"
+            android:onClick="onSaveMessageButtonClick"
             android:padding="8dp"
             android:text="@string/save_text"
             android:textAppearance="@style/myButtonStyleSmall"
