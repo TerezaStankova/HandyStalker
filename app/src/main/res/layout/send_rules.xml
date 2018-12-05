@@ -26,7 +26,7 @@
                 android:contentDescription="@string/sms_icon"
                 android:paddingTop="4dp"
                 android:paddingEnd="8dp"
-                android:paddingRight="8dp"
+                android:paddingStart="8dp"
                 android:paddingBottom="4dp"
                 app:srcCompat="@drawable/ic_sms_green_24dp" />
 
@@ -76,7 +76,8 @@
                 android:onClick="onContactsButtonClicked"
                 android:padding="8dp"
                 android:text="@string/contacts"
-                android:textAppearance="@style/myButtonStyleSmall" />
+                android:textAppearance="@style/myButtonStyleSmall"
+                android:textColor="@color/text_color_primary" />
 
 
             <Button
@@ -93,7 +94,8 @@
                 android:maxWidth="@dimen/button_width"
                 android:onClick="onMessagesButtonClicked"
                 android:text="@string/my_texts"
-                android:textAppearance="@style/myButtonStyleSmall" />
+                android:textAppearance="@style/myButtonStyleSmall"
+                android:textColor="@color/text_color_primary" />
 
         </LinearLayout>
 
@@ -107,7 +109,7 @@
 
         <Button
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="44dp"
             android:layout_marginEnd="8dp"

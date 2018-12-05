@@ -161,6 +161,11 @@ public class SmsRulesActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AddMessageActivity.class);
         startActivity(intent);
     }
+
+    public void onContactsButtonClicked(View view) {
+        Intent intent = new Intent(this, ContactsActivity.class);
+        startActivity(intent);
+    }
 }
 
 

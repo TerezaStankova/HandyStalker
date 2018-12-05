@@ -47,7 +47,8 @@
                 android:onClick="onSMSButtonClicked"
                 android:padding="8dp"
                 android:text="@string/text_message_button"
-                android:textAppearance="@style/myButtonStyleSmall" />
+                android:textAppearance="@style/myButtonStyleSmall"
+                android:textColor="@color/text_color_primary" />
 
 
             <Button
@@ -62,7 +63,8 @@
                 android:maxWidth="@dimen/button_width"
                 android:onClick="onNotificationButtonClicked"
                 android:text="@string/notification"
-                android:textAppearance="@style/myButtonStyleSmall" />
+                android:textAppearance="@style/myButtonStyleSmall"
+                android:textColor="@color/text_color_primary"/>
 
             <Button
                 android:layout_width="match_parent"
@@ -76,7 +78,8 @@
                 android:maxWidth="@dimen/button_width"
                 android:onClick="onSoundSettingsButtonClicked"
                 android:textAppearance="@style/myButtonStyleSmall"
-                android:text="@string/soundon" />
+                android:text="@string/soundon"
+                android:textColor="@color/text_color_primary"/>
 
             <Button
                 android:layout_width="match_parent"
@@ -90,7 +93,8 @@
                 android:maxWidth="@dimen/button_width"
                 android:onClick="onWifiButtonClicked"
                 android:textAppearance="@style/myButtonStyleSmall"
-                android:text="@string/wifi" />
+                android:text="@string/wifi"
+                android:textColor="@color/text_color_primary"/>
 
         </LinearLayout>
 

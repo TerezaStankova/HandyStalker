@@ -3,8 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
     android:textAlignment="center">
 
     <LinearLayout
@@ -14,16 +12,46 @@
         android:orientation="vertical"
         android:textAlignment="center">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="Notifikuj mne po příchodu na místo" />
+
+                <Spinner
+                    android:id="@+id/arrival_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:minHeight="12dp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:orientation="horizontal">
 
             <TextView
@@ -31,35 +59,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="@string/turn_wi_fi" />
+                android:text="pokud jsem před tím byl na místě" />
 
             <Spinner
-                android:id="@+id/on_wifi_spinner"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:minHeight="12dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:orientation="horizontal">
-
-            <TextView
+                android:id="@+id/departure_spinner"
+                style="@style/spinnerItemStyle2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/while_in" />
-
-            <Spinner
-                android:id="@+id/place_wifi_spinner"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
                 android:gravity="end"
                 android:minHeight="12dp" />
         </LinearLayout>
@@ -72,25 +79,26 @@
             android:background="@drawable/rounded_button"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onSaveWifiRuleClick"
+            android:onClick="onNotificationArrivalButtonClicked"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:text="@string/save_wi_fi_rule"
-            android:textAppearance="@style/myButtonStyleSmall"
+            android:text="@string/save_notification_rule"
             app:srcCompat="@android:drawable/ic_menu_save" />
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:orientation="vertical">
+
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:orientation="horizontal">
 
             <TextView
@@ -98,38 +106,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="@string/turn_sound" />
+                android:text="Notifikuj mne po odchodu z místa" />
 
             <Spinner
-                android:id="@+id/sound_on_spinner"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="end"
-                android:minHeight="12dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:orientation="horizontal">
-
-            <TextView
+                android:id="@+id/departure_place_rule_spinner"
+                style="@style/spinnerItemStyle2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/while_in" />
-
-            <Spinner
-                android:id="@+id/place_sound_spinner"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
                 android:gravity="end"
                 android:minHeight="12dp" />
-
-
         </LinearLayout>
 
         <Button
@@ -140,14 +126,14 @@
             android:background="@drawable/rounded_button"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onSaveSoundRuleClick"
+            android:onClick="onNotificationRuleDepartureClicked"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:text="@string/save_sound_rule"
-            android:textAppearance="@style/myButtonStyleSmall"
+            android:text="@string/save_notification_rule"
             app:srcCompat="@android:drawable/ic_menu_save" />
-    </LinearLayout>
 
 
     </LinearLayout>
+
+
 </ScrollView>

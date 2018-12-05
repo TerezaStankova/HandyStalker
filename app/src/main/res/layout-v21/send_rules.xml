@@ -7,8 +7,9 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
         android:orientation="vertical">
 
@@ -22,11 +23,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:paddingBottom="4dp"
-                android:paddingEnd="8dp"
-                android:paddingStart="2dp"
-                android:paddingTop="4dp"
                 android:contentDescription="@string/sms_icon"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:paddingBottom="4dp"
                 app:srcCompat="@drawable/ic_sms_green_24dp" />
 
             <TextView
@@ -46,22 +47,55 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
                     android:onClick="onSMSPermissionClicked" />
 
             </RelativeLayout>
         </LinearLayout>
 
-        <Button
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:layout_margin="16dp"
-            android:background="@drawable/rounded_button"
-            android:contentDescription="@string/add_new_contact"
-            android:elevation="6dp"
-            android:onClick="onAddSendRulesButtonClicked"
-            android:text="@string/new_rule" />
+            android:layout_gravity="end"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="44dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="44dp"
+                android:layout_marginBottom="32dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_button"
+                android:maxWidth="@dimen/button_width"
+                android:onClick="onContactsButtonClicked"
+                android:padding="8dp"
+                android:text="@string/contacts"
+                android:textAppearance="@style/myButtonStyleSmall" />
+
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="44dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="44dp"
+                android:layout_marginBottom="32dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_button"
+                android:contentDescription="@string/add_new_contact"
+                android:maxWidth="@dimen/button_width"
+                android:onClick="onMessagesButtonClicked"
+                android:text="@string/my_texts"
+                android:textAppearance="@style/myButtonStyleSmall" />
+
+        </LinearLayout>
 
 
         <android.support.v7.widget.RecyclerView
@@ -70,7 +104,37 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:layout_margin="8dp" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="44dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="44dp"
+            android:layout_marginBottom="32dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_button"
+            android:contentDescription="@string/add_new_contact"
+            android:maxWidth="@dimen/button_width"
+            android:onClick="onAddSendRulesButtonClicked"
+            android:text="@string/new_rule"
+            android:textAppearance="@style/myButtonStyleSmall" />
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:onClick="onAddSendRulesButtonClicked"
+        android:layout_width="69dp"
+        android:layout_height="54dp"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        app:backgroundTintMode="screen"
+        app:elevation="8dp"
+        app:layout_anchor="@+id/linearLayout2"
+        app:layout_anchorGravity="right|bottom"
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:focusable="true" />
 
 
 </android.support.design.widget.CoordinatorLayout>
