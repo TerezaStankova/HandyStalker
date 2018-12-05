@@ -9,8 +9,9 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
+import static android.arch.persistence.room.ForeignKey.RESTRICT;
 
-@Entity(tableName = "rule", indices = {@Index("arrival_id"), @Index("departure_id"), @Index("contact_id")}, foreignKeys = {@ForeignKey(entity = PlaceEntry.class,
+@Entity(tableName = "rule", indices = {@Index("arrival_id"), @Index("departure_id"), @Index("contact_id"), @Index("message_id")}, foreignKeys = {@ForeignKey(entity = PlaceEntry.class,
         parentColumns = "id",
         childColumns = "arrival_id",
         onDelete = CASCADE),
@@ -21,7 +22,13 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         @ForeignKey(entity = ContactsEntry.class,
         parentColumns = "id",
         childColumns = "contact_id",
-        onDelete = CASCADE)})
+        onDelete = CASCADE),
+        @ForeignKey(entity = MessagesEntry.class,
+                parentColumns = "id",
+                childColumns = "message_id",
+                onDelete = RESTRICT),
+        })
+
 public class RuleEntry {
 
     @PrimaryKey(autoGenerate = true)
@@ -36,6 +43,9 @@ public class RuleEntry {
 
     @ColumnInfo(name = "contact_id")
     private Integer contactId;
+
+    @ColumnInfo(name = "message_id")
+    private Integer messageId;
 
     @ColumnInfo(name = "type")
     @NonNull
@@ -53,6 +63,16 @@ public class RuleEntry {
         this.arrivalId = arrivalId;
         this.departureId = departureId;
         this.contactId = contactId;
+        this.type = type;
+        this.active = active;
+    }
+
+    @Ignore
+    public RuleEntry(Integer arrivalId, Integer departureId, Integer contactId, Integer messageId, @NonNull String type,@NonNull boolean active) {
+        this.arrivalId = arrivalId;
+        this.departureId = departureId;
+        this.contactId = contactId;
+        this.messageId = messageId;
         this.type = type;
         this.active = active;
     }
@@ -81,6 +101,11 @@ public class RuleEntry {
     public Integer getContactId() { return contactId; }
     public void setContactId(Integer contactId) {
         this.contactId = contactId;
+    }
+
+    public Integer getMessageId() { return messageId; }
+    public void setMessageId(Integer messageId) {
+        this.messageId = messageId;
     }
 
     public String getType() { return type; }

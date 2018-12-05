@@ -134,5 +134,6 @@
     <string name="notification">Notifikace</string>
     <string name="text_message_button">SMS zprávy</string>
     <string name="my_texts">Zprávy</string>
+    <string name="message_icon">Message Icon</string>
 
 </resources>

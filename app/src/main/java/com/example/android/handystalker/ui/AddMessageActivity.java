@@ -14,15 +14,18 @@ import android.view.View;
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.ContactsEntry;
+import com.example.android.handystalker.database.MessagesEntry;
 import com.example.android.handystalker.ui.Adapters.ContactsAdapter;
+import com.example.android.handystalker.ui.Adapters.MessagesAdapter;
 import com.example.android.handystalker.utilities.ContactsViewModel;
+import com.example.android.handystalker.utilities.MessagesViewModel;
 
 import java.util.List;
 
 public class AddMessageActivity extends AppCompatActivity {
 
     // Member variables
-    private ContactsAdapter mAdapter;
+    private MessagesAdapter mAdapter;
     private RecyclerView mRecyclerView;
 
     @Override
@@ -34,7 +37,7 @@ public class AddMessageActivity extends AppCompatActivity {
         // Set up the recycler view
         mRecyclerView = findViewById(R.id.texts_list_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new ContactsAdapter(this, null);
+        mAdapter = new MessagesAdapter(this, null);
         mRecyclerView.setAdapter(mAdapter);
 
         AppDatabase mDb = AppDatabase.getInstance(getApplicationContext());
@@ -51,13 +54,13 @@ public class AddMessageActivity extends AppCompatActivity {
 
     private void setupViewModel() {
         showContactsDataView();
-        ContactsViewModel viewModel = ViewModelProviders.of(this).get(ContactsViewModel.class);
-        viewModel.getContacts().observe(this, new Observer<List<ContactsEntry>>() {
+        MessagesViewModel viewModel = ViewModelProviders.of(this).get(MessagesViewModel.class);
+        viewModel.getMessages().observe(this, new Observer<List<MessagesEntry>>() {
             @Override
-            public void onChanged(@Nullable List<ContactsEntry> contactsEntries) {
-                mAdapter.setContactsFromDatabase(contactsEntries);
-                if (contactsEntries != null){
-                    Log.d("message", "Updating list of contacts from LiveData in ViewModel"  + contactsEntries.size() );
+            public void onChanged(@Nullable List<MessagesEntry> messagesEntries) {
+                mAdapter.setContactsFromDatabase(messagesEntries);
+                if (messagesEntries != null){
+                    Log.d("message", "Updating list of contacts from LiveData in ViewModel"  + messagesEntries.size() );
                 }
             }
 
