@@ -112,6 +112,9 @@
     <string name="stalker_update_toast">Stalker updated successfully</string>
     <string name="new_stalker_toast">New stalker saved successfully</string>
 
+    <string name="message_update_toast">Text updated successfully!</string>
+    <string name="new_message_toast">New text saved successfully</string>
+
     <!--Dialog-->
     <string name="set_place_name">Set name of your place</string>
     <string name="text_message">Hi, I arrived safely!</string>

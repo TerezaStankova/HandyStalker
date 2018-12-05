@@ -10,14 +10,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.ContactsEntry;
 import com.example.android.handystalker.database.MessagesEntry;
-import com.example.android.handystalker.ui.Adapters.ContactsAdapter;
+import com.example.android.handystalker.model.Message;
+
 import com.example.android.handystalker.ui.Adapters.MessagesAdapter;
-import com.example.android.handystalker.utilities.ContactsViewModel;
+import com.example.android.handystalker.utilities.AppExecutors;
 import com.example.android.handystalker.utilities.MessagesViewModel;
 
 import java.util.List;
@@ -27,11 +31,39 @@ public class AddMessageActivity extends AppCompatActivity {
     // Member variables
     private MessagesAdapter mAdapter;
     private RecyclerView mRecyclerView;
+    
+    // Member variable for the Database
+    private AppDatabase mDb;
+    String MESSAGES = "messages";
+
+    //Edit texts
+    EditText textEditText;
+    Button saveButton;
+    private Message mMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.message);
+
+        textEditText = findViewById(R.id.messageText_editText);
+        saveButton = findViewById(R.id.save_text_button);
+
+        if (getIntent().getParcelableExtra(MESSAGES) != null){
+            mMessage = getIntent().getParcelableExtra(MESSAGES);
+            saveButton.setText(R.string.update_contact);
+            textEditText.setText(mMessage.getText());
+            saveButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    onUpdateContactClick(v);
+                }
+            });
+        }
+
+        mDb = AppDatabase.getInstance(getApplicationContext());
 
 
         // Set up the recycler view
@@ -43,7 +75,7 @@ public class AddMessageActivity extends AppCompatActivity {
         AppDatabase mDb = AppDatabase.getInstance(getApplicationContext());
         mAdapter.setDatabase(mDb);
 
-        //setupViewModel();
+        setupViewModel();
     }
 
     private void showContactsDataView() {
@@ -68,11 +100,48 @@ public class AddMessageActivity extends AppCompatActivity {
     }
 
 
-    public void onAddContactButtonClicked(View view) {
-        Intent intent = new Intent(this, NewContactActivity.class);
+    //After Save button is clicked save the contact
+    public void onSaveMessageButtonClick(View view) {
+
+        String text = textEditText.getText().toString();
+        
+        
+        if (text != null) {
+            final MessagesEntry messagesEntry = new MessagesEntry(text);
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    // insert new contact
+                    mDb.messageDao().insertMessage(messagesEntry);
+
+                }
+            });
+            Toast.makeText(getApplicationContext(), R.string.new_message_toast, Toast.LENGTH_SHORT).show();
+        }
+
+        Intent intent = new Intent(this, ContactsActivity.class);
         startActivity(intent);
+
     }
 
-    public void onSaveMessageButtonClick(View view) {
+    //After Update button is clicked update the contact
+    public void onUpdateContactClick(View view) {
+
+        final String text = textEditText.getText().toString();
+        
+
+        if (text != null) {
+            final Integer messageId = mMessage.getMessageId();
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    // update contact
+                    MessagesEntry messagesEntry = mDb.messageDao().findMessagesEntryFromMessageId(messageId);
+                    messagesEntry.setText(text);
+                    mDb.messageDao().updateMessage(messagesEntry);
+                }
+            });
+            Toast.makeText(getApplicationContext(), R.string.message_update_toast, Toast.LENGTH_SHORT).show();
+        }
     }
 }

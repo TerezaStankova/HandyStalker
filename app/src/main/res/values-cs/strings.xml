@@ -113,6 +113,9 @@
     <string name="stalker_update_toast">Stalker úspěšně změněn!</string>
     <string name="new_stalker_toast">Nový stalker úspěšně uložen</string>
 
+    <string name="message_update_toast">Text zprávy úspěšně změněn!</string>
+    <string name="new_message_toast">Nový text zprávy úspěšně uložen</string>
+
     <!--Dialog-->
     <string name="set_place_name">Zadejte jméno pro toto místo</string>
     <string name="text_message">Ahoj, jsem v pořádku na místě!</string>
