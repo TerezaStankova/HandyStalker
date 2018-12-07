@@ -15,124 +15,129 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:orientation="vertical">
+            android:layout_margin="8dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:textAlignment="center">
+
+            <TextView
+                android:id="@+id/add_text_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:text="@string/add_notification_rule"
+                android:textAppearance="@style/myDetailTitleStyle" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
-                android:orientation="horizontal">
+                android:layout_margin="8dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:textAlignment="center">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:gravity="start"
                     android:text="Notifikuj mne po příchodu na místo" />
 
                 <Spinner
-                    android:id="@+id/arrival_spinner"
-                    android:layout_width="0dp"
+                    android:id="@+id/arrival_notification_spinner"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:gravity="end"
                     android:minHeight="12dp" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="pokud jsem před tím byl na místě" />
+
+                <Spinner
+                    android:id="@+id/departure_anywhere_notification_spinner"
+                    style="@style/spinnerItemStyle2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:minHeight="12dp" />
             </LinearLayout>
 
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
+            <Button
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="start"
-                android:text="pokud jsem před tím byl na místě" />
-
-            <Spinner
-                android:id="@+id/departure_spinner"
-                style="@style/spinnerItemStyle2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:minHeight="12dp" />
+                android:layout_gravity="center_vertical|end"
+                android:layout_margin="16dp"
+                android:background="@drawable/rounded_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onNotificationArrivalButtonClicked"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="@string/save_notification_rule"
+                android:textAppearance="@style/myButtonStyleSmall"
+                android:textColor="@color/text_color_primary"
+                app:srcCompat="@android:drawable/ic_menu_save" />
         </LinearLayout>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:layout_margin="16dp"
-            android:background="@drawable/rounded_button"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="onNotificationArrivalButtonClicked"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:text="@string/save_notification_rule"
-            app:srcCompat="@android:drawable/ic_menu_save" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:orientation="vertical">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="start"
-                android:text="Notifikuj mne po odchodu z místa" />
 
-            <Spinner
-                android:id="@+id/departure_place_rule_spinner"
-                style="@style/spinnerItemStyle2"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:minHeight="12dp" />
+                android:layout_margin="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="Notifikuj mne po odchodu z místa" />
+
+                <Spinner
+                    android:id="@+id/departure_notification_spinner"
+                    style="@style/spinnerItemStyle2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:minHeight="12dp" />
+            </LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_margin="16dp"
+                android:background="@drawable/rounded_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onNotificationRuleDepartureClicked"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="@string/save_notification_rule"
+                android:textAppearance="@style/myButtonStyleSmall"
+                android:textColor="@color/text_color_primary"
+                app:srcCompat="@android:drawable/ic_menu_save" />
+
+
         </LinearLayout>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:layout_margin="16dp"
-            android:background="@drawable/rounded_button"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="onNotificationRuleDepartureClicked"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:text="@string/save_notification_rule"
-            app:srcCompat="@android:drawable/ic_menu_save" />
-
-
     </LinearLayout>
 
 

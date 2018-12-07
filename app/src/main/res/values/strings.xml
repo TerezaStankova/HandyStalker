@@ -143,6 +143,8 @@
     <string name="text_message_button">Text Message</string>
     <string name="my_texts">My Texts</string>
     <string name="message_icon">Message Icon</string>
-    <string name="sms_rules">Text rules:</string>
+    <string name="sms_rules">Text rules</string>
+    <string name="add_text_rule_title">Add text rule</string>
+    <string name="add_notification_rule">Add notification rule</string>
 
 </resources>

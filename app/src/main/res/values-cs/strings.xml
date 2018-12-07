@@ -142,5 +142,7 @@
     <string name="my_texts">Zprávy</string>
     <string name="message_icon">Message Icon</string>
     <string name="sms_rules">SMS pravidla:</string>
+    <string name="add_text_rule_title">Přidejte pravidlo pro odeslání SMS</string>
+    <string name="add_notification_rule">Přidejte pravidlo pro notifikace</string>
 
 </resources>
