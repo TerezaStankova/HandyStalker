@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 import static android.arch.persistence.room.ForeignKey.RESTRICT;
+import static android.arch.persistence.room.ForeignKey.SET_NULL;
 
 @Entity(tableName = "rule", indices = {@Index("arrival_id"), @Index("departure_id"), @Index("contact_id"), @Index("message_id")}, foreignKeys = {@ForeignKey(entity = PlaceEntry.class,
         parentColumns = "id",
@@ -26,7 +27,7 @@ import static android.arch.persistence.room.ForeignKey.RESTRICT;
         @ForeignKey(entity = MessagesEntry.class,
                 parentColumns = "id",
                 childColumns = "message_id",
-                onDelete = RESTRICT),
+                onDelete = SET_NULL),
         })
 
 public class RuleEntry {

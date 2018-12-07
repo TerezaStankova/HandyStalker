@@ -15,7 +15,7 @@ import com.example.android.handystalker.database.AppDatabase;
 
 import com.example.android.handystalker.database.MessagesEntry;
 import com.example.android.handystalker.model.Message;
-import com.example.android.handystalker.ui.NewContactActivity;
+
 import com.example.android.handystalker.utilities.AppExecutors;
 
 import java.util.List;
@@ -28,7 +28,6 @@ private Context mContext;
 private List<Message> mMessages;
 // Member variable for the Database
 private AppDatabase mDb;
-private final String MESSAGES = "contacts";
 
 /**
  * Constructor using the context and list of contacts
@@ -66,17 +65,6 @@ public MessagesAdapter(Context context, List<Message> contacts) {
         String text = mMessages.get(position).getText();
         holder.textTextView.setText(text);
 
-        holder.updateIcon.setOnClickListener(new View.OnClickListener()
-    {
-        @Override
-        public void onClick(View v)
-        {
-            Message mMessage = mMessages.get(position);
-            Intent intent = new Intent(mContext, NewContactActivity.class);
-            intent.putExtra(MESSAGES, mMessage);
-            mContext.startActivity(intent);
-        }
-    });
 
         holder.deleteIcon.setOnClickListener(new View.OnClickListener()
         {
@@ -88,7 +76,7 @@ public MessagesAdapter(Context context, List<Message> contacts) {
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
-                mDb.contactDao().deleteByContactId(messageId);
+                mDb.messageDao().deleteByMessageId(messageId);
                 Log.d("delete task","deleted task: ");
                 }
                 });
@@ -114,14 +102,12 @@ public int getItemCount() {
 class ContactViewHolder extends RecyclerView.ViewHolder {
 
     ImageView deleteIcon;
-    ImageView updateIcon;
     TextView textTextView;
     
 
     public ContactViewHolder(View itemView) {
         super(itemView);
         deleteIcon = itemView.findViewById(R.id.delete_message_icon);
-        updateIcon = itemView.findViewById(R.id.edit_message_icon);
         textTextView = itemView.findViewById(R.id.message_text);
     }
 }
@@ -132,11 +118,10 @@ class ContactViewHolder extends RecyclerView.ViewHolder {
     public void setDatabase(AppDatabase myDatabase) {
         mDb = myDatabase;
     }
-    public void setContacts(List<Message> messages) {
+    public void setMessages(List<Message> messages) {
         mMessages = messages;
         notifyDataSetChanged();
     }
-
 
     /**
      * Retrieve List of Message objects from List of MessageEntries
@@ -146,7 +131,7 @@ class ContactViewHolder extends RecyclerView.ViewHolder {
             List<Message> mMessagesDatabase = newArrayList();
 
             for (int i = 0; i < messagesEntries.size(); i++) {
-                System.out.println("mPlaceEntry" + i + messagesEntries.get(i).getText());
+                System.out.println("mMessageEntry" + i + messagesEntries.get(i).getText());
 
                 String text = messagesEntries.get(i).getText();
                 int id = messagesEntries.get(i).getId();
@@ -154,7 +139,7 @@ class ContactViewHolder extends RecyclerView.ViewHolder {
                 Message newMessage = new Message(id, text);
                 mMessagesDatabase.add(newMessage);
             }
-            setContacts(mMessagesDatabase);
+            setMessages(mMessagesDatabase);
         }
     }
 

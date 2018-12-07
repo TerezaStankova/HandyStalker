@@ -29,7 +29,7 @@
         android:gravity="start"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/edit_message_icon"
+        app:layout_constraintEnd_toStartOf="@+id/delete_message_icon"
         app:layout_constraintStart_toEndOf="@+id/message_icon"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -55,17 +55,4 @@
         android:contentDescription="@string/delete_icon"
         app:srcCompat="@android:drawable/ic_delete" />
 
-    <ImageView
-        android:id="@+id/edit_message_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/delete_message_icon"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/edit_icon"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
 </android.support.constraint.ConstraintLayout>

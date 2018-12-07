@@ -34,12 +34,10 @@ public class AddMessageActivity extends AppCompatActivity {
     
     // Member variable for the Database
     private AppDatabase mDb;
-    String MESSAGES = "messages";
 
     //Edit texts
     EditText textEditText;
     Button saveButton;
-    private Message mMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,20 +46,6 @@ public class AddMessageActivity extends AppCompatActivity {
 
         textEditText = findViewById(R.id.messageText_editText);
         saveButton = findViewById(R.id.save_text_button);
-
-        if (getIntent().getParcelableExtra(MESSAGES) != null){
-            mMessage = getIntent().getParcelableExtra(MESSAGES);
-            saveButton.setText(R.string.update_contact);
-            textEditText.setText(mMessage.getText());
-            saveButton.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    onUpdateContactClick(v);
-                }
-            });
-        }
 
         mDb = AppDatabase.getInstance(getApplicationContext());
 
@@ -78,21 +62,21 @@ public class AddMessageActivity extends AppCompatActivity {
         setupViewModel();
     }
 
-    private void showContactsDataView() {
-        /* Then, make sure the contacts data is visible */
+    private void showMessagesDataView() {
+        /* Then, make sure the messages data is visible */
         mRecyclerView.setVisibility(View.VISIBLE);
     }
 
 
     private void setupViewModel() {
-        showContactsDataView();
+        showMessagesDataView();
         MessagesViewModel viewModel = ViewModelProviders.of(this).get(MessagesViewModel.class);
         viewModel.getMessages().observe(this, new Observer<List<MessagesEntry>>() {
             @Override
             public void onChanged(@Nullable List<MessagesEntry> messagesEntries) {
                 mAdapter.setContactsFromDatabase(messagesEntries);
                 if (messagesEntries != null){
-                    Log.d("message", "Updating list of contacts from LiveData in ViewModel"  + messagesEntries.size() );
+                    Log.d("message", "Updating list of messages from LiveData in ViewModel"  + messagesEntries.size() );
                 }
             }
 
@@ -119,29 +103,6 @@ public class AddMessageActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), R.string.new_message_toast, Toast.LENGTH_SHORT).show();
         }
 
-        Intent intent = new Intent(this, ContactsActivity.class);
-        startActivity(intent);
-
     }
 
-    //After Update button is clicked update the contact
-    public void onUpdateContactClick(View view) {
-
-        final String text = textEditText.getText().toString();
-        
-
-        if (text != null) {
-            final Integer messageId = mMessage.getMessageId();
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    // update contact
-                    MessagesEntry messagesEntry = mDb.messageDao().findMessagesEntryFromMessageId(messageId);
-                    messagesEntry.setText(text);
-                    mDb.messageDao().updateMessage(messagesEntry);
-                }
-            });
-            Toast.makeText(getApplicationContext(), R.string.message_update_toast, Toast.LENGTH_SHORT).show();
-        }
-    }
 }
