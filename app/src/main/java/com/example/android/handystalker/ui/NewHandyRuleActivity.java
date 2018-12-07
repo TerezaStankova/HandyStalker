@@ -98,7 +98,7 @@ public class NewHandyRuleActivity extends AppCompatActivity {
         } else {
             // Permission has already been granted
 
-                final RuleEntry ruleEntry = new RuleEntry(wifiPlaceId, wifiPlaceId, contactId, type, onWifi);
+                final RuleEntry ruleEntry = new RuleEntry(wifiPlaceId, wifiPlaceId, contactId, null, type, onWifi);
                 Log.d("rules entred", "r " + soundPlaceId + wifiPlaceId + contactId + type);
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
@@ -133,7 +133,7 @@ public class NewHandyRuleActivity extends AppCompatActivity {
         } else {
             // Permission has already been granted
 
-            final RuleEntry ruleEntry = new RuleEntry(soundPlaceId, soundPlaceId, contactId, type, onSound);
+            final RuleEntry ruleEntry = new RuleEntry(soundPlaceId, soundPlaceId, contactId, null, type, onSound);
             Log.d("rules entred", "r " + soundPlaceId + contactId + type);
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
@@ -168,7 +168,7 @@ public class NewHandyRuleActivity extends AppCompatActivity {
                 }
             } else {
                 // Permission has already been granted
-                final RuleEntry ruleEntry = new RuleEntry(wifiPlaceId, wifiPlaceId, contactId, type, onWifi);
+                final RuleEntry ruleEntry = new RuleEntry(wifiPlaceId, wifiPlaceId, contactId, null, type, onWifi);
                 Log.d("rules entred", "r " + soundPlaceId + wifiPlaceId + contactId + type);
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
@@ -193,7 +193,7 @@ public class NewHandyRuleActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             // Permission has already been granted
-            final RuleEntry ruleEntry = new RuleEntry(soundPlaceId, soundPlaceId, contactId, type, onSound);
+            final RuleEntry ruleEntry = new RuleEntry(soundPlaceId, soundPlaceId, contactId, null, type, onSound);
             Log.d("rules entred", "r " + soundPlaceId + contactId + type);
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override

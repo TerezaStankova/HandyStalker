@@ -69,14 +69,15 @@
                 android:layout_marginLeft="44dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="44dp"
-                android:layout_marginBottom="32dp"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_button"
                 android:maxWidth="@dimen/button_width"
                 android:onClick="onContactsButtonClicked"
                 android:padding="8dp"
                 android:text="@string/contacts"
-                android:textAppearance="@style/myButtonStyleSmall" />
+                android:textAppearance="@style/myButtonStyleSmall"
+                android:textColor="@color/text_color_primary" />
 
 
             <Button
@@ -86,16 +87,41 @@
                 android:layout_marginLeft="44dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="44dp"
-                android:layout_marginBottom="32dp"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_button"
                 android:contentDescription="@string/add_new_contact"
                 android:maxWidth="@dimen/button_width"
                 android:onClick="onMessagesButtonClicked"
                 android:text="@string/my_texts"
-                android:textAppearance="@style/myButtonStyleSmall" />
+                android:textAppearance="@style/myButtonStyleSmall"
+                android:textColor="@color/text_color_primary" />
 
         </LinearLayout>
+
+             <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="44dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="44dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/rounded_button"
+            android:contentDescription="@string/add_new_rule"
+            android:maxWidth="@dimen/button_width"
+            android:onClick="onAddSendRulesButtonClicked"
+            android:text="@string/new_rule"
+            android:textAppearance="@style/myButtonStyleSmall"
+            android:textColor="@color/text_color_primary" />
+
+        <TextView
+            android:id="@+id/my_rules_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/sms_rules"
+            android:textAppearance="@style/myDetailTitleStyle" />
 
 
         <android.support.v7.widget.RecyclerView
@@ -105,36 +131,23 @@
             android:layout_gravity="top"
             android:layout_margin="8dp" />
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="44dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="44dp"
-            android:layout_marginBottom="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/rounded_button"
-            android:contentDescription="@string/add_new_contact"
-            android:maxWidth="@dimen/button_width"
-            android:onClick="onAddSendRulesButtonClicked"
-            android:text="@string/new_rule"
-            android:textAppearance="@style/myButtonStyleSmall" />
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"
-        android:onClick="onAddSendRulesButtonClicked"
         android:layout_width="69dp"
-        android:layout_height="54dp"
+        android:layout_height="60dp"
         android:layout_margin="16dp"
         android:clickable="true"
-        app:backgroundTintMode="screen"
+        android:focusable="true"
+        android:onClick="onAddSendRulesButtonClicked"
+        android:visibility="visible"
+        app:backgroundTint="@color/colorAccent"
+        app:backgroundTintMode="add"
         app:elevation="8dp"
         app:layout_anchor="@+id/linearLayout2"
         app:layout_anchorGravity="right|bottom"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:focusable="true" />
+        app:srcCompat="@drawable/ic_add_black_24dp" />
 
 
 </android.support.design.widget.CoordinatorLayout>

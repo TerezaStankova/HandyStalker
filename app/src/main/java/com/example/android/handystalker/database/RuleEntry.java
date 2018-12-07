@@ -60,6 +60,7 @@ public class RuleEntry {
     public RuleEntry() {
     }
 
+    @Ignore
     public RuleEntry(Integer arrivalId, Integer departureId, Integer contactId, @NonNull String type,@NonNull boolean active) {
         this.arrivalId = arrivalId;
         this.departureId = departureId;
@@ -68,7 +69,6 @@ public class RuleEntry {
         this.active = active;
     }
 
-    @Ignore
     public RuleEntry(Integer arrivalId, Integer departureId, Integer contactId, Integer messageId, @NonNull String type,@NonNull boolean active) {
         this.arrivalId = arrivalId;
         this.departureId = departureId;

@@ -46,7 +46,7 @@ public class SmsRulesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.send_rules);
-        setTitle("Stalking Rules");
+        setTitle(R.string.sms_rules);
 
         // Set up the recycler view
         mRecyclerView = findViewById(R.id.sendrules_list_recycler_view);
@@ -55,8 +55,8 @@ public class SmsRulesActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
 
         if (savedInstanceState != null) {
-            // Load the saved state (the array of trailers) if there is one
-            showContactsDataView();
+            // Load the saved state (the array of rules) if there is one
+            showRulesDataView();
         }
 
         mAdapter = new RulesAdapter(this, null);
@@ -74,7 +74,7 @@ public class SmsRulesActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void showContactsDataView() {
+    private void showRulesDataView() {
         /* Then, make sure the movie data is visible */
         mRecyclerView.setVisibility(View.VISIBLE);
     }
@@ -97,7 +97,7 @@ public class SmsRulesActivity extends AppCompatActivity {
                 }
 
                 if (ruleEntries != null) {
-                        showContactsDataView();
+                        showRulesDataView();
                         mAdapter.setHandy(false);
                         mAdapter.setRulesFromDatabase(ruleEntries);
                 }

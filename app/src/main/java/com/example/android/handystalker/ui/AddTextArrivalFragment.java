@@ -16,15 +16,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.ContactsEntry;
+import com.example.android.handystalker.database.MessagesEntry;
 import com.example.android.handystalker.database.PlaceEntry;
 import com.example.android.handystalker.database.RuleEntry;
 import com.example.android.handystalker.utilities.AppExecutors;
 import com.example.android.handystalker.utilities.ContactsViewModel;
+import com.example.android.handystalker.utilities.MessagesViewModel;
 import com.example.android.handystalker.utilities.PlacesViewModel;
 
 import java.util.ArrayList;
@@ -39,9 +42,10 @@ public class AddTextArrivalFragment extends Fragment {
     List<Integer> placeIds = new ArrayList<Integer>();
     List<String> placeNames = new ArrayList<String>();
     List<String> placeNamesAnywhere = new ArrayList<String>();
+    List<Integer> mMessgesIds = newArrayList();
+    List<String> mMessagesTexts = newArrayList();
 
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 2222;
-    private static final int MY_PERMISSIONS_REQUEST_SEND_NOTIFICATIONS = 1111;
 
     // Member variable for the Database
     private AppDatabase mDb;
@@ -50,19 +54,16 @@ public class AddTextArrivalFragment extends Fragment {
     Spinner contactNameSpinner;
     Spinner arrivalSpinner;
     Spinner departureSpinner;
-    Spinner departureSMSPlaceSpinner;
-
-
-    Integer placeId = null;
+    Spinner messageTextSpinner;
     Integer arrivalId = null;
     Integer departureId = null;
     Integer departureId2 = null;
     Integer contactId = null;
-    Integer contactId2 = null;
-    Integer contactIdNot = null;
+    Integer messageId = null;
+
+    Button saveRuleButton;
+
     String type = "sms";
-    private boolean arrivalNotificationRule = true;
-    private boolean depRule = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,18 +73,27 @@ public class AddTextArrivalFragment extends Fragment {
         contactNameSpinner = rootView.findViewById(R.id.name_spinner);
         arrivalSpinner = rootView.findViewById(R.id.arrival_spinner);
         departureSpinner = rootView.findViewById(R.id.departure_spinner);
+        messageTextSpinner = rootView.findViewById(R.id.message_spinner);
+        saveRuleButton = rootView.findViewById(R.id.arrival_save_button);
+        saveRuleButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                onSaveSendingRuleClick(saveRuleButton);
+            }
+        });
 
         mDb = AppDatabase.getInstance(getContext());
         setupPlacesViewModel();
         setupContactsViewModel();
+        setupMessagesViewModel();
 
         return rootView;
     }
 
     public void onSaveSendingRuleClick(View view) {
-        depRule = false;
         type = "sms";
-
 
         //There is a library out there that helps you taking permissions.
         //https://github.com/googlesamples/easypermissions
@@ -106,9 +116,9 @@ public class AddTextArrivalFragment extends Fragment {
             // Permission has already been granted
             String name = (String) contactNameSpinner.getSelectedItem();
 
-            if (name != null) {
-                final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureId, contactId, type, false);
-                Log.d("rules entred", "r " + arrivalId + departureId + contactId + type);
+            if (name != null && arrivalId != null) {
+                final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureId, contactId, messageId, type, false);
+                Log.d("rules entred", "r " + arrivalId + departureId + contactId + messageId + type);
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -144,21 +154,18 @@ public class AddTextArrivalFragment extends Fragment {
                 // Permission has already been granted
                 Log.d("rules entred", "r " + arrivalId + departureId + contactId + type);
                 String name = (String) contactNameSpinner.getSelectedItem();
-                final RuleEntry ruleEntry;
+                if (name != null && arrivalId != null) {
+                    final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureId, contactId, messageId, type, false);
+                    Log.d("rules entred", "r " + arrivalId + departureId + contactId + messageId + type);
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Insert new rule
+                            mDb.ruleDao().insertRule(ruleEntry);
 
-                if (!depRule){
-                    ruleEntry = new RuleEntry(arrivalId, departureId, contactId, type, false);
-                }else{
-                    ruleEntry = new RuleEntry(null, departureId2, contactId, type, false);
+                        }
+                    });
                 }
-
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Insert new rule
-                        mDb.ruleDao().insertRule(ruleEntry);
-                    }
-                });
 
                 Intent intent = new Intent(getActivity(), SmsRulesActivity.class);
                 startActivity(intent);
@@ -268,25 +275,6 @@ public class AddTextArrivalFragment extends Fragment {
         }
     }
 
-    class DepartureSpinnerClass implements AdapterView.OnItemSelectedListener
-    {
-        public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
-        {  departureId2 = placeIds.get(position);
-        }
-        public void onNothingSelected(AdapterView<?> parent) {
-            departureId2 = null;
-        }
-    }
-
-    class PlaceSpinnerClass implements AdapterView.OnItemSelectedListener
-    {
-        public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
-        {   placeId = placeIds.get(position);
-        }
-        public void onNothingSelected(AdapterView<?> parent) {
-            placeId = null;
-        }
-    }
 
 
     private void setupContactsViewModel() {
@@ -327,6 +315,54 @@ public class AddTextArrivalFragment extends Fragment {
                         }
                         public void onNothingSelected(AdapterView<?> parent) {
                             contactId = 0;
+                        }
+                    });
+
+
+                }
+            }
+
+        });
+    }
+
+    private void setupMessagesViewModel() {
+        MessagesViewModel viewModel = ViewModelProviders.of(this).get(MessagesViewModel.class);
+        viewModel.getMessages().observe(this, new Observer<List<MessagesEntry>>() {
+            @Override
+            public void onChanged(@Nullable List<MessagesEntry> messagesEntries) {
+                Log.d("message", "Updating list of messages from LiveData in ViewModel"  + messagesEntries.size() );
+                if (messagesEntries.size() == 0) {
+                    return;
+                }
+                if (messagesEntries != null || messagesEntries.size() != 0) {
+                    mMessgesIds.clear();
+                    mMessagesTexts.clear();
+
+                    for (int i = 0; i < messagesEntries.size(); i++) {
+                        System.out.println("mPlaceEntry" + i + messagesEntries.get(i).getText());
+
+                        mMessagesTexts.add(messagesEntries.get(i).getText());
+                        mMessgesIds.add(messagesEntries.get(i).getId());
+                    }
+
+
+                    ArrayAdapter<String> adapterMessages = new ArrayAdapter<String>(
+                            getContext(),
+                            R.layout.spinner_item,
+                            mMessagesTexts
+                    );
+                    // Specify the layout to use when the list of choices appears
+                    adapterMessages.setDropDownViewResource(R.layout.spinner_item);
+                    // Apply the adapter to the spinner
+                    messageTextSpinner.setAdapter(adapterMessages);
+
+
+                    messageTextSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
+                            messageId = mMessgesIds.get(position);
+                        }
+                        public void onNothingSelected(AdapterView<?> parent) {
+                            messageId = 0;
                         }
                     });
 

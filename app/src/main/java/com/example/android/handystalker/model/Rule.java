@@ -10,6 +10,7 @@ public class Rule  implements Parcelable {
     private String name;
     private String departurePlace;
     private String type;
+    private String text;
 
     /* No args constructor */
     public Rule() {
