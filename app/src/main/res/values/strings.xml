@@ -112,6 +112,9 @@
     <string name="stalker_update_toast">Stalker updated successfully</string>
     <string name="new_stalker_toast">New stalker saved successfully</string>
 
+    <string name="rule_update_toast">Rule updated successfully</string>
+    <string name="rule_saved_toast">Rule stalker saved successfully</string>
+
     <string name="message_update_toast">Text updated successfully!</string>
     <string name="new_message_toast">New text saved successfully</string>
 

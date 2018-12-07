@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
@@ -115,6 +116,7 @@ public class AddTextArrivalFragment extends Fragment {
         } else {
             // Permission has already been granted
             String name = (String) contactNameSpinner.getSelectedItem();
+            Log.d("rules entred", "r " + arrivalId + departureId + contactId + messageId + type);
 
             if (name != null && arrivalId != null) {
                 final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureId, contactId, messageId, type, false);
@@ -165,6 +167,7 @@ public class AddTextArrivalFragment extends Fragment {
 
                         }
                     });
+                    Toast.makeText(getContext(), R.string.rule_saved_toast, Toast.LENGTH_SHORT).show();
                 }
 
                 Intent intent = new Intent(getActivity(), SmsRulesActivity.class);
@@ -339,7 +342,7 @@ public class AddTextArrivalFragment extends Fragment {
                     mMessagesTexts.clear();
 
                     for (int i = 0; i < messagesEntries.size(); i++) {
-                        System.out.println("mPlaceEntry" + i + messagesEntries.get(i).getText());
+                        System.out.println("mMessageEntry" + i + messagesEntries.get(i).getText());
 
                         mMessagesTexts.add(messagesEntries.get(i).getText());
                         mMessgesIds.add(messagesEntries.get(i).getId());

@@ -116,6 +116,9 @@
     <string name="message_update_toast">Text zprávy úspěšně změněn!</string>
     <string name="new_message_toast">Nový text zprávy úspěšně uložen</string>
 
+    <string name="rule_update_toast">Pravidlo úspěšně upraveno</string>
+    <string name="rule_saved_toast">Pravidlo úspěšně uloženo</string>
+
     <!--Dialog-->
     <string name="set_place_name">Zadejte jméno pro toto místo</string>
     <string name="text_message">Ahoj, jsem v pořádku na místě!</string>
