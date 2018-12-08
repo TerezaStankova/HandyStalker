@@ -20,7 +20,7 @@ import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.RuleEntry;
 import com.example.android.handystalker.ui.Adapters.RulesAdapter;
-import com.example.android.handystalker.utilities.RulesViewModel;
+import com.example.android.handystalker.utilities.TextRulesViewModel;
 
 import java.util.List;
 
@@ -86,7 +86,7 @@ public class SmsRulesActivity extends AppCompatActivity {
 
 
     private void setUpRulesViewModel() {
-        RulesViewModel viewModel = ViewModelProviders.of(this).get(RulesViewModel.class);
+        TextRulesViewModel viewModel = ViewModelProviders.of(this).get(TextRulesViewModel.class);
         viewModel.getRules().observe(this, new Observer<List<RuleEntry>>() {
             @Override
             public void onChanged(@Nullable List<RuleEntry> ruleEntries) {
@@ -98,7 +98,7 @@ public class SmsRulesActivity extends AppCompatActivity {
 
                 if (ruleEntries != null) {
                         showRulesDataView();
-                        mAdapter.setHandy(false);
+                        mAdapter.setTextRule(true);
                         mAdapter.setRulesFromDatabase(ruleEntries);
                 }
             }

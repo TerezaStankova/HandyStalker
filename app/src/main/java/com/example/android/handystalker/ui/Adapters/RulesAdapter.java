@@ -30,6 +30,10 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
 
     //Boolean to distinguish between handy and stalking rules
     private boolean handy = false;
+    private boolean soundRule = false;
+    private boolean notificationRule = false;
+    private boolean textRule = false;
+    private boolean wifiRule = false;
 
     /*
      *Constructor using the context and list of Rules
@@ -68,7 +72,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
         String typeRule = mRules.get(position).getType();
 
         //Set the View for stalking rules
-        if (!handy) {
+        if (textRule) {
         String contactName = mRules.get(position).getName();
         String departurePlace = mRules.get(position).getDeparturePlace();
         String myStalker = mContext.getString(R.string.my_stalker) + " " + contactName;
@@ -92,19 +96,35 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
 
         if(typeRule.equals("sms")){
             holder.typeIcon.setImageResource(R.drawable.ic_sms_green_24dp);
-        } else {
-            holder.typeIcon.setImageResource(R.drawable.ic_notifications_active_green_24dp);
         }
+        }
+        else if (notificationRule) {
+            String departurePlace = mRules.get(position).getDeparturePlace();
+
+            if(arrivalPlace != null){
+                holder.arriveTextView.setVisibility(View.VISIBLE);
+                String myArrival = mContext.getString(R.string.arrival_to) +" "+ arrivalPlace;
+                holder.arriveTextView.setText(myArrival);
+            } else {
+                holder.arriveTextView.setVisibility(View.GONE);
+            }
+
+            if(departurePlace != null){
+                holder.departTextView.setVisibility(View.VISIBLE);
+                String myDeparture = mContext.getString(R.string.departure_to) + " " + departurePlace;
+                holder.departTextView.setText(myDeparture);
+            } else {
+                holder.departTextView.setVisibility(View.GONE);
+            }
+
+            holder.typeIcon.setImageResource(R.drawable.ic_notifications_active_green_24dp);
+
         }
         //Set the View for handy rules
-        else if (handy) {
+        else if (wifiRule) {
             String myPlace = mContext.getString(R.string.place) +" "+ arrivalPlace;
             holder.nameTextView.setText(myPlace);
             holder.arriveTextView.setVisibility(View.VISIBLE);
-            String NET = "net";
-            String NETOFF = "netoff";
-            String SOUND = "sound";
-            String SOUNDOFF = "soundoff";
             String WIFI = "wifi";
             String WIFIOFF = "wifioff";
             if(typeRule.equals(WIFI) || typeRule.equals(WIFIOFF)){
@@ -114,19 +134,23 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
                 }else{
                     holder.arriveTextView.setText(R.string.wifi_of_turn);
                 }
-            } else if(typeRule.equals(SOUND) || typeRule.equals(SOUNDOFF)) {
+            }
+
+            holder.departTextView.setVisibility(View.GONE);
+        }
+        else if (soundRule) {
+            String myPlace = mContext.getString(R.string.place) +" "+ arrivalPlace;
+            holder.nameTextView.setText(myPlace);
+            holder.arriveTextView.setVisibility(View.VISIBLE);
+            String SOUND = "sound";
+            String SOUNDOFF = "soundoff";
+
+            if(typeRule.equals(SOUND) || typeRule.equals(SOUNDOFF)) {
                 holder.typeIcon.setImageResource(R.drawable.ic_volume_up_green_24dp);
                 if(typeRule.equals(SOUND)){
                     holder.arriveTextView.setText(R.string.sound_on_turn);
                 }else{
                     holder.arriveTextView.setText(R.string.sound_off_turn);
-                }
-            } else if(typeRule.equals(NET) || typeRule.equals(NETOFF)) {
-                holder.typeIcon.setImageResource(R.drawable.ic_net_green_24dp);
-                if(typeRule.equals(WIFI)){
-                    holder.arriveTextView.setText(R.string.data_on_turn);
-                }else{
-                    holder.arriveTextView.setText(R.string.data_off_turn);
                 }
             }
 
@@ -193,6 +217,20 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
     public void setHandy(boolean mHandy) {
         handy = mHandy;
     }
+    public void setWifiRule(boolean mWifiRule) {
+        wifiRule = mWifiRule;
+    }
+    public void setTextRule(boolean mTextRule) {
+        textRule = mTextRule;
+    }
+    public void setSoundRule(boolean mSoundRule) {
+        soundRule = mSoundRule;
+    }
+    public void setNotificationRule(boolean mNotificationRule) {
+        notificationRule = mNotificationRule;
+    }
+
+
 
     public void setRules(List<Rule> rules) {
         mRules = rules;

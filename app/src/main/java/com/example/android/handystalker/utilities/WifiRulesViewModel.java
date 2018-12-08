@@ -11,20 +11,20 @@ import com.example.android.handystalker.database.RuleEntry;
 
 import java.util.List;
 
-public class HandyRulesViewModel extends AndroidViewModel {
+public class WifiRulesViewModel extends AndroidViewModel {
 
     // Constant for logging
-    private static final String TAG = HandyRulesViewModel.class.getSimpleName();
+    private static final String TAG = WifiRulesViewModel.class.getSimpleName();
 
     private LiveData<List<RuleEntry>> rules;
 
 
-    public HandyRulesViewModel(Application application) {
+    public WifiRulesViewModel(Application application) {
         super(application);
         PlaceRepository mRepository = new PlaceRepository(application);
         AppDatabase database = AppDatabase.getInstance(this.getApplication());
         Log.d(TAG, "Actively retrieving the rules from the DataBase");
-        rules = mRepository.getmHandyRules();
+        rules = mRepository.getmWifiRules();
     }
 
     public LiveData<List<RuleEntry>> getRules() {

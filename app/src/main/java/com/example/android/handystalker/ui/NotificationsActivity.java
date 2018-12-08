@@ -17,7 +17,7 @@ import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.RuleEntry;
 import com.example.android.handystalker.ui.Adapters.RulesAdapter;
-import com.example.android.handystalker.utilities.RulesViewModel;
+import com.example.android.handystalker.utilities.NotificationRulesViewModel;
 
 import java.util.List;
 
@@ -80,7 +80,7 @@ public class NotificationsActivity extends AppCompatActivity {
 
 
     private void setUpRulesViewModel() {
-        RulesViewModel viewModel = ViewModelProviders.of(this).get(RulesViewModel.class);
+        NotificationRulesViewModel viewModel = ViewModelProviders.of(this).get(NotificationRulesViewModel.class);
         viewModel.getRules().observe(this, new Observer<List<RuleEntry>>() {
             @Override
             public void onChanged(@Nullable List<RuleEntry> ruleEntries) {
@@ -92,7 +92,7 @@ public class NotificationsActivity extends AppCompatActivity {
 
                 if (ruleEntries != null) {
                     showRulesDataView();
-                    mAdapter.setHandy(false);
+                    mAdapter.setNotificationRule(true);
                     mAdapter.setRulesFromDatabase(ruleEntries);
                 }
             }

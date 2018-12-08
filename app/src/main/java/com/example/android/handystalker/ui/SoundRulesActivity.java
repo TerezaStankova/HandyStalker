@@ -1,15 +1,12 @@
 package com.example.android.handystalker.ui;
 
-import android.Manifest;
 import android.app.NotificationManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +18,7 @@ import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.RuleEntry;
 import com.example.android.handystalker.ui.Adapters.RulesAdapter;
-import com.example.android.handystalker.utilities.HandyRulesViewModel;
+import com.example.android.handystalker.utilities.SoundRulesViewModel;
 
 import java.util.List;
 
@@ -86,7 +83,7 @@ public class SoundRulesActivity extends AppCompatActivity {
 
 
     private void setUpRulesViewModel() {
-        HandyRulesViewModel viewModel = ViewModelProviders.of(this).get(HandyRulesViewModel.class);
+        SoundRulesViewModel viewModel = ViewModelProviders.of(this).get(SoundRulesViewModel.class);
         viewModel.getRules().observe(this, new Observer<List<RuleEntry>>() {
             @Override
             public void onChanged(@Nullable List<RuleEntry> ruleEntries) {
@@ -97,7 +94,7 @@ public class SoundRulesActivity extends AppCompatActivity {
                         return;
                     }
                         showContactsDataView();
-                        mAdapter.setHandy(true);
+                        mAdapter.setSoundRule(true);
                         mAdapter.setRulesFromDatabase(ruleEntries);
 
                 }

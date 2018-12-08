@@ -21,6 +21,19 @@ public interface RuleDao {
     @Query("SELECT * FROM rule  WHERE type=:sms OR type=:notify ORDER BY id")
     LiveData<List<RuleEntry>> loadSendingRules(String sms, String notify);
 
+    @Query("SELECT * FROM rule  WHERE type=:sms ORDER BY id")
+    LiveData<List<RuleEntry>> loadTextRules(String sms);
+
+    @Query("SELECT * FROM rule  WHERE type=:notify ORDER BY id")
+    LiveData<List<RuleEntry>> loadNotifyRules(String notify);
+
+    @Query("SELECT * FROM rule  WHERE type=:wifi OR type=:wifioff ORDER BY id")
+    LiveData<List<RuleEntry>> loadWifiRules(String wifi, String wifioff);
+
+    @Query("SELECT * FROM rule  WHERE type=:sound OR type=:soundoff ORDER BY id")
+    LiveData<List<RuleEntry>> loadSoundRules(String sound, String soundoff);
+
+
     //It will ignore the transaction if the same ruleId already exists in DB
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertRule(RuleEntry ruleEntry);

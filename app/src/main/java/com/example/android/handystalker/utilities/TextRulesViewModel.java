@@ -11,20 +11,20 @@ import com.example.android.handystalker.database.RuleEntry;
 
 import java.util.List;
 
-public class RulesViewModel extends AndroidViewModel {
+public class TextRulesViewModel extends AndroidViewModel {
 
     // Constant for logging
-    private static final String TAG = RulesViewModel.class.getSimpleName();
+    private static final String TAG = TextRulesViewModel.class.getSimpleName();
 
     private LiveData<List<RuleEntry>> rules;
 
 
-    public RulesViewModel(Application application) {
+    public TextRulesViewModel(Application application) {
         super(application);
         PlaceRepository mRepository = new PlaceRepository(application);
         AppDatabase database = AppDatabase.getInstance(this.getApplication());
         Log.d(TAG, "Actively retrieving the rules from the DataBase");
-        rules = mRepository.getmStalkerRules();
+        rules = mRepository.getmTextRules();
     }
 
     public LiveData<List<RuleEntry>> getRules() {

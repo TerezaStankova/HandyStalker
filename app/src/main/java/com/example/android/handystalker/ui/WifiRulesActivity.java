@@ -20,7 +20,7 @@ import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.RuleEntry;
 import com.example.android.handystalker.ui.Adapters.RulesAdapter;
-import com.example.android.handystalker.utilities.HandyRulesViewModel;
+import com.example.android.handystalker.utilities.WifiRulesViewModel;
 
 import java.util.List;
 
@@ -86,7 +86,7 @@ public class WifiRulesActivity extends AppCompatActivity {
 
 
     private void setUpRulesViewModel() {
-        HandyRulesViewModel viewModel = ViewModelProviders.of(this).get(HandyRulesViewModel.class);
+        WifiRulesViewModel viewModel = ViewModelProviders.of(this).get(WifiRulesViewModel.class);
         viewModel.getRules().observe(this, new Observer<List<RuleEntry>>() {
             @Override
             public void onChanged(@Nullable List<RuleEntry> ruleEntries) {
@@ -97,7 +97,7 @@ public class WifiRulesActivity extends AppCompatActivity {
                         return;
                     }
                         showContactsDataView();
-                        mAdapter.setHandy(true);
+                        mAdapter.setWifiRule(true);
                         mAdapter.setRulesFromDatabase(ruleEntries);
 
                 }
