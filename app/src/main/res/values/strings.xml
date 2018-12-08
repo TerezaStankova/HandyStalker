@@ -146,5 +146,11 @@
     <string name="sms_rules">Text rules</string>
     <string name="add_text_rule_title">Add text rule</string>
     <string name="add_notification_rule">Add notification rule</string>
+    <string name="notify_me_after_arrival">Notifikuj mne po příchodu na místo</string>
+    <string name="if_I_departured_from">pokud jsem před tím byl na místě</string>
+    <string name="notify_me_after_departuring_from">Notifikuj mne po odchodu z místa</string>
+    <string name="after_my_arrival_to">after my arrival to</string>
+    <string name="add_sound_rule">Add sound rule</string>
+    <string name="after_departuring_from">after departuring from</string>
 
 </resources>

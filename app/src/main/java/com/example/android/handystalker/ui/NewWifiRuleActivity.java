@@ -40,77 +40,52 @@ public class NewWifiRuleActivity extends AppCompatActivity {
     private String WIFI = "wifi";
     private String WIFIOFF = "wifioff";
 
+    List<String> placeNamesAnywhere = new ArrayList<String>();
 
     //edit texts
-    Spinner onOfWifiSpinner;
-    Spinner wifiPlaceSpinner;
+    Spinner arrivalSpinner;
+    Spinner departureSpinner;
+    Spinner departureAnywhereSpinner;
 
-    Integer wifiPlaceId = null;
+    Integer arrivalId = null;
+    Integer departureAnywhereId = null;
+    Integer departureId = null;
+
+
+    //spinners
+    Spinner onOfWifiSpinner;
+    Spinner onOfWifiSpinnerDeparture;
+
     Integer contactId = null;
     String type = WIFI;
-
     private boolean onWifi = true;
-    private boolean onSound = true;
+    private boolean onWifiDeparture = true;
+
+    private boolean arrival = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_wifi_rule);
-        setTitle("New Handy Rule");
+        setTitle("New WiFi Rule");
+
+        //place spinner
+        arrivalSpinner = findViewById(R.id.arrival_wifi_spinner);
+        departureSpinner = findViewById(R.id.departure_wifi_spinner);
+        departureAnywhereSpinner = findViewById(R.id.departure_anywhere_wifi_spinner);
 
         //on-of spinner
         onOfWifiSpinner = findViewById(R.id.on_wifi_spinner);
-
-        //place spinner
-        wifiPlaceSpinner = findViewById(R.id.place_wifi_spinner);
+        onOfWifiSpinnerDeparture = findViewById(R.id.wifi_on_spinner_departure);
 
         setupTypeSpinner();
         mDb = AppDatabase.getInstance(getApplicationContext());
         setupPlacesViewModel();
     }
 
-    public void onSaveWifiRuleClick(View view) {
-
-        if (onWifi) {type = WIFI;} else {
-            type = WIFIOFF;}
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.CHANGE_WIFI_STATE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Permission is not granted
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.CHANGE_WIFI_STATE)) {
-                // Show an explanation to the user *asynchronously*
-            } else {
-                // No explanation needed; request the permission
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.CHANGE_WIFI_STATE},
-                        MY_PERMISSIONS_REQUEST_WIFI);
-            }
-        } else {
-            // Permission has already been granted
-
-                final RuleEntry ruleEntry = new RuleEntry(wifiPlaceId, wifiPlaceId, contactId, null, type, onWifi);
-                Log.d("rules entred", "r " +  wifiPlaceId + contactId + type);
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        // insert new contact
-                        mDb.ruleDao().insertRule(ruleEntry);
-
-                    }
-                });
-
-            Intent intent = new Intent(this, WifiRulesActivity.class);
-            startActivity(intent);
-        }
-    }
-
 
 
     public void saveRule(){
-        if (type.equals("wifi")) {
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.CHANGE_WIFI_STATE)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -126,22 +101,38 @@ public class NewWifiRuleActivity extends AppCompatActivity {
                             MY_PERMISSIONS_REQUEST_WIFI);
                 }
             } else {
-                // Permission has already been granted
-                final RuleEntry ruleEntry = new RuleEntry(wifiPlaceId, wifiPlaceId, contactId, null, type, onWifi);
-                Log.d("rules entred", "r " + wifiPlaceId + contactId + type);
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Insert new rule
-                        mDb.ruleDao().insertRule(ruleEntry);
 
-                    }
-                });
+                if (arrival) {
+
+                    // Permission has already been granted
+                    final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureAnywhereId, contactId, null, type, false);
+                    Log.d("rules entred", "r " + arrivalId + contactId + type);
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Insert new rule
+                            mDb.ruleDao().insertRule(ruleEntry);
+
+                        }
+                    });
+
+                } else {
+                    final RuleEntry ruleEntry = new RuleEntry(null, departureId, contactId, null, type, false);
+                    Log.d("rules entred", "r " + departureId + contactId + type);
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            // insert new rule
+                            mDb.ruleDao().insertRule(ruleEntry);
+
+                        }
+                    });
+                }
+
 
                 Intent intent = new Intent(this, WifiRulesActivity.class);
                 startActivity(intent);
             }
-        }
     }
 
     @Override
@@ -154,7 +145,6 @@ public class NewWifiRuleActivity extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission was granted
                     saveRule();
-                } else {
                 }
             }
         }
@@ -167,7 +157,7 @@ public class NewWifiRuleActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(R.layout.spinner_item);
         // Apply the adapter to the spinner
         onOfWifiSpinner.setAdapter(adapter);
-
+        onOfWifiSpinnerDeparture.setAdapter(adapter);
 
         onOfWifiSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
@@ -186,6 +176,24 @@ public class NewWifiRuleActivity extends AppCompatActivity {
                 onWifi = true;
             }
         });
+
+        onOfWifiSpinnerDeparture.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
+                switch (position) {
+                    case 0:
+                        // Chosen ON
+                        onWifiDeparture = true;
+                        break;
+                    case 1:
+                        // Chosen OFF
+                        onWifiDeparture = false;
+                        break;
+                }
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+                onWifiDeparture = true;
+            }
+        });
     }
 
 
@@ -195,12 +203,14 @@ public class NewWifiRuleActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable List<PlaceEntry> placeEntries) {
                 if (placeEntries != null){
-                Log.d("message", "Updating list of places from LiveData in ViewModel"  + placeEntries.size() );
-                if (placeEntries.size() == 0) {
-                    return;
-                }
+                    Log.d("message", "Updating list of places from LiveData in ViewModel"  + placeEntries.size() );
+                    if (placeEntries.size() == 0) {
+                        return;
+                    }
+                    placeEntries.size();
                     placeIds.clear();
                     placeNames.clear();
+                    placeNamesAnywhere.clear();
 
                     for (int i = 0; i < placeEntries.size(); i++) {
                         placeIds.add(placeEntries.get(i).getId());
@@ -209,26 +219,152 @@ public class NewWifiRuleActivity extends AppCompatActivity {
                         System.out.println("placeNames" + i + placeNames.get(i));
                     }
 
+
+                    Log.d("placeNames", " " + placeNames.get(0));
+                    placeNamesAnywhere.addAll(placeNames);
+                    placeNamesAnywhere.add(0, "anywhere");
+                    Log.d("placeNames", " " + placeNames.get(0));
+
+
+                    ArrayAdapter<String> adapterDepartureAnywherePlace = new ArrayAdapter<String>(
+                            getApplicationContext(),
+                            R.layout.spinner_item,
+                            placeNamesAnywhere
+                    );
+
                     ArrayAdapter<String> adapterPlace = new ArrayAdapter<String>(
                             getApplicationContext(),
                             R.layout.spinner_item,
                             placeNames
                     );
+
+
+                    // Specify the layout to use when the list of choices appears
                     adapterPlace.setDropDownViewResource(R.layout.spinner_item);
+                    adapterDepartureAnywherePlace.setDropDownViewResource(R.layout.spinner_item);
                     // Apply the adapter to the spinner
+                    arrivalSpinner.setAdapter(adapterPlace);
+                    departureAnywhereSpinner.setAdapter(adapterPlace);
+                    departureSpinner.setAdapter(adapterDepartureAnywherePlace);
 
-                    wifiPlaceSpinner.setAdapter(adapterPlace);
+                    arrivalSpinner.setOnItemSelectedListener(new ArrivalSpinnerClass());
+                    departureAnywhereSpinner.setOnItemSelectedListener(new DepartureSpinnerClass());
+                    departureSpinner.setOnItemSelectedListener(new DepartureAnywhereSpinnerClass());
                 }
-
-                wifiPlaceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        wifiPlaceId = placeIds.get(position);
-                    }
-                    public void onNothingSelected(AdapterView<?> parent) {
-                        wifiPlaceId = null;
-                    }
-                });
             }
         });
+    }
+
+    class ArrivalSpinnerClass implements AdapterView.OnItemSelectedListener
+    {
+        public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
+        {  arrivalId = placeIds.get(position);
+        }
+        public void onNothingSelected(AdapterView<?> parent) {
+            arrivalId = null;
+        }
+    }
+
+    class DepartureAnywhereSpinnerClass implements AdapterView.OnItemSelectedListener
+    {
+        public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
+        { if (position == 0){
+            departureAnywhereId = null;
+        } else {
+            departureAnywhereId = placeIds.get(position - 1);}
+        }
+        public void onNothingSelected(AdapterView<?> parent) {
+            departureAnywhereId = null;
+        }
+    }
+
+    class DepartureSpinnerClass implements AdapterView.OnItemSelectedListener
+    {
+        public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
+        {  departureId = placeIds.get(position);
+        }
+        public void onNothingSelected(AdapterView<?> parent) {
+            departureId = null;
+        }
+    }
+
+    public void onSaveWifiArrivalRuleClick(View view) {
+
+        if (onWifi) {type = WIFI;} else {
+            type = WIFIOFF;}
+
+        arrival = true;
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CHANGE_WIFI_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.CHANGE_WIFI_STATE)) {
+                // Show an explanation to the user *asynchronously*
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CHANGE_WIFI_STATE},
+                        MY_PERMISSIONS_REQUEST_WIFI);
+            }
+        } else {
+            // Permission has already been granted
+
+            final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureAnywhereId, contactId, null, type, false);
+                Log.d("rules entred", "r " +  arrivalId + contactId + type);
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        // insert new contact
+                        mDb.ruleDao().insertRule(ruleEntry);
+
+                    }
+                });
+
+            Intent intent = new Intent(this, WifiRulesActivity.class);
+            startActivity(intent);
+        }
+    }
+
+        public void onSaveWifiDepartureRuleClick(View view) {
+
+        if (onWifiDeparture) {type = WIFI;} else {
+            type = WIFIOFF;}
+
+            arrival = false;
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CHANGE_WIFI_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.CHANGE_WIFI_STATE)) {
+                // Show an explanation to the user *asynchronously*
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CHANGE_WIFI_STATE},
+                        MY_PERMISSIONS_REQUEST_WIFI);
+            }
+        } else {
+            // Permission has already been granted
+
+                final RuleEntry ruleEntry = new RuleEntry(null, departureId, contactId, null, type, false);
+                Log.d("rules entred", "r " + departureId + contactId + type);
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        // insert new contact
+                        mDb.ruleDao().insertRule(ruleEntry);
+
+                    }
+                });
+
+            Intent intent = new Intent(this, WifiRulesActivity.class);
+            startActivity(intent);
+        }
     }
 }

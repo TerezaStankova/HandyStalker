@@ -31,7 +31,7 @@ import java.util.List;
 import static com.google.android.gms.common.util.ArrayUtils.newArrayList;
 
 public class NewNotificationRuleActivity extends AppCompatActivity {
-    
+
     List<Integer> placeIds = new ArrayList<Integer>();
     List<String> placeNames = new ArrayList<String>();
     List<String> placeNamesAnywhere = new ArrayList<String>();
@@ -50,9 +50,8 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
     Integer arrivalId = null;
     Integer departureAnywhereId = null;
     Integer departureId = null;
-   
+
     String type = "notify";
-    private boolean arrivalNotificationRule = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,46 +75,16 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
     }
 
 
-    public void onSaveNotifyRuleClick(View view) {
-        type = "notify";
-
-        if (arrivalNotificationRule){
-            final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureAnywhereId, null, type, false);
-            Log.d("rules entred notify", "r " + arrivalId + + departureAnywhereId + type);
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    // Insert new rule
-                    mDb.ruleDao().insertRule(ruleEntry);
-
-                }});
-        } else {
-            final RuleEntry ruleEntry = new RuleEntry(null, departureId, null, type, false);
-            Log.d("rules entred notify", "r " + departureId  + type);
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    // Insert new rule
-                    mDb.ruleDao().insertRule(ruleEntry);
-
-                }});
-        }
-        Intent intent = new Intent(this, NotificationsActivity.class);
-        startActivity(intent);
-        }
-
-
-
     private void setupPlacesViewModel() {
         PlacesViewModel viewModel = ViewModelProviders.of(this).get(PlacesViewModel.class);
         viewModel.getPlaces().observe(this, new Observer<List<PlaceEntry>>() {
             @Override
             public void onChanged(@Nullable List<PlaceEntry> placeEntries) {
                 if (placeEntries != null){
-                Log.d("message", "Updating list of places from LiveData in ViewModel"  + placeEntries.size() );
-                if (placeEntries.size() == 0) {
-                    return;
-                }
+                    Log.d("message", "Updating list of places from LiveData in ViewModel"  + placeEntries.size() );
+                    if (placeEntries.size() == 0) {
+                        return;
+                    }
                     placeEntries.size();
                     placeIds.clear();
                     placeNames.clear();
@@ -164,6 +133,34 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void onNotificationRuleDepartureClicked(View view) {
+        final RuleEntry ruleEntry = new RuleEntry(null, departureId, null, type, false);
+        Log.d("rules entred notify", "r " + departureId  + type);
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                // Insert new rule
+                mDb.ruleDao().insertRule(ruleEntry);
+
+            }});
+        Intent intent = new Intent(this, NotificationsActivity.class);
+        startActivity(intent);
+    }
+
+    public void onNotificationArrivalButtonClicked(View view) {
+        final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureAnywhereId, null, type, false);
+        Log.d("rules entred notify", "r " + arrivalId + + departureAnywhereId + type);
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                // Insert new rule
+                mDb.ruleDao().insertRule(ruleEntry);
+
+            }});
+        Intent intent = new Intent(this, NotificationsActivity.class);
+        startActivity(intent);
     }
 
     class ArrivalSpinnerClass implements AdapterView.OnItemSelectedListener
