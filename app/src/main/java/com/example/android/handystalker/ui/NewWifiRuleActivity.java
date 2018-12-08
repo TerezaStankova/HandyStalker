@@ -22,13 +22,12 @@ import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.PlaceEntry;
 import com.example.android.handystalker.database.RuleEntry;
 import com.example.android.handystalker.utilities.AppExecutors;
-
 import com.example.android.handystalker.utilities.PlacesViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewHandyRuleActivity extends AppCompatActivity {
+public class NewWifiRuleActivity extends AppCompatActivity {
 
     List<Integer> placeIds = new ArrayList<Integer>();
     List<String> placeNames = new ArrayList<String>();
@@ -40,16 +39,12 @@ public class NewHandyRuleActivity extends AppCompatActivity {
 
     private String WIFI = "wifi";
     private String WIFIOFF = "wifioff";
-    private String SOUND = "sound";
-    private String SOUNDOFF = "soundoff";
+
 
     //edit texts
     Spinner onOfWifiSpinner;
-    Spinner onOfSoundSpinner;
-    Spinner soundPlaceSpinner;
     Spinner wifiPlaceSpinner;
 
-    Integer soundPlaceId = null;
     Integer wifiPlaceId = null;
     Integer contactId = null;
     String type = WIFI;
@@ -60,15 +55,13 @@ public class NewHandyRuleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_handy_rule);
+        setContentView(R.layout.new_wifi_rule);
         setTitle("New Handy Rule");
 
-        //on-of spinners
+        //on-of spinner
         onOfWifiSpinner = findViewById(R.id.on_wifi_spinner);
-        onOfSoundSpinner = findViewById(R.id.sound_on_spinner);
 
-        //place spinners
-        soundPlaceSpinner = findViewById(R.id.place_sound_spinner);
+        //place spinner
         wifiPlaceSpinner = findViewById(R.id.place_wifi_spinner);
 
         setupTypeSpinner();
@@ -99,7 +92,7 @@ public class NewHandyRuleActivity extends AppCompatActivity {
             // Permission has already been granted
 
                 final RuleEntry ruleEntry = new RuleEntry(wifiPlaceId, wifiPlaceId, contactId, null, type, onWifi);
-                Log.d("rules entred", "r " + soundPlaceId + wifiPlaceId + contactId + type);
+                Log.d("rules entred", "r " +  wifiPlaceId + contactId + type);
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -109,41 +102,7 @@ public class NewHandyRuleActivity extends AppCompatActivity {
                     }
                 });
 
-            Intent intent = new Intent(this, HandyRulesActivity.class);
-            startActivity(intent);
-        }
-    }
-
-    public void onSaveSoundRuleClick(View view) {
-        if (onSound) {
-            type = SOUND;} else {
-            type = SOUNDOFF;}
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        // Check if the API supports such permission change and check if permission is granted
-        if (android.os.Build.VERSION.SDK_INT >= 24 && !notificationManager.isNotificationPolicyAccessGranted()) {
-
-            // Permission is not granted
-                Intent intent = null;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                    intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-                }
-                startActivity(intent);
-
-        } else {
-            // Permission has already been granted
-
-            final RuleEntry ruleEntry = new RuleEntry(soundPlaceId, soundPlaceId, contactId, null, type, onSound);
-            Log.d("rules entred", "r " + soundPlaceId + contactId + type);
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    // Insert new rule
-                    mDb.ruleDao().insertRule(ruleEntry);
-                }
-            });
-
-            Intent intent = new Intent(this, HandyRulesActivity.class);
+            Intent intent = new Intent(this, WifiRulesActivity.class);
             startActivity(intent);
         }
     }
@@ -169,7 +128,7 @@ public class NewHandyRuleActivity extends AppCompatActivity {
             } else {
                 // Permission has already been granted
                 final RuleEntry ruleEntry = new RuleEntry(wifiPlaceId, wifiPlaceId, contactId, null, type, onWifi);
-                Log.d("rules entred", "r " + soundPlaceId + wifiPlaceId + contactId + type);
+                Log.d("rules entred", "r " + wifiPlaceId + contactId + type);
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -179,35 +138,10 @@ public class NewHandyRuleActivity extends AppCompatActivity {
                     }
                 });
 
-                Intent intent = new Intent(this, HandyRulesActivity.class);
+                Intent intent = new Intent(this, WifiRulesActivity.class);
                 startActivity(intent);
             }
-        } else if (type.equals("sound")) {
-        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        // Check if the API supports such permission change and check if permission is granted
-        if (android.os.Build.VERSION.SDK_INT >= 24 && !nm.isNotificationPolicyAccessGranted()) {
-            Intent intent = null;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-            }
-            startActivity(intent);
-        } else {
-            // Permission has already been granted
-            final RuleEntry ruleEntry = new RuleEntry(soundPlaceId, soundPlaceId, contactId, null, type, onSound);
-            Log.d("rules entred", "r " + soundPlaceId + contactId + type);
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    // Insert new rule
-                    mDb.ruleDao().insertRule(ruleEntry);
-
-                }
-            });
-
-            Intent intent = new Intent(this, HandyRulesActivity.class);
-            startActivity(intent);
         }
-    }
     }
 
     @Override
@@ -233,7 +167,6 @@ public class NewHandyRuleActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(R.layout.spinner_item);
         // Apply the adapter to the spinner
         onOfWifiSpinner.setAdapter(adapter);
-        onOfSoundSpinner.setAdapter(adapter);
 
 
         onOfWifiSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -251,25 +184,6 @@ public class NewHandyRuleActivity extends AppCompatActivity {
             }
             public void onNothingSelected(AdapterView<?> parent) {
                 onWifi = true;
-            }
-        });
-
-
-        onOfSoundSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
-                switch (position) {
-                    case 0:
-                        // Chosen ON
-                        onSound = true;
-                        break;
-                    case 1:
-                        // Chosen OFF
-                        onSound = false;
-                        break;
-                }
-            }
-            public void onNothingSelected(AdapterView<?> parent) {
-                onSound = true;
             }
         });
     }
@@ -302,18 +216,9 @@ public class NewHandyRuleActivity extends AppCompatActivity {
                     );
                     adapterPlace.setDropDownViewResource(R.layout.spinner_item);
                     // Apply the adapter to the spinner
-                    soundPlaceSpinner.setAdapter(adapterPlace);
+
                     wifiPlaceSpinner.setAdapter(adapterPlace);
                 }
-
-                soundPlaceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
-                        soundPlaceId = placeIds.get(position);
-                    }
-                    public void onNothingSelected(AdapterView<?> parent) {
-                        soundPlaceId = null;
-                    }
-                });
 
                 wifiPlaceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

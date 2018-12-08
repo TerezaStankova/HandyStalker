@@ -36,14 +36,10 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
     List<String> placeNames = new ArrayList<String>();
     List<String> placeNamesAnywhere = new ArrayList<String>();
 
-    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 2222;
-    private static final int MY_PERMISSIONS_REQUEST_SEND_NOTIFICATIONS = 1111;
-
     // Member variable for the Database
     private AppDatabase mDb;
 
     //edit texts
-    Spinner typeSpinner;
     Spinner arrivalSpinner;
     Spinner departureSpinner;
     Spinner departureAnywhereSpinner;
@@ -51,14 +47,12 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
     Spinner contactNameSpinnerNotify;
     Spinner placeNotificationSpinner;
 
-    Integer placeId = null;
     Integer arrivalId = null;
+    Integer departureAnywhereId = null;
     Integer departureId = null;
-    Integer departureId2 = null;
    
-    String type = "sms";
+    String type = "notify";
     private boolean arrivalNotificationRule = true;
-    private boolean depRule = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,11 +68,9 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
         departureAnywhereSpinner = findViewById(R.id.departure_place_rule_spinner);
 
         //Notification spinners
-        typeSpinner = findViewById(R.id.type_spinner);
         contactNameSpinnerNotify = findViewById(R.id.name_spinner2);
         placeNotificationSpinner = findViewById(R.id.place_spinner);
 
-        setupTypeSpinner();
         mDb = AppDatabase.getInstance(getApplicationContext());
         setupPlacesViewModel();
     }
@@ -88,8 +80,8 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
         type = "notify";
 
         if (arrivalNotificationRule){
-            final RuleEntry ruleEntry = new RuleEntry(placeId, null, null, type, false);
-            Log.d("rules entred notify", "r " + placeId + type);
+            final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureAnywhereId, null, type, false);
+            Log.d("rules entred notify", "r " + arrivalId + + departureAnywhereId + type);
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
@@ -98,8 +90,8 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
 
                 }});
         } else {
-            final RuleEntry ruleEntry = new RuleEntry(null, placeId, null, type, false);
-            Log.d("rules entred notify", "r " + placeId  + type);
+            final RuleEntry ruleEntry = new RuleEntry(null, departureId, null, type, false);
+            Log.d("rules entred notify", "r " + departureId  + type);
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
@@ -108,39 +100,10 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
 
                 }});
         }
-        Intent intent = new Intent(this, SmsRulesActivity.class);
+        Intent intent = new Intent(this, NotificationsActivity.class);
         startActivity(intent);
         }
 
-
-    private void setupTypeSpinner() {
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.type_array, R.layout.spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(R.layout.spinner_item);
-        // Apply the adapter to the spinner
-        typeSpinner.setAdapter(adapter);
-
-
-        typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
-                switch (position) {
-                    case 0:
-                        // Chosen arrival
-                        arrivalNotificationRule = true;
-                        break;
-                    case 1:
-                        // Chosen departure
-                        arrivalNotificationRule = false;
-                        break;
-                }
-            }
-            public void onNothingSelected(AdapterView<?> parent) {
-                arrivalNotificationRule = true;
-            }
-        });
-    }
 
 
     private void setupPlacesViewModel() {
@@ -191,13 +154,11 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
                     // Apply the adapter to the spinner
                     arrivalSpinner.setAdapter(adapterPlace);
                     departureAnywhereSpinner.setAdapter(adapterPlace);
-                    placeNotificationSpinner.setAdapter(adapterPlace);
                     departureSpinner.setAdapter(adapterDepartureAnywherePlace);
 
                     arrivalSpinner.setOnItemSelectedListener(new ArrivalSpinnerClass());
-                    departureSpinner.setOnItemSelectedListener(new DepartureAnywhereSpinnerClass());
                     departureAnywhereSpinner.setOnItemSelectedListener(new DepartureSpinnerClass());
-                    placeNotificationSpinner.setOnItemSelectedListener(new PlaceSpinnerClass());
+                    departureSpinner.setOnItemSelectedListener(new DepartureAnywhereSpinnerClass());
                 }
 
 
@@ -219,34 +180,23 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
     {
         public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
         { if (position == 0){
-            departureId = null;
+            departureAnywhereId = null;
         } else {
-            departureId = placeIds.get(position - 1);}
+            departureAnywhereId = placeIds.get(position - 1);}
         }
         public void onNothingSelected(AdapterView<?> parent) {
-            departureId = null;
+            departureAnywhereId = null;
         }
     }
 
     class DepartureSpinnerClass implements AdapterView.OnItemSelectedListener
     {
         public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
-        {  departureId2 = placeIds.get(position);
+        {  departureId = placeIds.get(position);
         }
         public void onNothingSelected(AdapterView<?> parent) {
-            departureId2 = null;
+            departureId = null;
         }
     }
 
-    class PlaceSpinnerClass implements AdapterView.OnItemSelectedListener
-    {
-        public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
-        {   placeId = placeIds.get(position);
-        }
-            public void onNothingSelected(AdapterView<?> parent) {
-            placeId = null;
-        }
-    }
-
-    
 }

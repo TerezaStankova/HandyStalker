@@ -25,7 +25,7 @@ import com.example.android.handystalker.utilities.HandyRulesViewModel;
 
 import java.util.List;
 
-public class HandyRulesActivity extends AppCompatActivity {
+public class WifiRulesActivity extends AppCompatActivity {
 
     // Member variables
     private RulesAdapter mAdapter;
@@ -71,7 +71,7 @@ public class HandyRulesActivity extends AppCompatActivity {
     }
 
     public void onAddSendRulesButtonClicked(View view) {
-        Intent intent = new Intent(this, NewHandyRuleActivity.class);
+        Intent intent = new Intent(this, NewSoundRuleActivity.class);
         startActivity(intent);
     }
 
@@ -123,7 +123,7 @@ public class HandyRulesActivity extends AppCompatActivity {
         }
 
         CheckBox wifiPermissions = findViewById(R.id.wifi_permission_checkbox);
-        if (ActivityCompat.checkSelfPermission(HandyRulesActivity.this,
+        if (ActivityCompat.checkSelfPermission(WifiRulesActivity.this,
                 Manifest.permission.CHANGE_WIFI_STATE) != PackageManager.PERMISSION_GRANTED) {
             wifiPermissions.setChecked(false);
         } else {

@@ -6,8 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.example.android.handystalker.R;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 
 public class RulesActivity extends AppCompatActivity {
 
@@ -27,17 +25,17 @@ public class RulesActivity extends AppCompatActivity {
     }
 
     public void onNotificationButtonClicked(View view) {
-        Intent intent = new Intent(this, HandyRulesActivity.class);
+        Intent intent = new Intent(this, NotificationsActivity.class);
         startActivity(intent);
     }
 
     public void onSoundSettingsButtonClicked(View view) {
-        Intent intent = new Intent(this, HandyRulesActivity.class);
+        Intent intent = new Intent(this, SoundRulesActivity.class);
         startActivity(intent);
     }
 
     public void onWifiButtonClicked(View view) {
-        Intent intent = new Intent(this, HandyRulesActivity.class);
+        Intent intent = new Intent(this, WifiRulesActivity.class);
         startActivity(intent);
     }
 }

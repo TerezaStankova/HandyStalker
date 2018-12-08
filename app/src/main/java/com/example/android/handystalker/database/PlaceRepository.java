@@ -23,7 +23,7 @@ public class PlaceRepository {
         mAllContacts = mContactDao.loadAllContacts();
         RuleDao mRuleDao = db.ruleDao();
         mAllRules = mRuleDao.loadAllRules();
-        mHandyRules = mRuleDao.loadHandyRules("wifi", "net", "sound", "wifioff", "netoff", "soundoff");
+        mHandyRules = mRuleDao.loadHandyRules("wifi", "sound", "wifioff", "soundoff");
         mStalkerRules = mRuleDao.loadSendingRules("sms", "notify");
         MessageDao mMessageDao = db.messageDao();
         mAllMessages = mMessageDao.loadAllMessages();

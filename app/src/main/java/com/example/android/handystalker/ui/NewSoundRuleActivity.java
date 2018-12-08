@@ -1,0 +1,223 @@
+package com.example.android.handystalker.ui;
+
+import android.Manifest;
+import android.app.NotificationManager;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
+import com.example.android.handystalker.R;
+import com.example.android.handystalker.database.AppDatabase;
+import com.example.android.handystalker.database.PlaceEntry;
+import com.example.android.handystalker.database.RuleEntry;
+import com.example.android.handystalker.utilities.AppExecutors;
+
+import com.example.android.handystalker.utilities.PlacesViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class NewSoundRuleActivity extends AppCompatActivity {
+
+    List<Integer> placeIds = new ArrayList<Integer>();
+    List<String> placeNames = new ArrayList<String>();
+
+    private static final int MY_PERMISSIONS_REQUEST_WIFI = 1234;
+
+    // Member variable for the Database
+    private AppDatabase mDb;
+
+    private String SOUND = "sound";
+    private String SOUNDOFF = "soundoff";
+
+    //edit texts
+    Spinner onOfSoundSpinner;
+    Spinner soundPlaceSpinner;
+
+    Integer soundPlaceId = null;
+    Integer contactId = null;
+    String type = SOUND;
+
+    private boolean onSound = true;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.new_sound_rule);
+        setTitle("New Handy Rule");
+
+        //on-of spinners
+        onOfSoundSpinner = findViewById(R.id.sound_on_spinner);
+
+        //place spinner
+        soundPlaceSpinner = findViewById(R.id.place_sound_spinner);
+
+        setupTypeSpinner();
+        mDb = AppDatabase.getInstance(getApplicationContext());
+        setupPlacesViewModel();
+    }
+
+
+    public void onSaveSoundRuleClick(View view) {
+        if (onSound) {
+            type = SOUND;} else {
+            type = SOUNDOFF;}
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        // Check if the API supports such permission change and check if permission is granted
+        if (android.os.Build.VERSION.SDK_INT >= 24 && !notificationManager.isNotificationPolicyAccessGranted()) {
+
+            // Permission is not granted
+                Intent intent = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+                }
+                startActivity(intent);
+
+        } else {
+            // Permission has already been granted
+
+            final RuleEntry ruleEntry = new RuleEntry(soundPlaceId, soundPlaceId, contactId, null, type, onSound);
+            Log.d("rules entred", "r " + soundPlaceId + contactId + type);
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    // Insert new rule
+                    mDb.ruleDao().insertRule(ruleEntry);
+                }
+            });
+
+            Intent intent = new Intent(this, WifiRulesActivity.class);
+            startActivity(intent);
+        }
+    }
+
+
+
+    public void saveRule(){
+
+        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        // Check if the API supports such permission change and check if permission is granted
+        if (android.os.Build.VERSION.SDK_INT >= 24 && !nm.isNotificationPolicyAccessGranted()) {
+            Intent intent = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+            }
+            startActivity(intent);
+        } else {
+            // Permission has already been granted
+            final RuleEntry ruleEntry = new RuleEntry(soundPlaceId, soundPlaceId, contactId, null, type, onSound);
+            Log.d("rules entred", "r " + soundPlaceId + contactId + type);
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    // Insert new rule
+                    mDb.ruleDao().insertRule(ruleEntry);
+
+                }
+            });
+
+            Intent intent = new Intent(this, WifiRulesActivity.class);
+            startActivity(intent);
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_WIFI: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission was granted
+                    saveRule();
+                } else {
+                }
+            }
+        }
+    }
+
+    private void setupTypeSpinner() {
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.on_array, R.layout.spinner_item);
+        adapter.setDropDownViewResource(R.layout.spinner_item);
+        // Apply the adapter to the spinner
+        onOfSoundSpinner.setAdapter(adapter);
+
+
+        onOfSoundSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
+                switch (position) {
+                    case 0:
+                        // Chosen ON
+                        onSound = true;
+                        break;
+                    case 1:
+                        // Chosen OFF
+                        onSound = false;
+                        break;
+                }
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+                onSound = true;
+            }
+        });
+    }
+
+
+    private void setupPlacesViewModel() {
+        PlacesViewModel viewModel = ViewModelProviders.of(this).get(PlacesViewModel.class);
+        viewModel.getPlaces().observe(this, new Observer<List<PlaceEntry>>() {
+            @Override
+            public void onChanged(@Nullable List<PlaceEntry> placeEntries) {
+                if (placeEntries != null){
+                Log.d("message", "Updating list of places from LiveData in ViewModel"  + placeEntries.size() );
+                if (placeEntries.size() == 0) {
+                    return;
+                }
+                    placeIds.clear();
+                    placeNames.clear();
+
+                    for (int i = 0; i < placeEntries.size(); i++) {
+                        placeIds.add(placeEntries.get(i).getId());
+                        System.out.println("placeIds" + i + placeIds.get(i));
+                        placeNames.add(placeEntries.get(i).getPlaceName());
+                        System.out.println("placeNames" + i + placeNames.get(i));
+                    }
+
+                    ArrayAdapter<String> adapterPlace = new ArrayAdapter<String>(
+                            getApplicationContext(),
+                            R.layout.spinner_item,
+                            placeNames
+                    );
+                    adapterPlace.setDropDownViewResource(R.layout.spinner_item);
+                    // Apply the adapter to the spinner
+                    soundPlaceSpinner.setAdapter(adapterPlace);
+                }
+
+                soundPlaceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
+                        soundPlaceId = placeIds.get(position);
+                    }
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        soundPlaceId = null;
+                    }
+                });
+            }
+        });
+    }
+}

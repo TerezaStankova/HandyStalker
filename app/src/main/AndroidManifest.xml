@@ -44,20 +44,29 @@
         <activity
             android:name=".ui.RulesActivity"
             android:parentActivityName=".ui.MainActivity" />
-        <activity
-            android:name=".ui.ContactsActivity"
-            android:parentActivityName=".ui.MainActivity" />
+
         <activity
             android:name=".ui.SmsRulesActivity"
             android:parentActivityName=".ui.RulesActivity" />
-        <activity android:name=".ui.HandyRulesActivity"
+        <activity
+            android:name=".ui.ContactsActivity"
+            android:parentActivityName=".ui.SmsRulesActivity" />
+
+        <activity android:name=".ui.WifiRulesActivity"
             android:parentActivityName=".ui.RulesActivity" />
+        <activity android:name=".ui.SoundRulesActivity"
+            android:parentActivityName=".ui.RulesActivity" />
+        <activity android:name=".ui.NotificationsActivity"
+            android:parentActivityName=".ui.RulesActivity" />
+        <activity android:name=".ui.NewNotificationRuleActivity"
+            android:parentActivityName=".ui.NotificationsActivity" />
 
         <activity android:name=".ui.NewTextRuleActivity" android:parentActivityName=".ui.SmsRulesActivity" android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity android:name=".ui.NewContactActivity" android:parentActivityName=".ui.ContactsActivity"/>
         <activity android:name=".ui.NewRuleActivity" android:parentActivityName=".ui.SmsRulesActivity"/>
-        <activity android:name=".ui.NewHandyRuleActivity" android:parentActivityName=".ui.HandyRulesActivity"/>
+        <activity android:name=".ui.NewSoundRuleActivity" android:parentActivityName=".ui.SoundRulesActivity"/>
+        <activity android:name=".ui.NewWifiRuleActivity" android:parentActivityName=".ui.WifiRulesActivity"/>
         <activity android:name=".ui.AddMessageActivity" android:parentActivityName=".ui.SmsRulesActivity"/>
 
         <service android:name=".geofencing.AddingGeofencesService"/>
