@@ -244,12 +244,12 @@ public class NewWifiRuleActivity extends AppCompatActivity {
                     adapterDepartureAnywherePlace.setDropDownViewResource(R.layout.spinner_item);
                     // Apply the adapter to the spinner
                     arrivalSpinner.setAdapter(adapterPlace);
-                    departureAnywhereSpinner.setAdapter(adapterPlace);
-                    departureSpinner.setAdapter(adapterDepartureAnywherePlace);
+                    departureAnywhereSpinner.setAdapter(adapterDepartureAnywherePlace);
+                    departureSpinner.setAdapter(adapterPlace);
 
                     arrivalSpinner.setOnItemSelectedListener(new ArrivalSpinnerClass());
-                    departureAnywhereSpinner.setOnItemSelectedListener(new DepartureSpinnerClass());
-                    departureSpinner.setOnItemSelectedListener(new DepartureAnywhereSpinnerClass());
+                    departureSpinner.setOnItemSelectedListener(new DepartureSpinnerClass());
+                    departureAnywhereSpinner.setOnItemSelectedListener(new DepartureAnywhereSpinnerClass());
                 }
             }
         });

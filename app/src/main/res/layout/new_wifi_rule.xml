@@ -23,7 +23,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:text="@string/add_sound_rule"
+            android:text="@string/add_new_rule"
             android:textAppearance="@style/myDetailTitleStyle" />
 
         <LinearLayout
@@ -76,7 +76,6 @@
 
             <Spinner
                 android:id="@+id/departure_anywhere_wifi_spinner"
-                style="@style/spinnerItemStyle2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="end"
@@ -94,7 +93,7 @@
                 android:onClick="onSaveWifiArrivalRuleClick"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:text="@string/save_sound_rule"
+                android:text="@string/save_wi_fi_rule"
                 android:textAppearance="@style/myButtonStyleSmall"
                 android:textColor="@color/text_color_primary"
                 app:srcCompat="@android:drawable/ic_menu_save" />
@@ -109,7 +108,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="8dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -131,9 +129,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -144,7 +139,6 @@
 
                 <Spinner
                     android:id="@+id/departure_wifi_spinner"
-                    style="@style/spinnerItemStyle2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"

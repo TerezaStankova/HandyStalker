@@ -1,7 +1,6 @@
 package com.example.android.handystalker.ui;
 
 import android.Manifest;
-import android.app.NotificationManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -45,7 +44,7 @@ public class WifiRulesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.handy_rules);
+        setContentView(R.layout.wifi_rules);
         setTitle("Handy Rules");
 
         // Set up the recycler view
@@ -71,7 +70,7 @@ public class WifiRulesActivity extends AppCompatActivity {
     }
 
     public void onAddSendRulesButtonClicked(View view) {
-        Intent intent = new Intent(this, NewSoundRuleActivity.class);
+        Intent intent = new Intent(this, NewWifiRuleActivity.class);
         startActivity(intent);
     }
 
@@ -112,16 +111,6 @@ public class WifiRulesActivity extends AppCompatActivity {
         super.onResume();
 
         // Initialize permissions checkbox
-        CheckBox soundPermissions = findViewById(R.id.sound_permission_checkbox);
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        // Check if the API supports such permission change and check if permission is granted
-        if (android.os.Build.VERSION.SDK_INT >= 24 && !notificationManager.isNotificationPolicyAccessGranted()) {
-            soundPermissions.setChecked(false);
-        } else {
-            soundPermissions.setChecked(true);
-            soundPermissions.setEnabled(false);
-        }
-
         CheckBox wifiPermissions = findViewById(R.id.wifi_permission_checkbox);
         if (ActivityCompat.checkSelfPermission(WifiRulesActivity.this,
                 Manifest.permission.CHANGE_WIFI_STATE) != PackageManager.PERMISSION_GRANTED) {
@@ -160,14 +149,6 @@ public class WifiRulesActivity extends AppCompatActivity {
         // Retrieve list state and list/item positions
         if(state != null)
             mListState = state.getParcelable(LIST_STATE_KEY);
-    }
-
-    public void onSoundPermissionClicked(View view) {
-        Intent intent = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-        }
-        startActivity(intent);
     }
 
     public void onWifiPermissionClicked(View view) {

@@ -35,7 +35,6 @@ public class SoundRulesActivity extends AppCompatActivity {
     private Parcelable mListState;
     private LinearLayoutManager layoutManager;
 
-    private static final int MY_PERMISSIONS_REQUEST_WIFI = 1234;
 
     // Final String to store state information about the rules
     private static final String RULES = "rules";
@@ -45,11 +44,11 @@ public class SoundRulesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.handy_rules);
+        setContentView(R.layout.sound_rules);
         setTitle("Handy Rules");
 
         // Set up the recycler view
-        mRecyclerView = findViewById(R.id.handyrules_list_recycler_view);
+        mRecyclerView = findViewById(R.id.soundrules_list_recycler_view);
         layoutManager = new LinearLayoutManager(this);
         restoreLayoutManagerPosition();
         mRecyclerView.setLayoutManager(layoutManager);
@@ -122,15 +121,6 @@ public class SoundRulesActivity extends AppCompatActivity {
             soundPermissions.setEnabled(false);
         }
 
-        CheckBox wifiPermissions = findViewById(R.id.wifi_permission_checkbox);
-        if (ActivityCompat.checkSelfPermission(SoundRulesActivity.this,
-                Manifest.permission.CHANGE_WIFI_STATE) != PackageManager.PERMISSION_GRANTED) {
-            wifiPermissions.setChecked(false);
-        } else {
-            wifiPermissions.setChecked(true);
-            wifiPermissions.setEnabled(false);
-        }
-
         if (mListState != null) {
             layoutManager.onRestoreInstanceState(mListState);
         }
@@ -169,13 +159,6 @@ public class SoundRulesActivity extends AppCompatActivity {
         }
         startActivity(intent);
     }
-
-    public void onWifiPermissionClicked(View view) {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.CHANGE_WIFI_STATE},
-                MY_PERMISSIONS_REQUEST_WIFI);
-    }
-
 }
 
 

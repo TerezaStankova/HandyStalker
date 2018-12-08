@@ -33,11 +33,9 @@ public class NewSoundRuleActivity extends AppCompatActivity {
     List<Integer> placeIds = new ArrayList<Integer>();
     List<String> placeNames = new ArrayList<String>();
 
-    private static final int MY_PERMISSIONS_REQUEST_WIFI = 1234;
-
     // Member variable for the Database
     private AppDatabase mDb;
-    
+
     List<String> placeNamesAnywhere = new ArrayList<String>();
 
     //edit texts
@@ -259,12 +257,12 @@ public class NewSoundRuleActivity extends AppCompatActivity {
                     adapterDepartureAnywherePlace.setDropDownViewResource(R.layout.spinner_item);
                     // Apply the adapter to the spinner
                     arrivalSpinner.setAdapter(adapterPlace);
-                    departureAnywhereSpinner.setAdapter(adapterPlace);
-                    departureSpinner.setAdapter(adapterDepartureAnywherePlace);
+                    departureAnywhereSpinner.setAdapter(adapterDepartureAnywherePlace);
+                    departureSpinner.setAdapter(adapterPlace);
 
                     arrivalSpinner.setOnItemSelectedListener(new ArrivalSpinnerClass());
-                    departureAnywhereSpinner.setOnItemSelectedListener(new DepartureSpinnerClass());
-                    departureSpinner.setOnItemSelectedListener(new DepartureAnywhereSpinnerClass());
+                    departureSpinner.setOnItemSelectedListener(new DepartureSpinnerClass());
+                    departureAnywhereSpinner.setOnItemSelectedListener(new DepartureAnywhereSpinnerClass());
                 }
             }
         });

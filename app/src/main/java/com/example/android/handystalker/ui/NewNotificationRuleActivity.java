@@ -60,11 +60,11 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
         setTitle("New Notification Rule");
 
         //SMS for arrival spinners
-        arrivalSpinner = findViewById(R.id.arrival_spinner);
-        departureSpinner = findViewById(R.id.departure_spinner);
+        arrivalSpinner = findViewById(R.id.arrival_notification_spinner);
+        departureSpinner = findViewById(R.id.departure_notification_spinner);
 
         //Departure SMS spinners
-        departureAnywhereSpinner = findViewById(R.id.departure_place_rule_spinner);
+        departureAnywhereSpinner = findViewById(R.id.departure_anywhere_notification_spinner);
 
         //Notification spinners
         contactNameSpinnerNotify = findViewById(R.id.name_spinner2);
@@ -122,12 +122,12 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
                     adapterDepartureAnywherePlace.setDropDownViewResource(R.layout.spinner_item);
                     // Apply the adapter to the spinner
                     arrivalSpinner.setAdapter(adapterPlace);
-                    departureAnywhereSpinner.setAdapter(adapterPlace);
-                    departureSpinner.setAdapter(adapterDepartureAnywherePlace);
+                    departureAnywhereSpinner.setAdapter(adapterDepartureAnywherePlace);
+                    departureSpinner.setAdapter(adapterPlace);
 
                     arrivalSpinner.setOnItemSelectedListener(new ArrivalSpinnerClass());
-                    departureAnywhereSpinner.setOnItemSelectedListener(new DepartureSpinnerClass());
-                    departureSpinner.setOnItemSelectedListener(new DepartureAnywhereSpinnerClass());
+                    departureSpinner.setOnItemSelectedListener(new DepartureSpinnerClass());
+                    departureAnywhereSpinner.setOnItemSelectedListener(new DepartureAnywhereSpinnerClass());
                 }
 
 
@@ -151,7 +151,7 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
 
     public void onNotificationArrivalButtonClicked(View view) {
         final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureAnywhereId, null, type, false);
-        Log.d("rules entred notify", "r " + arrivalId + + departureAnywhereId + type);
+        Log.d("rules entred notify", "r " + arrivalId + departureAnywhereId + type);
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {

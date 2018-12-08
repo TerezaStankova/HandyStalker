@@ -40,10 +40,10 @@ public class NotificationsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notification_rules);
-        setTitle(R.string.sms_rules);
+        setTitle(R.string.notification);
 
         // Set up the recycler view
-        mRecyclerView = findViewById(R.id.sendrules_list_recycler_view);
+        mRecyclerView = findViewById(R.id.notification_list_recycler_view);
         layoutManager = new LinearLayoutManager(this);
         restoreLayoutManagerPosition();
         mRecyclerView.setLayoutManager(layoutManager);
