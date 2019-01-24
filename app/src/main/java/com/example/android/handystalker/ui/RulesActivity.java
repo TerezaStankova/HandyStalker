@@ -20,7 +20,7 @@ public class RulesActivity extends AppCompatActivity {
     }
 
     public void onSMSButtonClicked(View view) {
-        Intent intent = new Intent(this, SmsRulesActivity.class);
+        Intent intent = new Intent(this, TextRulesActivity.class);
         startActivity(intent);
     }
 

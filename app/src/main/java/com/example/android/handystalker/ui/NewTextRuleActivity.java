@@ -26,8 +26,8 @@ public class NewTextRuleActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Arrival"));
-        tabLayout.addTab(tabLayout.newTab().setText("Departure"));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.arrival));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.departure));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);

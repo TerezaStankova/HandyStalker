@@ -17,7 +17,7 @@ public class ProviderChangedBroadcastReceiver extends BroadcastReceiver {
             LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             if (locationManager != null){
 
-                //  gps –> (GPS, AGPS)
+            //  gps –> (GPS, AGPS)
             isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
             //network –> (AGPS, CellID, WiFi MACID)

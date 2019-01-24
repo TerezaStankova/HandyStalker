@@ -69,13 +69,15 @@
     <string name="contact_icon">Contact icon</string>
     <string name="rule_icon">Rule icon</string>
 
-    <!--Stalking Rules-->
-    <string name="send_sms_to">Send SMS to</string>
+    <!--Text Rules-->
+    <string name="send_sms_to">Send a message to</string>
     <string name="after_reaching">after reaching</string>
     <string name="from">from</string>
     <string name="save_sms_rule">Save SMS Rule</string>
     <string name="while_departuring_from">while departuring from</string>
     <string name="save_departuring_sms_rule">Save departuring SMS Rule</string>
+
+    <!--Notification Rules-->
     <string name="notify_me_to_let">Notify me to let</string>
     <string name="know_about_my_safe">know about my safe</string>
     <string name="save_notification_rule">Save Notification Rule</string>
@@ -152,5 +154,7 @@
     <string name="after_my_arrival_to">after my arrival to</string>
     <string name="add_sound_rule">Add sound rule</string>
     <string name="after_departuring_from">after departuring from</string>
+    <string name="departure">Departure</string>
+    <string name="with_text">with text</string>
 
 </resources>

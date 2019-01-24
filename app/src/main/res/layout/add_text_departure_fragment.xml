@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="@string/while_departuring_from" />
+                android:text="@string/after_departuring_from" />
 
             <Spinner
                 android:id="@+id/departure_place_rule_spinner"
@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="with text" />
+                android:text="@string/with_text" />
 
             <Spinner
                 android:id="@+id/message_departure_spinner"

@@ -24,7 +24,7 @@ import com.example.android.handystalker.utilities.TextRulesViewModel;
 
 import java.util.List;
 
-public class SmsRulesActivity extends AppCompatActivity {
+public class TextRulesActivity extends AppCompatActivity {
 
     // Member variables
     private RulesAdapter mAdapter;
@@ -45,7 +45,7 @@ public class SmsRulesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.send_rules);
+        setContentView(R.layout.text_rules);
         setTitle(R.string.sms_rules);
 
         // Set up the recycler view
@@ -107,7 +107,7 @@ public class SmsRulesActivity extends AppCompatActivity {
     }
 
     public void onSMSPermissionClicked(View view) {
-        ActivityCompat.requestPermissions(SmsRulesActivity.this,
+        ActivityCompat.requestPermissions(TextRulesActivity.this,
                 new String[]{Manifest.permission.SEND_SMS},
                 PERMISSIONS_REQUEST);
     }
@@ -118,7 +118,7 @@ public class SmsRulesActivity extends AppCompatActivity {
 
         // Initialize location permissions checkbox
         CheckBox smsPermissions = findViewById(R.id.sms_permission_checkbox);
-        if (ActivityCompat.checkSelfPermission(SmsRulesActivity.this,
+        if (ActivityCompat.checkSelfPermission(TextRulesActivity.this,
                 android.Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
             smsPermissions.setChecked(false);
         } else {

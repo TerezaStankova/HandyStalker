@@ -131,7 +131,7 @@ public class AddTextArrivalFragment extends Fragment {
                 });
             }
 
-            Intent intent = new Intent(getActivity(), SmsRulesActivity.class);
+            Intent intent = new Intent(getActivity(), TextRulesActivity.class);
             startActivity(intent);
         }
     }
@@ -170,7 +170,7 @@ public class AddTextArrivalFragment extends Fragment {
                     Toast.makeText(getContext(), R.string.rule_saved_toast, Toast.LENGTH_SHORT).show();
                 }
 
-                Intent intent = new Intent(getActivity(), SmsRulesActivity.class);
+                Intent intent = new Intent(getActivity(), TextRulesActivity.class);
                 startActivity(intent);
             }
         }

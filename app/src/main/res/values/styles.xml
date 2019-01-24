@@ -6,9 +6,12 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:textColor">@color/TextOnLight</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimaryLight</item>
         <item name="spinnerDropDownItemStyle">@style/spinnerItemStyle2</item>
         <item name="android:spinnerItemStyle">@style/mySpinnerStyleItem</item>
+        <item name="android:textColorPrimary">@color/TextOnLight</item>
+        <item name="android:textColorSecondary">@color/text_color_primary</item>
+        <item name="android:colorForeground">@color/TextOnLight</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.DarkActionBar">

@@ -136,7 +136,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                     });
                 }
 
-                Intent intent = new Intent(this, SmsRulesActivity.class);
+                Intent intent = new Intent(this, TextRulesActivity.class);
                 startActivity(intent);
             }
     }
@@ -175,7 +175,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                 });
             }
 
-            Intent intent = new Intent(this, SmsRulesActivity.class);
+            Intent intent = new Intent(this, TextRulesActivity.class);
             startActivity(intent);
         }
     }
@@ -205,7 +205,7 @@ public class NewRuleActivity  extends AppCompatActivity {
 
                 }});
         }
-        Intent intent = new Intent(this, SmsRulesActivity.class);
+        Intent intent = new Intent(this, TextRulesActivity.class);
         startActivity(intent);
         }
 
@@ -244,7 +244,7 @@ public class NewRuleActivity  extends AppCompatActivity {
                         }
                     });
 
-                Intent intent = new Intent(this, SmsRulesActivity.class);
+                Intent intent = new Intent(this, TextRulesActivity.class);
                 startActivity(intent);
             }
         }

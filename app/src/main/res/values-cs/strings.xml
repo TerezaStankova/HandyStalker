@@ -70,11 +70,13 @@
     <string name="rule_icon">Rule icon</string>
 
     <!--Stalking Rules-->
-    <string name="send_sms_to">Pošli SMS pro </string>
-    <string name="after_reaching">, když dorazím do </string>
+    <string name="send_sms_to">Odešli kontaktu</string>
+    <string name="after_reaching">po příchodu do</string>
     <string name="from">z</string>
     <string name="save_sms_rule">Ulož SMS pravidlo</string>
-    <string name="while_departuring_from">, jakmile vyrazím z</string>
+    <string name="while_departuring_from">pokud jsem před tím navštívil</string>
+    <string name="with_text">zprávu s textem</string>
+
     <string name="save_departuring_sms_rule">Uložit pravidlo</string>
     <string name="notify_me_to_let">Upozorni mne, abych kontaktoval </string>
     <string name="know_about_my_safe"> ohledně mého bezpečného </string>
@@ -150,5 +152,7 @@
     <string name="after_my_arrival_to">poté, co dorazím do </string>
     <string name="add_sound_rule">Přidat pravidlo pro zvuk</string>
     <string name="after_departuring_from">po mém odchodu z</string>
+    <string name="departure">Odjezd</string>
+
 
 </resources>
