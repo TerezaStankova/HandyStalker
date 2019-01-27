@@ -133,8 +133,8 @@
 
     <string name="you_arrived">You arrived!</string>
     <string name="safely_there">Safely there!</string>
-    <string name="let">Let</string>
-    <string name="know_about_you">know that you are safe.</string>
+    <string name="let">Let your beloved ones </string>
+    <string name="know_about_you">know.</string>
     <string name="you_departured">You just departured!</string>
     <string name="know">know.</string>
     <string name="hi_i_am_home">Hi, I am home.</string>
@@ -156,5 +156,10 @@
     <string name="after_departuring_from">after departuring from</string>
     <string name="departure">Departure</string>
     <string name="with_text">with text</string>
+    <string name="Hi">Hi! I just departured from</string>
+    <string name="Hi_reaching">Hi! I just reached</string>
+    <string name="safely">safely! Have a wonderful day!</string>
+    <string name="anywhere">anywhere</string>
+    <string name="default_message">default text</string>
 
 </resources>

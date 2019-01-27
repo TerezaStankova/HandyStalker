@@ -136,7 +136,7 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
     }
 
     public void onNotificationRuleDepartureClicked(View view) {
-        final RuleEntry ruleEntry = new RuleEntry(null, departureId, null, type, false);
+        final RuleEntry ruleEntry = new RuleEntry(null, departureId, null,null, type, false);
         Log.d("rules entred notify", "r " + departureId  + type);
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
@@ -150,7 +150,7 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
     }
 
     public void onNotificationArrivalButtonClicked(View view) {
-        final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureAnywhereId, null, type, false);
+        final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureAnywhereId, null, null, type, false);
         Log.d("rules entred notify", "r " + arrivalId + departureAnywhereId + type);
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override

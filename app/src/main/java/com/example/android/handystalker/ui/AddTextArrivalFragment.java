@@ -43,7 +43,7 @@ public class AddTextArrivalFragment extends Fragment {
     List<Integer> placeIds = new ArrayList<Integer>();
     List<String> placeNames = new ArrayList<String>();
     List<String> placeNamesAnywhere = new ArrayList<String>();
-    List<Integer> mMessgesIds = newArrayList();
+    List<Integer> mMessagesIds = newArrayList();
     List<String> mMessagesTexts = newArrayList();
 
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 2222;
@@ -58,7 +58,6 @@ public class AddTextArrivalFragment extends Fragment {
     Spinner messageTextSpinner;
     Integer arrivalId = null;
     Integer departureId = null;
-    Integer departureId2 = null;
     Integer contactId = null;
     Integer messageId = null;
 
@@ -219,7 +218,7 @@ public class AddTextArrivalFragment extends Fragment {
 
                     Log.d("placeNames", " " + placeNames.get(0));
                     placeNamesAnywhere.addAll(placeNames);
-                    placeNamesAnywhere.add(0, "anywhere");
+                    placeNamesAnywhere.add(0, getString(R.string.anywhere));
                     Log.d("placeNames", " " + placeNames.get(0));
 
 
@@ -246,11 +245,7 @@ public class AddTextArrivalFragment extends Fragment {
 
                     arrivalSpinner.setOnItemSelectedListener(new ArrivalSpinnerClass());
                     departureSpinner.setOnItemSelectedListener(new DepartureAnywhereSpinnerClass());
-
-
                 }
-
-
             }
         });
     }
@@ -338,16 +333,17 @@ public class AddTextArrivalFragment extends Fragment {
                     return;
                 }
                 if (messagesEntries != null || messagesEntries.size() != 0) {
-                    mMessgesIds.clear();
+                    mMessagesIds.clear();
                     mMessagesTexts.clear();
 
                     for (int i = 0; i < messagesEntries.size(); i++) {
                         System.out.println("mMessageEntry" + i + messagesEntries.get(i).getText());
 
                         mMessagesTexts.add(messagesEntries.get(i).getText());
-                        mMessgesIds.add(messagesEntries.get(i).getId());
+                        mMessagesIds.add(messagesEntries.get(i).getId());
                     }
 
+                    mMessagesTexts.add(0, getString(R.string.default_message));
 
                     ArrayAdapter<String> adapterMessages = new ArrayAdapter<String>(
                             getContext(),
@@ -360,19 +356,26 @@ public class AddTextArrivalFragment extends Fragment {
                     messageTextSpinner.setAdapter(adapterMessages);
 
 
-                    messageTextSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
-                            messageId = mMessgesIds.get(position);
-                        }
-                        public void onNothingSelected(AdapterView<?> parent) {
-                            messageId = 0;
-                        }
-                    });
-
+                    messageTextSpinner.setOnItemSelectedListener(new MessageSpinnerClass());
 
                 }
             }
 
         });
     }
+
+    class MessageSpinnerClass implements AdapterView.OnItemSelectedListener
+    {
+        public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
+        { if (position == 0){
+            messageId = null;
+        } else {
+            messageId = mMessagesIds.get(position - 1);}
+        }
+        public void onNothingSelected(AdapterView<?> parent) {
+            messageId = null;
+        }
+    }
+
+
 }

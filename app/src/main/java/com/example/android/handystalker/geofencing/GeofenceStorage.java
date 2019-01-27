@@ -58,7 +58,6 @@ public class GeofenceStorage {
 
     public boolean getIsEnabled() {
         // Get isEnabled, which indicates if the user allows the GeoFences to work
-
         boolean isEnabled;
         isEnabled = mPrefs.getBoolean(ISENABLED, false);
         return isEnabled;

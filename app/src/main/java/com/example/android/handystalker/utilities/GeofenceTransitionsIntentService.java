@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+
 import android.support.annotation.NonNull;
 import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
@@ -18,9 +19,8 @@ import android.util.Log;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
-import com.example.android.handystalker.database.ContactsEntry;
 import com.example.android.handystalker.database.RuleEntry;
-import com.example.android.handystalker.model.Contact;
+
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
@@ -75,6 +75,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                 case Geofence.GEOFENCE_TRANSITION_ENTER: {
                     Log.d("enter", "entered ");
                     final List<String> placeName = new ArrayList<String>();
+                    final List<String> messagesForThisPlace = new ArrayList<String>();
 
                     @SuppressLint("StaticFieldLeak") AsyncTask<String, Void, List<String>> asyncTask = new AsyncTask<String, Void, List<String>>() {
                         @Override
@@ -89,9 +90,6 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                             String namePlace = mDb.placeDao().findPlaceNameById(arrivalId);
                             List<RuleEntry> rulesForThisPlace = mDb.ruleDao().findRulesForArrivalPlace(arrivalId);
                             List<String> phoneNumbers = new ArrayList<String>();
-                            ArrayList<Contact> contactsForThisPlace = new ArrayList<Contact>();
-                            List<String> contactNames = new ArrayList<String>();
-
 
                             if (rulesForThisPlace != null && rulesForThisPlace.size() != 0) {
                                 Log.d(TAG, "rulesForThisPlace.size= " + rulesForThisPlace.size());
@@ -109,18 +107,26 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                                                 mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
                                                 placeName.add(mDb.placeDao().findPlaceNameById(arrivalId));
                                                 phoneNumbers.add(mDb.contactDao().findPhoneForContactId(rulesForThisPlace.get(i).getContactId()));
+                                                messagesForThisPlace.add(mDb.messageDao().findTextForMessageId(rulesForThisPlace.get(i).getMessageId()));
                                             }
                                         } else {
                                             placeName.add(mDb.placeDao().findPlaceNameById(arrivalId));
                                             phoneNumbers.add(mDb.contactDao().findPhoneForContactId(rulesForThisPlace.get(i).getContactId()));
+                                            messagesForThisPlace.add(mDb.messageDao().findTextForMessageId(rulesForThisPlace.get(i).getMessageId()));
                                         }
                                     } else if (rulesForThisPlace.get(i).getType().equals("notify")) {
+                                        if (rulesForThisPlace.get(i).getDepartureId() != null) {
+                                            boolean active = rulesForThisPlace.get(i).getActive();
+                                            if (active) {
+                                                rulesForThisPlace.get(i).setActive(false);
+                                                mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
+                                                sendNotification(context, true);
+                                            }
+                                        } else {
+                                            sendNotification(context, true);
+                                        }
+
                                         Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
-                                        Integer contactId = (Integer) rulesForThisPlace.get(i).getContactId();
-                                        Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
-                                        contactNames.add(mDb.contactDao().findNameForContactId(rulesForThisPlace.get(i).getContactId()));
-                                        ContactsEntry contactsEntry = mDb.contactDao().findContactsEntryfromContactId(contactId);
-                                        contactsForThisPlace.add(new Contact(0, contactsEntry.getPhone(), contactsEntry.getName(), null));
                                     } else if (rulesForThisPlace.get(i).getType().equals("wifi")) {
                                         Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
                                         setWiFi(context, true);
@@ -140,8 +146,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                             Log.d(TAG, "async finished");
                             // Must call finish() so the BroadcastReceiver can be recycled.
                             //pendingResult.finish();
-
-                            sendNotification(context, contactNames, true);
+                            //sendNotification(context, true);
                             return phoneNumbers;
                         }
 
@@ -149,7 +154,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                         protected void onPostExecute(List<String> phoneNumbers) {
                             if (phoneNumbers != null && phoneNumbers.size() != 0) {
                                 for (int i = 0; i < phoneNumbers.size(); i++) {
-                                    sendSMS(context, phoneNumbers.get(i), placeName.get(i));
+                                    sendSMS(context, phoneNumbers.get(i), placeName.get(i), messagesForThisPlace.get(i));
                                 }
                             }
                         }
@@ -164,6 +169,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                 case Geofence.GEOFENCE_TRANSITION_EXIT: {
                     Log.d("exit", "exited");
                     final List<String> placeName = new ArrayList<String>();
+                    final List<String> messagesForThisPlace = new ArrayList<String>();
 
 
                     @SuppressLint("StaticFieldLeak") AsyncTask<String, Void, List<String>> asyncTask = new AsyncTask<String, Void, List<String>>() {
@@ -178,7 +184,6 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                             Log.d(TAG, "triggeringGeofence.size()" + triggeringGeofence.size() + " " + departureId);
                             List<RuleEntry> rulesForThisPlace = mDb.ruleDao().findRulesForDeparturePlace(departureId);
                             List<String> phoneNumbers = new ArrayList<String>();
-                            List<String> contactNames = new ArrayList<String>();
 
                             if (rulesForThisPlace != null && rulesForThisPlace.size() != 0) {
 
@@ -197,10 +202,11 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                                         } else {
                                             placeName.add(mDb.placeDao().findPlaceNameById(departureId));
                                             phoneNumbers.add(mDb.contactDao().findPhoneForContactId(rulesForThisPlace.get(i).getContactId()));
+                                            messagesForThisPlace.add(mDb.messageDao().findTextForMessageId(rulesForThisPlace.get(i).getMessageId()));
                                         }
                                     } else if (rulesForThisPlace.get(i).getType().equals("notify")) {
+                                        sendNotification(context, false);
                                         Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
-                                        contactNames.add(mDb.contactDao().findNameForContactId(rulesForThisPlace.get(i).getContactId()));
                                     } else if (rulesForThisPlace.get(i).getType().equals(getString(R.string.wifi))) {
                                         Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
                                         setWiFi(context, false);
@@ -216,7 +222,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                                     }
                                 }
                             }
-                            sendNotification(context, contactNames, false);
+
                             return phoneNumbers;
                         }
 
@@ -224,7 +230,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                         protected void onPostExecute(List<String> phoneNumbers) {
                             if (phoneNumbers != null && phoneNumbers.size() != 0) {
                                 for (int i = 0; i < phoneNumbers.size(); i++) {
-                                    sendDeparturingSMS(context, phoneNumbers.get(i), placeName.get(i));
+                                    sendDeparturingSMS(context, phoneNumbers.get(i), placeName.get(i), messagesForThisPlace.get(i));
                                 }
                             }
                             // Must call finish() so the BroadcastReceiver can be recycled.
@@ -243,42 +249,47 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                     break;
             }
 
-
         } else {
             // Log the error.
             Log.e(TAG, "Invalid Transition");
         }
-
-
     }
 
 
     //Sends an SMS to the number stated
 
-    protected void sendSMS(Context context, String phoneNumber, String placeName) {
+    protected void sendSMS(Context context, String phoneNumber, String placeName, String message) {
 
         Log.d("sentsms", "exited " + context);
         Log.d("sentsms", "Number " + phoneNumber);
         if (android.os.Build.VERSION.SDK_INT < 24 || ContextCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
             try {
                 Log.d("sentsms", "now send " + context);
+                String messageText;
+                if (message == null || message.length() == 0) { messageText = getString(R.string.Hi_reaching) + placeName + getString(R.string.safely);}
+                else {messageText = message;}
+
                 SmsManager smsManager = SmsManager.getDefault();
-                smsManager.sendTextMessage(phoneNumber, null, "Hi! I just reached " + placeName + " safely! Have a wonderful day!", null, null);
+                smsManager.sendTextMessage(phoneNumber, null, messageText, null, null);
                 //  smsManager.sendTextMessage(number,null,matn,null,null);
             } catch (Exception e) {
             }
         }
     }
 
-    protected void sendDeparturingSMS(Context context, String phoneNumber, String placeName) {
+    protected void sendDeparturingSMS(Context context, String phoneNumber, String placeName, String message) {
 
         Log.d("sentsms", "exited " + context);
-        Log.d("sentsms", "Number " + phoneNumber);
+        Log.d("sentsms", "Number " + phoneNumber + message);
         if (android.os.Build.VERSION.SDK_INT < 24 || ContextCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
             try {
                 Log.d("sentsms", "now send " + context);
+                String messageText;
+                if (message == null || message.length() == 0) { messageText = getString(R.string.Hi) + placeName;}
+                else {messageText = message;}
+
                 SmsManager smsManager = SmsManager.getDefault();
-                smsManager.sendTextMessage(phoneNumber, null, "Hi! I just departured from " + placeName, null, null);
+                smsManager.sendTextMessage(phoneNumber, null, messageText, null, null);
             } catch (Exception e) {
             }
         }
@@ -286,6 +297,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
 
     private void setSound(Context context, int mode) {
 
+        Log.d("turn", "sound to mode: " + mode);
         //RINGER_MODE_SILENT - Ringer mode that will be silent and will not vibrate. (This overrides the vibrate setting.)
         //Constant Value: 0 (0x00000000)
         //RINGER_MODE_NORMAL - Ringer mode that may be audible and may vibrate. It will be audible if the volume before changing out of this mode was audible. It will vibrate if the vibrate setting is on.
@@ -302,60 +314,55 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
     }
 
 
-    private void sendNotification(Context context, List<String> contactNames, boolean arrival) {
-        if (contactNames != null && contactNames.size()!= 0) {
-            StringBuilder nameList = new StringBuilder(contactNames.get(0));
-            for (int i = 1; i < contactNames.size(); i++) {
-                nameList.append(", ").append(contactNames.get(i));
+    private void sendNotification(Context context, boolean arrival) {
+
+        if (arrival) {
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_place_green_24dp)
+                    .setContentTitle(getString(R.string.you_arrived))
+                    .setContentText(getString(R.string.safely_there))
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(getString(R.string.let) + getString(R.string.know_about_you)))
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+            // Dismiss notification once the user touches it.
+            mBuilder.setAutoCancel(true);
+
+            // Get an instance of the Notification manager
+            NotificationManager mNotificationManager =
+                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+            // Issue the notification
+            if (mNotificationManager != null) {
+                mNotificationManager.notify(0, mBuilder.build());
             }
 
-            if (arrival) {
-                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_place_green_24dp)
-                        .setContentTitle(getString(R.string.you_arrived))
-                        .setContentText(getString(R.string.safely_there))
-                        .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText(getString(R.string.let) + nameList + getString(R.string.know_about_you)))
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        } else {
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_place_green_24dp)
+                    .setContentTitle(getString(R.string.you_departured))
+                    .setContentText("Safely on my way!")
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(getString(R.string.let) + getString(R.string.know_about_you)))
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-                // Dismiss notification once the user touches it.
-                mBuilder.setAutoCancel(true);
+            // Dismiss notification once the user touches it.
+            mBuilder.setAutoCancel(true);
 
-                // Get an instance of the Notification manager
-                NotificationManager mNotificationManager =
-                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            // Get an instance of the Notification manager
+            NotificationManager mNotificationManager =
+                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-                // Issue the notification
-                if (mNotificationManager != null) {
-                    mNotificationManager.notify(0, mBuilder.build());
-                }
-
-            } else {
-                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_place_green_24dp)
-                        .setContentTitle(getString(R.string.you_departured))
-                        .setContentText("Safely on my way!")
-                        .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText(getString(R.string.let) + nameList + getString(R.string.know)))
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-                // Dismiss notification once the user touches it.
-                mBuilder.setAutoCancel(true);
-
-                // Get an instance of the Notification manager
-                NotificationManager mNotificationManager =
-                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-                // Issue the notification
-                if (mNotificationManager != null) {
-                    mNotificationManager.notify(0, mBuilder.build());
-                }
+            // Issue the notification
+            if (mNotificationManager != null) {
+                mNotificationManager.notify(0, mBuilder.build());
             }
         }
     }
 
 
     private void setWiFi(Context context, boolean mode) {
+        Log.d("turn", "wifi to mode: " + mode);
         if (android.os.Build.VERSION.SDK_INT < 24 || ContextCompat.checkSelfPermission(context, Manifest.permission.CHANGE_WIFI_STATE) == PackageManager.PERMISSION_GRANTED) {
             try {
                 WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -366,10 +373,4 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
             }
         }
     }
-
-
-
-
-
-
 }

@@ -72,8 +72,8 @@ public class NewSoundRuleActivity extends AppCompatActivity {
 
         //place spinner
         arrivalSpinner = findViewById(R.id.arrival_sound_spinner);
-        departureSpinner = findViewById(R.id.departure_anywhere_sound_spinner);
-        departureAnywhereSpinner = findViewById(R.id.departure_sound_spinner);
+        departureSpinner = findViewById(R.id.departure_sound_spinner);
+        departureAnywhereSpinner = findViewById(R.id.departure_anywhere_sound_spinner);
 
         //on-of spinner
         onOfSoundSpinner = findViewById(R.id.sound_on_spinner_arrival);
@@ -124,7 +124,7 @@ public class NewSoundRuleActivity extends AppCompatActivity {
     }
 
     public void onSaveSoundRuleDepartureClick(View view) {
-        if (onSound) {
+        if (onSoundDeparture) {
             type = SOUND;} else {
             type = SOUNDOFF;}
 
@@ -145,7 +145,7 @@ public class NewSoundRuleActivity extends AppCompatActivity {
             // Permission has already been granted
 
             final RuleEntry ruleEntry = new RuleEntry(null, departureId, contactId, null, type, false);
-            Log.d("rules entred", "r " + departureId + contactId + type);
+            Log.d("rules entred", "r " + departureId + type);
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {

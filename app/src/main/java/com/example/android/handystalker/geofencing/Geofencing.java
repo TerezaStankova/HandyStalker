@@ -53,6 +53,7 @@ public class Geofencing {
     public void registerAllGeofences() {
         // Check that the list has Geofences in it
         if (mGeoClient == null || mGeofenceList == null || mGeofenceList.size() == 0) {
+            if(mGeoClient == null) {Log.d("noClient","fail");}
             Log.d("noList","fail");
             return;
         }

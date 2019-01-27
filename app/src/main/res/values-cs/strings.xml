@@ -127,7 +127,7 @@
 
     <string name="you_arrived">Dorazili jste!</string>
     <string name="safely_there">Bezpečně tady!</string>
-    <string name="let">Dej</string>
+    <string name="let">Dej </string>
     <string name="know_about_you">vědět, že jsi v pořádku.</string>
     <string name="you_departured">Vyrazili jste! Dejte o tom vědět.</string>
     <string name="know">know.</string>
@@ -153,6 +153,12 @@
     <string name="add_sound_rule">Přidat pravidlo pro zvuk</string>
     <string name="after_departuring_from">po mém odchodu z</string>
     <string name="departure">Odjezd</string>
+    <string name="Hi">Ahoj! Vyrážím z </string>
+    <string name="Hi_reaching">Ahoj! Akorát jsem dorazil do </string>
+    <string name="safely">! Měj se krásně!</string>
+
+    <string name="anywhere">kdekoliv</string>
+    <string name="default_message">automatický text</string>
 
 
 </resources>

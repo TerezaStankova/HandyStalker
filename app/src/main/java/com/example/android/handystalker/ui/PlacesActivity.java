@@ -104,7 +104,13 @@ public class PlacesActivity extends AppCompatActivity {
         mGeoDataClient = Places.getGeoDataClient(this);
 
         mIsEnabled = getPreferences(MODE_PRIVATE).getBoolean(getString(R.string.setting_enabled), false);
+
         Log.d("Preference","getPref" + mIsEnabled);
+
+        mIsEnabled = mGeofenceStorage.getIsEnabled();
+
+        Log.d("Preference","getPref" + mIsEnabled);
+
 
 
 
