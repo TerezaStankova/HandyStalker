@@ -1,5 +1,11 @@
 package com.example.android.handystalker.ui;
 
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+
+
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 
@@ -42,19 +48,27 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.GeoDataClient;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBufferResponse;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlacePicker;
+//import com.google.android.gms.location.places.GeoDataClient;
+//import com.google.android.gms.location.places.Place;
+//import com.google.android.gms.location.places.PlaceBufferResponse;
+//import com.google.android.gms.location.places.Places;
+//import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.FetchPlaceResponse;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static com.google.android.gms.location.places.ui.PlacePicker.getPlace;
+//import static com.google.android.gms.location.places.ui.PlacePicker.getPlace;
 
 public class PlacesActivity extends AppCompatActivity {
 
@@ -62,12 +76,13 @@ public class PlacesActivity extends AppCompatActivity {
     public static final String TAG = PlacesActivity.class.getSimpleName();
     private static final int PERMISSIONS_REQUEST_FINE_LOCATION = 111;
     private static final int PLACE_PICKER_REQUEST = 1;
+    private static final int AUTOCOMPLETE_REQUEST_CODE = 23456;
 
     // Member variables
     private PlacesAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private boolean mIsEnabled;
-    private GeoDataClient mGeoDataClient;
+    //private GeoDataClient mGeoDataClient;
     private static Geofencing mGeofencing;
     private String placeIdfromPicker;
     private String AddressfromPicker;
@@ -82,10 +97,17 @@ public class PlacesActivity extends AppCompatActivity {
     // Member variable for the Database
     private AppDatabase mDb;
 
+    private PlacesClient placesClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.places);
+
+
+
+        // Retrieve a PlacesClient (previously initialized - see MainActivity)
+        placesClient = Places.createClient(this);
 
         // Instantiate a new geofence storage area.
         mGeofenceStorage = new GeofenceStorage(this);
@@ -101,7 +123,7 @@ public class PlacesActivity extends AppCompatActivity {
         GeofencingClient mGeoClient = LocationServices.getGeofencingClient(this);
 
         mGeofencing = new Geofencing(this, mGeoClient);
-        mGeoDataClient = Places.getGeoDataClient(this);
+        //mGeoDataClient = Places.getGeoDataClient(this);
 
         mIsEnabled = getPreferences(MODE_PRIVATE).getBoolean(getString(R.string.setting_enabled), false);
 
@@ -182,7 +204,69 @@ public class PlacesActivity extends AppCompatActivity {
 
                     mGeofenceStorage.setGeofence(placeIds);
 
-                    mGeoDataClient.getPlaceById(placeIds.toArray(new String[placeIds.size()])).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
+                    // Specify the fields to return.
+                    List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
+
+                    // Construct a request object, passing the place ID and fields array.
+                    FetchPlaceRequest request = FetchPlaceRequest.builder(placeIds.get(0), placeFields)
+                            .build();
+
+                   /* placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
+                        Place place = response.getPlace();
+                        Log.i(TAG, "Place found: " + place.getName());
+                    }).addOnFailureListener((exception) -> {
+                        if (exception instanceof ApiException) {
+                            ApiException apiException = (ApiException) exception;
+                            int statusCode = apiException.getStatusCode();
+                            // Handle error with given status code.
+                            Log.e(TAG, "Place not found: " + exception.getMessage());
+                        }
+                    });*/
+
+                    placesClient.fetchPlace(request).addOnCompleteListener(new OnCompleteListener<FetchPlaceResponse>() {
+                        @Override
+                        public void onComplete(@NonNull Task<FetchPlaceResponse> response) {
+                            if (response.isSuccessful()) {
+                                Place place = response.getResult().getPlace();
+
+                                Log.i(TAG, "Place found: " + place.getName());
+                                mGeofencing.updateGeofencesList(place);
+                                if (mIsEnabled) mGeofencing.registerAllGeofences();
+                                //places.release();
+                            } else {
+                                Log.e(TAG, "Place not found.");
+                            }
+                        }
+                    });
+
+                   /* .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(TResult authResult) {
+                            // Task completed successfully
+                            // ...
+                        }
+                    });
+
+ .addOnCompleteListener(new OnCompleteListener<Place>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Place> task) {
+                            if (task.isSuccessful()) {
+                                Place places = task.getResult();
+
+
+
+                                if (mIsEnabled) mGeofencing.registerAllGeofences();
+                                places.release();
+                            } else {
+                                Log.e(TAG, "Place not found.");
+                            }
+                        }
+                    });
+
+
+
+/*
+                            .addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
                         @Override
                         public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
                             if (task.isSuccessful()) {
@@ -195,10 +279,50 @@ public class PlacesActivity extends AppCompatActivity {
                                 Log.e(TAG, "Place not found.");
                             }
                         }
-                    });
+                    });/
+                    */
 
                 }}
         });
+    }
+
+
+
+
+
+    /**
+     * Override the activity's onActivityResult(), check the request code, and
+     * do something with the returned place data (in this example it's place name and place ID).
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+
+                if (place == null) {
+                    Log.i(TAG, "No place selected");
+                    return;
+                }
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    AddressfromPicker = Objects.requireNonNull(place.getAddress()).toString();
+                } else {
+                    if (place.getAddress() != null) AddressfromPicker = place.getAddress().toString();
+                }
+                placeIdfromPicker = place.getId();
+                buildDialog();
+
+
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // TODO: Handle the error.
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Log.i(TAG, status.getStatusMessage());
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        }
     }
 
     /***
@@ -213,26 +337,34 @@ public class PlacesActivity extends AppCompatActivity {
         try {
             // Start a new Activity for the Place Picker API, this will trigger {@code #onActivityResult}
             // when a place is selected or the user cancels.
-            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+
+            // Set the fields to specify which types of place data to return.
+            List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
+
+            // Start the autocomplete intent.
+            Intent intent = new Autocomplete.IntentBuilder(
+                    AutocompleteActivityMode.FULLSCREEN, fields)
+                    .build(this);
+            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+
+
+            /*PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
             Intent i = builder.build(this);
-            startActivityForResult(i, PLACE_PICKER_REQUEST);
-        } catch (GooglePlayServicesRepairableException e) {
-            Log.e(TAG, String.format("GooglePlayServices Not Available [%s]", e.getMessage()));
-        } catch (GooglePlayServicesNotAvailableException e) {
-            Log.e(TAG, String.format("GooglePlayServices Not Available [%s]", e.getMessage()));
+            startActivityForResult(i, PLACE_PICKER_REQUEST);*/
         } catch (Exception e) {
             Log.e(TAG, String.format("PlacePicker Exception: %s", e.getMessage()));
         }
     }
 
 
-    /***
+    /*
      * Called when the Place Picker Activity returns back with a selected place (or after canceling)
      *
      * @param requestCode The request code passed when calling startActivityForResult
      * @param resultCode  The result code specified by the second activity
      * @param data        The Intent that carries the result data.
-     */
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
             Place place = getPlace(this, data);
@@ -252,7 +384,7 @@ public class PlacesActivity extends AppCompatActivity {
             placeIdfromPicker = place.getId();
             buildDialog();
         }
-    }
+    }*/
 
 
     public void buildDialog(){

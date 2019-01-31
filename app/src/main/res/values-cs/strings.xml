@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Užitečný Stalker</string>
+    <string name="app_name">Hlídáček</string>
     <string name="policies_privacy">http://www.google.com/policies/privacy</string>
     <string name="add_new_location">Přidat nové místečko</string>
 
@@ -159,6 +159,8 @@
 
     <string name="anywhere">kdekoliv</string>
     <string name="default_message">automatický text</string>
+
+    <string name="error_api_key" translatable="false">API klíč nenalezen</string>
 
 
 </resources>

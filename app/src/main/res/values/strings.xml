@@ -162,4 +162,7 @@
     <string name="anywhere">anywhere</string>
     <string name="default_message">default text</string>
 
+
+
+    <string name="error_api_key" translatable="false">No API key defined in gradle.properties</string>
 </resources>

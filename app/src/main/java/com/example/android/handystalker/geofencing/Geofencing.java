@@ -9,10 +9,13 @@ import android.util.Log;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBufferResponse;
+//import com.google.android.gms.location.places.Place;
+//import com.google.android.gms.location.places.PlaceBufferResponse;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,12 +127,12 @@ public class Geofencing {
      * Updates the local ArrayList of Geofences
      * Uses the Place ID defined by the API as the Geofence object Id
      *
-     * @param places the PlaceBufferResponse result of the getPlaceById call
+     * @param place the Place result of the fetchPlace call
      */
-    public void updateGeofencesList(PlaceBufferResponse places) {
-        mGeofenceList = new ArrayList<>();
-        if (places == null || places.getCount() == 0) return;
-        for (Place place : places) {
+    public void updateGeofencesList(Place place) {
+        //mGeofenceList = new ArrayList<>();
+        if (place == null) return;
+
             // Read the place information from the DB cursor
             String placeUID = place.getId();
             Log.d("updateGeofenceList", "regId" + placeUID);
@@ -149,7 +152,7 @@ public class Geofencing {
                     .build();
             // Add it to the list
             mGeofenceList.add(geofence);
-        }
+
         //places.release();
     }
 

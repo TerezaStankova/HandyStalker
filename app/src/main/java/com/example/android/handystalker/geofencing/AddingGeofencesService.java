@@ -10,21 +10,32 @@ import android.util.Log;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.GeoDataClient;
+
+/**import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlaceBufferResponse;
 import com.google.android.gms.location.places.Places;
+ **/
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.Arrays;
 import java.util.List;
-
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.FetchPlaceResponse;
+import com.google.android.libraries.places.api.net.PlacesClient;
 
 public class AddingGeofencesService extends IntentService implements GoogleApiClient.ConnectionCallbacks {
 
     private static final String TAG = "AddingGeofencesService";
 
     private Geofencing mGeofencing;
-    private GeoDataClient mGeoDataClient;
+    //private GeoDataClient mGeoDataClient;
+
+    private PlacesClient placesClient;
+
     private static boolean mIsEnabled;
     // Persistent storage for geofences.
     private GeofenceStorage mGeofenceStorage;
@@ -57,7 +68,8 @@ public class AddingGeofencesService extends IntentService implements GoogleApiCl
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        mGeoDataClient = Places.getGeoDataClient(this);
+        //mGeoDataClient = Places.getGeoDataClient(this);
+        placesClient = Places.createClient(this);
 
         Log.d(TAG, "handling service" + mIsEnabled);
         GeofencingClient mGeoClient = LocationServices.getGeofencingClient(getApplicationContext());
@@ -71,10 +83,11 @@ public class AddingGeofencesService extends IntentService implements GoogleApiCl
 
         mIsEnabled = mGeofenceStorage.getIsEnabled();
         Log.d(TAG, "handling service" + mIsEnabled);
+        List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
 
         if (placeIds != null && placeIds.size() > 0) {
 
-            mGeoDataClient.getPlaceById(placeIds.toArray(new String[placeIds.size()])).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
+            /*mGeoDataClient.getPlaceById(placeIds.toArray(new String[placeIds.size()])).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
                 @Override
                 public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
                     if (task.isSuccessful()) {
@@ -86,7 +99,46 @@ public class AddingGeofencesService extends IntentService implements GoogleApiCl
                         Log.e(TAG, "Place not found.");
                     }
                 }
-            });
+            });*/
+
+
+            for (int i = 0; i < placeIds.size(); i++){
+
+                // Construct a request object, passing the place ID and fields array.
+                FetchPlaceRequest request = FetchPlaceRequest.builder(placeIds.get(i), placeFields)
+                        .build();
+
+                placesClient.fetchPlace(request).addOnCompleteListener(new OnCompleteListener<FetchPlaceResponse>() {
+                    @Override
+                    public void onComplete(@NonNull Task<FetchPlaceResponse> response) {
+                        if (response.isSuccessful()) {
+                            Place place = response.getResult().getPlace();
+
+                            Log.i(TAG, "Place found: " + place.getName());
+                            mGeofencing.updateGeofencesList(place);
+                            if (mIsEnabled) mGeofencing.registerAllGeofences();
+                            //places.release();
+                        } else {
+                            Log.e(TAG, "Place not found.");
+                        }
+                    }
+                });
+
+
+            }
+
+                   /* placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
+                        Place place = response.getPlace();
+                        Log.i(TAG, "Place found: " + place.getName());
+                    }).addOnFailureListener((exception) -> {
+                        if (exception instanceof ApiException) {
+                            ApiException apiException = (ApiException) exception;
+                            int statusCode = apiException.getStatusCode();
+                            // Handle error with given status code.
+                            Log.e(TAG, "Place not found: " + exception.getMessage());
+                        }
+                    });*/
+
 
         }
     }

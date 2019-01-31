@@ -10,19 +10,26 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.geofencing.GeofenceStorage;
 import com.example.android.handystalker.geofencing.Geofencing;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.GeoDataClient;
-import com.google.android.gms.location.places.PlaceBufferResponse;
-import com.google.android.gms.location.places.Places;
+//import com.google.android.gms.location.places.GeoDataClient;
+//import com.google.android.gms.location.places.PlaceBufferResponse;
+//import com.google.android.gms.location.places.Places;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.FetchPlaceResponse;
+import com.google.android.libraries.places.api.net.PlacesClient;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -31,16 +38,32 @@ public class MainActivity extends AppCompatActivity {
     private boolean mIsEnabled;
     private GeofenceStorage mGeofenceStorage;
     private static Geofencing mGeofencing;
-    private GeoDataClient mGeoDataClient;
+    //private GeoDataClient mGeoDataClient;
+
+    private PlacesClient placesClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        String apiKey = getString(R.string.GOOGLE_PLACES_ANDROID_API_KEY);
+
+        if (apiKey.equals("")) {
+            Toast.makeText(this, getString(R.string.error_api_key), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // Setup Places Client
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), apiKey);
+        }
+
+        placesClient = Places.createClient(this);
+
         // Instantiate a new geofence storage area.
         mGeofenceStorage = new GeofenceStorage(this);
-        mGeoDataClient = Places.getGeoDataClient(this);
+        //mGeoDataClient = Places.getGeoDataClient(this);
 
         mIsEnabled = getPreferences(MODE_PRIVATE).getBoolean(getString(R.string.setting_enabled), false);
         Log.d("Preference","getPref" + mIsEnabled);
@@ -66,12 +89,44 @@ public class MainActivity extends AppCompatActivity {
                 //TODO: is it right?
                 //AddingGeofencesService.setmIsEnabled(mIsEnabled);
                 mGeofenceStorage.setIsEnabled(mIsEnabled);
+                List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
 
                 editor.apply();
                 if (isChecked) {
                     List<String> placeIds = mGeofenceStorage.getGeofenceIds();
 
-                    mGeoDataClient.getPlaceById(placeIds.toArray(new String[placeIds.size()])).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
+                    for (int i = 0; i < placeIds.size(); i++){
+
+                        // Construct a request object, passing the place ID and fields array.
+                        FetchPlaceRequest request = FetchPlaceRequest.builder(placeIds.get(i), placeFields)
+                                .build();
+
+                        placesClient.fetchPlace(request).addOnCompleteListener(new OnCompleteListener<FetchPlaceResponse>() {
+                            @Override
+                            public void onComplete(@NonNull Task<FetchPlaceResponse> response) {
+                                if (response.isSuccessful()) {
+                                    Place place = response.getResult().getPlace();
+
+                                    Log.i(TAG, "Place found: " + place.getName());
+                                    mGeofencing.updateGeofencesList(place);
+                                    if (mIsEnabled) mGeofencing.registerAllGeofences();
+                                    //places.release();
+                                } else {
+                                    Log.e(TAG, "Place not found.");
+                                }
+                            }
+                        });
+
+
+                    }
+
+
+
+
+
+
+
+                    /*mGeoDataClient.getPlaceById(placeIds.toArray(new String[placeIds.size()])).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
                         @Override
                         public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
                             if (task.isSuccessful()) {
@@ -83,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                                 Log.e(TAG, "Place not found.");
                             }
                         }
-                    });
+                    });*/
                 }
                 else mGeofencing.unRegisterAllGeofences();
             }});
