@@ -86,7 +86,6 @@ public class PlacesActivity extends AppCompatActivity {
     private static Geofencing mGeofencing;
     private String placeIdfromPicker;
     private String AddressfromPicker;
-
     private GeofenceStorage mGeofenceStorage;
 
     //Variable to save position in the list
@@ -96,6 +95,8 @@ public class PlacesActivity extends AppCompatActivity {
 
     // Member variable for the Database
     private AppDatabase mDb;
+    private int b;
+    private final int d = 0;
 
     private PlacesClient placesClient;
 
@@ -140,26 +141,6 @@ public class PlacesActivity extends AppCompatActivity {
         mAdapter.setDatabase(mDb);
         setupViewModel();
     }
-
-    /*public void setCheckedPrivacy(Switch onOffSwitch){
-        onOffSwitch.setChecked(mIsEnabled);
-        onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
-                editor.putBoolean(getString(R.string.setting_enabled), isChecked);
-                mIsEnabled = isChecked;
-
-                //TODO: is it right?
-                //AddingGeofencesService.setmIsEnabled(mIsEnabled);
-                mGeofenceStorage.setIsEnabled(mIsEnabled);
-
-                editor.apply();
-                if (isChecked) mGeofencing.registerAllGeofences();
-                else mGeofencing.unRegisterAllGeofences();
-            }});
-    }*/
-
 
     //TODO: Loading bar
     //TODO: register Geofences boolean
@@ -206,82 +187,38 @@ public class PlacesActivity extends AppCompatActivity {
 
                     // Specify the fields to return.
                     List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
+                    final List<Place> places = new ArrayList<Place>();
+                    b = 1;
 
-                    // Construct a request object, passing the place ID and fields array.
-                    FetchPlaceRequest request = FetchPlaceRequest.builder(placeIds.get(0), placeFields)
-                            .build();
+                    for (int i = 0; i < placeIds.size(); i++){
 
-                   /* placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
-                        Place place = response.getPlace();
-                        Log.i(TAG, "Place found: " + place.getName());
-                    }).addOnFailureListener((exception) -> {
-                        if (exception instanceof ApiException) {
-                            ApiException apiException = (ApiException) exception;
-                            int statusCode = apiException.getStatusCode();
-                            // Handle error with given status code.
-                            Log.e(TAG, "Place not found: " + exception.getMessage());
-                        }
-                    });*/
+                        // Construct a request object, passing the place ID and fields array.
+                        FetchPlaceRequest request = FetchPlaceRequest.builder(placeIds.get(i), placeFields)
+                                .build();
 
-                    placesClient.fetchPlace(request).addOnCompleteListener(new OnCompleteListener<FetchPlaceResponse>() {
-                        @Override
-                        public void onComplete(@NonNull Task<FetchPlaceResponse> response) {
-                            if (response.isSuccessful()) {
-                                Place place = response.getResult().getPlace();
+                        placesClient.fetchPlace(request).addOnCompleteListener(new OnCompleteListener<FetchPlaceResponse>() {
+                            @Override
+                            public void onComplete(@NonNull Task<FetchPlaceResponse> response) {
+                                if (response.isSuccessful()) {
+                                    Place place = response.getResult().getPlace();
 
-                                Log.i(TAG, "Place found: " + place.getName());
-                                mGeofencing.updateGeofencesList(place);
-                                if (mIsEnabled) mGeofencing.registerAllGeofences();
-                                //places.release();
-                            } else {
-                                Log.e(TAG, "Place not found.");
+                                    Log.i(TAG, "Place found: " + place.getName() + places.size());
+                                    places.add(place);
+                                    Log.i(TAG, "Place size: " + places.size());
+
+                                    if (b == placeIds.size()) {
+                                        Log.i(TAG, "Place size2: " + places.size());
+                                        mGeofencing.updateGeofencesList(places);
+                                        if (mIsEnabled) mGeofencing.registerAllGeofences();
+                                    }
+                                } else {
+                                    Log.i(TAG, "Place size: " + places.size());
+                                    Log.e(TAG, "Place not found.");
+                                }
+                                b += 1;
                             }
-                        }
-                    });
-
-                   /* .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                        @Override
-                        public void onSuccess(TResult authResult) {
-                            // Task completed successfully
-                            // ...
-                        }
-                    });
-
- .addOnCompleteListener(new OnCompleteListener<Place>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Place> task) {
-                            if (task.isSuccessful()) {
-                                Place places = task.getResult();
-
-
-
-                                if (mIsEnabled) mGeofencing.registerAllGeofences();
-                                places.release();
-                            } else {
-                                Log.e(TAG, "Place not found.");
-                            }
-                        }
-                    });
-
-
-
-/*
-                            .addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
-                        @Override
-                        public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
-                            if (task.isSuccessful()) {
-                                PlaceBufferResponse places = task.getResult();
-                                mGeofencing.updateGeofencesList(places);
-
-                                if (mIsEnabled) mGeofencing.registerAllGeofences();
-                                places.release();
-                            } else {
-                                Log.e(TAG, "Place not found.");
-                            }
-                        }
-                    });/
-                    */
-
+                        });
+                    }
                 }}
         });
     }
@@ -353,7 +290,7 @@ public class PlacesActivity extends AppCompatActivity {
             Intent i = builder.build(this);
             startActivityForResult(i, PLACE_PICKER_REQUEST);*/
         } catch (Exception e) {
-            Log.e(TAG, String.format("PlacePicker Exception: %s", e.getMessage()));
+            Log.e(TAG, String.format("AutoComplete Exception: %s", e.getMessage()));
         }
     }
 

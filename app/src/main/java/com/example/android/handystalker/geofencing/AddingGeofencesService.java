@@ -19,6 +19,7 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import com.google.android.libraries.places.api.Places;
@@ -35,6 +36,7 @@ public class AddingGeofencesService extends IntentService implements GoogleApiCl
     //private GeoDataClient mGeoDataClient;
 
     private PlacesClient placesClient;
+    private int count;
 
     private static boolean mIsEnabled;
     // Persistent storage for geofences.
@@ -43,7 +45,6 @@ public class AddingGeofencesService extends IntentService implements GoogleApiCl
     public AddingGeofencesService() {
         super(TAG);
     }
-
 
     @Override
     public void onCreate() {
@@ -78,29 +79,18 @@ public class AddingGeofencesService extends IntentService implements GoogleApiCl
         // Instantiate a new geofence storage area.
         mGeofenceStorage = new GeofenceStorage(this);
 
-        List<String> placeIds;
+        final List<String> placeIds;
         placeIds = mGeofenceStorage.getGeofenceIds();
 
         mIsEnabled = mGeofenceStorage.getIsEnabled();
         Log.d(TAG, "handling service" + mIsEnabled);
-        List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
+
 
         if (placeIds != null && placeIds.size() > 0) {
 
-            /*mGeoDataClient.getPlaceById(placeIds.toArray(new String[placeIds.size()])).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
-                @Override
-                public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
-                    if (task.isSuccessful()) {
-                        PlaceBufferResponse places = task.getResult();
-                        mGeofencing.updateGeofencesList(places);
-                        if (mIsEnabled) mGeofencing.registerAllGeofences();
-                        places.release(); // release in Geofencing? Adapter not responding - changed Adapter no Adress
-                    } else {
-                        Log.e(TAG, "Place not found.");
-                    }
-                }
-            });*/
-
+            List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
+            final List<Place> places = new ArrayList<Place>();
+            count = 1;
 
             for (int i = 0; i < placeIds.size(); i++){
 
@@ -114,32 +104,23 @@ public class AddingGeofencesService extends IntentService implements GoogleApiCl
                         if (response.isSuccessful()) {
                             Place place = response.getResult().getPlace();
 
-                            Log.i(TAG, "Place found: " + place.getName());
-                            mGeofencing.updateGeofencesList(place);
-                            if (mIsEnabled) mGeofencing.registerAllGeofences();
-                            //places.release();
+                            Log.i(TAG, "Place found: " + place.getName() + places.size());
+                            places.add(place);
+                            Log.i(TAG, "Place size: " + places.size());
+
+                            if (count == placeIds.size()) {
+                                Log.i(TAG, "Place size2: " + places.size());
+                                mGeofencing.updateGeofencesList(places);
+                                if (mIsEnabled) mGeofencing.registerAllGeofences();
+                            }
                         } else {
+                            Log.i(TAG, "Place size: " + places.size());
                             Log.e(TAG, "Place not found.");
                         }
+                        count += 1;
                     }
                 });
-
-
             }
-
-                   /* placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
-                        Place place = response.getPlace();
-                        Log.i(TAG, "Place found: " + place.getName());
-                    }).addOnFailureListener((exception) -> {
-                        if (exception instanceof ApiException) {
-                            ApiException apiException = (ApiException) exception;
-                            int statusCode = apiException.getStatusCode();
-                            // Handle error with given status code.
-                            Log.e(TAG, "Place not found: " + exception.getMessage());
-                        }
-                    });*/
-
-
         }
     }
 

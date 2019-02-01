@@ -156,6 +156,35 @@ public class Geofencing {
         //places.release();
     }
 
+
+    public void updateGeofencesList(List<Place> places) {
+        mGeofenceList = new ArrayList<>();
+        Log.d("updateGeofenceList", "regId" + places.size() + places.isEmpty());
+        if (places == null || places.size() == 0) return;
+        for (Place place : places) {
+            // Read the place information from the DB cursor
+            String placeID = place.getId();
+            Log.d("updateGeofenceList", "regId" + placeID);
+            double placeLat = place.getLatLng().latitude;
+            double placeLng = place.getLatLng().longitude;
+            // Build a Geofence object
+            Geofence geofence = new Geofence.Builder()
+                    /***
+                     *   Set the request ID of the geofence.
+                     * This is a string to identify this
+                     * geofence.
+                     */
+                    .setRequestId(placeID)
+                    .setExpirationDuration(GEOFENCE_TIMEOUT)
+                    .setCircularRegion(placeLat, placeLng, GEOFENCE_RADIUS)
+                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                    .build();
+            // Add it to the list
+            mGeofenceList.add(geofence);
+        }
+        //places.release();
+    }
+
     /***
      * Specify the geofences to monitor and to set how related geofence events are triggered
      *

@@ -40,7 +40,9 @@ public class MainActivity extends AppCompatActivity {
     private static Geofencing mGeofencing;
     //private GeoDataClient mGeoDataClient;
 
+
     private PlacesClient placesClient;
+    private int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,11 +91,16 @@ public class MainActivity extends AppCompatActivity {
                 //TODO: is it right?
                 //AddingGeofencesService.setmIsEnabled(mIsEnabled);
                 mGeofenceStorage.setIsEnabled(mIsEnabled);
-                List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
+                final List<Place> places = new ArrayList<Place>();
 
                 editor.apply();
                 if (isChecked) {
-                    List<String> placeIds = mGeofenceStorage.getGeofenceIds();
+
+                    final List<String> placeIds = mGeofenceStorage.getGeofenceIds();
+                    if (placeIds == null || placeIds.size() < 1) {return;}
+
+                    List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
+                    count = 1;
 
                     for (int i = 0; i < placeIds.size(); i++){
 
@@ -107,38 +114,23 @@ public class MainActivity extends AppCompatActivity {
                                 if (response.isSuccessful()) {
                                     Place place = response.getResult().getPlace();
 
-                                    Log.i(TAG, "Place found: " + place.getName());
-                                    mGeofencing.updateGeofencesList(place);
-                                    if (mIsEnabled) mGeofencing.registerAllGeofences();
-                                    //places.release();
+                                    Log.i(TAG, "Place found: " + place.getName() + places.size());
+                                    places.add(place);
+                                    Log.i(TAG, "Place size: " + places.size());
+
+                                    if (count == placeIds.size()) {
+                                        Log.i(TAG, "Place size2: " + places.size());
+                                        mGeofencing.updateGeofencesList(places);
+                                        if (mIsEnabled) mGeofencing.registerAllGeofences();
+                                    }
                                 } else {
+                                    Log.i(TAG, "Place size: " + places.size());
                                     Log.e(TAG, "Place not found.");
                                 }
+                                count += 1;
                             }
                         });
-
-
                     }
-
-
-
-
-
-
-
-                    /*mGeoDataClient.getPlaceById(placeIds.toArray(new String[placeIds.size()])).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
-                        @Override
-                        public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
-                            if (task.isSuccessful()) {
-                                PlaceBufferResponse places = task.getResult();
-                                mGeofencing.updateGeofencesList(places);
-                                mGeofencing.registerAllGeofences();
-                                places.release();
-                            } else {
-                                Log.e(TAG, "Place not found.");
-                            }
-                        }
-                    });*/
                 }
                 else mGeofencing.unRegisterAllGeofences();
             }});
