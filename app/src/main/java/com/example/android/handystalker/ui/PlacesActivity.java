@@ -55,7 +55,6 @@ import com.google.android.gms.location.LocationServices;
 //import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
@@ -75,8 +74,9 @@ public class PlacesActivity extends AppCompatActivity {
     // Constants
     public static final String TAG = PlacesActivity.class.getSimpleName();
     private static final int PERMISSIONS_REQUEST_FINE_LOCATION = 111;
-    private static final int PLACE_PICKER_REQUEST = 1;
+    //private static final int PLACE_PICKER_REQUEST = 1;
     private static final int AUTOCOMPLETE_REQUEST_CODE = 23456;
+    private static final int AUTOCOMPLETE_REQUEST_CODE_WITH_MAP = 56789;
 
     // Member variables
     private PlacesAdapter mAdapter;
@@ -104,8 +104,6 @@ public class PlacesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.places);
-
-
 
         // Retrieve a PlacesClient (previously initialized - see MainActivity)
         placesClient = Places.createClient(this);
@@ -183,7 +181,7 @@ public class PlacesActivity extends AppCompatActivity {
                     Log.d("PreferenceView","success" + mIsEnabled);
                     mAdapter.refreshPlaces(placeIds, placeNames);
 
-                    mGeofenceStorage.setGeofence(placeIds);
+                   mGeofenceStorage.setGeofence(placeIds);
 
                     // Specify the fields to return.
                     List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
@@ -234,6 +232,33 @@ public class PlacesActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+
+                if (place == null) {
+                    Log.i(TAG, "No place selected");
+                    return;
+                }
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    AddressfromPicker = Objects.requireNonNull(place.getAddress()).toString();
+                } else {
+                    if (place.getAddress() != null) AddressfromPicker = place.getAddress().toString();
+                }
+                placeIdfromPicker = place.getId();
+                buildDialog();
+
+
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // TODO: Handle the error.
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Log.i(TAG, status.getStatusMessage());
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        }
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE_WITH_MAP) {
             if (resultCode == RESULT_OK) {
                 Place place = Autocomplete.getPlaceFromIntent(data);
                 Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
@@ -417,6 +442,17 @@ public class PlacesActivity extends AppCompatActivity {
         // Retrieve list state and list/item positions
         if(state != null)
             mListState = state.getParcelable(LIST_STATE_KEY);
+    }
+
+    /** Called when the user taps the Place button */
+    public void OnMapButtonClicked(View view) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, getString(R.string.need_location_permission_message), Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent intent = new Intent(this, MapsActivity.class);
+        startActivity(intent);
     }
 }
 

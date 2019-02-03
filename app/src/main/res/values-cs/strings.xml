@@ -161,6 +161,11 @@
     <string name="default_message">automatický text</string>
 
     <string name="error_api_key" translatable="false">API klíč nenalezen</string>
+    <string name="pick_place">Vyber místo</string>
+    <string name="option_get_place">Poblíž mě</string>
+    <string name="default_info_title">Praha</string>
+    <string name="default_info_snippet">VŠE</string>
+    <string name="select_from_nearby_places">Vyber z míst poblíž</string>
 
 
 </resources>

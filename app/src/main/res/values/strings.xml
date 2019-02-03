@@ -165,4 +165,9 @@
 
 
     <string name="error_api_key" translatable="false">No API key defined in gradle.properties</string>
+    <string name="pick_place">Pick place</string>
+    <string name="option_get_place">Near me</string>
+    <string name="default_info_title">Prague</string>
+    <string name="default_info_snippet">University of Economics</string>
+    <string name="select_from_nearby_places">Select from nearby places</string>
 </resources>
