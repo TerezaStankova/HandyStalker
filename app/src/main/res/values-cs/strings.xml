@@ -154,7 +154,7 @@
     <string name="after_departuring_from">po mém odchodu z</string>
     <string name="departure">Odjezd</string>
     <string name="Hi">Ahoj! Vyrážím z </string>
-    <string name="Hi_reaching">Ahoj! Akorát jsem dorazil do </string>
+    <string name="Hi_reaching">Ahoj! Akorát jsem dorazil na místo, kterému říkám </string>
     <string name="safely">! Měj se krásně!</string>
 
     <string name="anywhere">kdekoliv</string>
@@ -166,6 +166,8 @@
     <string name="default_info_title">Praha</string>
     <string name="default_info_snippet">VŠE</string>
     <string name="select_from_nearby_places">Vyber z míst poblíž</string>
+    <string name="channel_name">Hlídáčkovy notifikace</string>
+    <string name="channel_description">Notifikace ohledně příchodů a odjezdů.</string>
 
 
 </resources>

@@ -62,12 +62,13 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
             // multiple geofences.
             final List<Geofence> triggeringGeofence = geofencingEvent.getTriggeringGeofences();
 
-
-            final String[] triggerIds = new String[triggeringGeofence.size()];
+            //ToDO: Solve SMS rules for case when multiple geofences triggered
+            /*final String[] triggerIds = new String[triggeringGeofence.size()];
 
             for (int i = 0; i < triggerIds.length; i++) {
                 triggerIds[i] = triggeringGeofence.get(i).getRequestId();
-            }
+            }*/
+
             mDb = AppDatabase.getInstance(context);
 
 
@@ -93,9 +94,9 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
 
                             if (rulesForThisPlace != null && rulesForThisPlace.size() != 0) {
                                 Log.d(TAG, "rulesForThisPlace.size= " + rulesForThisPlace.size());
-                                List<Integer> rulesIdForThisPlace = mDb.ruleDao().findRulesById(arrivalId);
 
-                                Log.d(TAG, "rulesIdForThisPlace.size= " + rulesIdForThisPlace.size());
+                                //List<Integer> rulesIdForThisPlace = mDb.ruleDao().findRulesById(arrivalId);
+                                //Log.d(TAG, "rulesIdForThisPlace.size= " + rulesIdForThisPlace.size());
 
                                 for (int i = 0; i < rulesForThisPlace.size(); i++) {
                                     if (rulesForThisPlace.get(i).getType().equals("sms")) {
@@ -128,17 +129,68 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
 
                                         Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
                                     } else if (rulesForThisPlace.get(i).getType().equals("wifi")) {
-                                        Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
-                                        setWiFi(context, true);
+
+                                        if (rulesForThisPlace.get(i).getDepartureId() != null) {
+                                            boolean active = rulesForThisPlace.get(i).getActive();
+                                            if (active) {
+                                                rulesForThisPlace.get(i).setActive(false);
+                                                mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
+                                                Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                                setWiFi(context, true);
+                                            }
+                                        } else {
+                                            Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                            setWiFi(context, true);
+                                        }
+
                                     } else if (rulesForThisPlace.get(i).getType().equals("wifioff")) {
-                                        Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
-                                        setWiFi(context, false);
+
+                                        if (rulesForThisPlace.get(i).getDepartureId() != null) {
+                                            boolean active = rulesForThisPlace.get(i).getActive();
+                                            if (active) {
+                                                rulesForThisPlace.get(i).setActive(false);
+                                                mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
+                                                Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                                setWiFi(context, false);
+                                            }
+                                        } else {
+                                            Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                            setWiFi(context, false);
+                                        }
+
+
                                     } else if (rulesForThisPlace.get(i).getType().equals("sound")) {
-                                        Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
-                                        setSound(context, 2);
+
+                                        if (rulesForThisPlace.get(i).getDepartureId() != null) {
+                                            boolean active = rulesForThisPlace.get(i).getActive();
+                                            if (active) {
+                                                rulesForThisPlace.get(i).setActive(false);
+                                                mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
+                                                setSound(context, 2);
+                                                Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                            }
+                                        } else {
+                                            setSound(context, 2);
+                                            Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                        }
+
+
+
                                     } else if (rulesForThisPlace.get(i).getType().equals("soundoff")) {
-                                        Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
-                                        setSound(context, 0);
+
+                                        if (rulesForThisPlace.get(i).getDepartureId() != null) {
+                                            boolean active = rulesForThisPlace.get(i).getActive();
+                                            if (active) {
+                                                rulesForThisPlace.get(i).setActive(false);
+                                                mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
+                                                setSound(context, 0);
+                                                Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                            }
+                                        } else {
+                                            setSound(context, 0);
+                                            Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                        }
+
                                     }
                                 }
                             }
@@ -205,20 +257,57 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                                             messagesForThisPlace.add(mDb.messageDao().findTextForMessageId(rulesForThisPlace.get(i).getMessageId()));
                                         }
                                     } else if (rulesForThisPlace.get(i).getType().equals("notify")) {
-                                        sendNotification(context, false);
-                                        Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+
+                                        if (rulesForThisPlace.get(i).getArrivalId() != null) {
+                                            rulesForThisPlace.get(i).setActive(true);
+                                            mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
+                                        } else {
+                                            sendNotification(context, false);
+                                            Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                        }
+
+
                                     } else if (rulesForThisPlace.get(i).getType().equals(getString(R.string.wifi))) {
-                                        Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
-                                        setWiFi(context, false);
+
+                                        if (rulesForThisPlace.get(i).getArrivalId() != null) {
+                                            rulesForThisPlace.get(i).setActive(true);
+                                            mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
+                                        } else {
+                                            Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                            setWiFi(context, false);
+                                        }
+
                                     } else if (rulesForThisPlace.get(i).getType().equals(getString(R.string.wifioff))) {
-                                        Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
-                                        setWiFi(context, true);
+
+                                        if (rulesForThisPlace.get(i).getArrivalId() != null) {
+                                            rulesForThisPlace.get(i).setActive(true);
+                                            mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
+                                        } else {
+                                            Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                            setWiFi(context, true);
+                                        }
+
                                     } else if (rulesForThisPlace.get(i).getType().equals(getString(R.string.soundon))) {
-                                        Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
-                                        setSound(context, 0);
+
+                                        if (rulesForThisPlace.get(i).getArrivalId() != null) {
+                                            rulesForThisPlace.get(i).setActive(true);
+                                            mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
+                                        } else {
+                                            Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                            setSound(context, 0);
+                                        }
+
+
                                     } else if (rulesForThisPlace.get(i).getType().equals(getString(R.string.soundoff))) {
-                                        Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
-                                        setSound(context, 2);
+                                        if (rulesForThisPlace.get(i).getArrivalId() != null) {
+                                            rulesForThisPlace.get(i).setActive(true);
+                                            mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
+                                        } else {
+                                            Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                            setSound(context, 2);
+                                        }
+
+
                                     }
                                 }
                             }
@@ -266,7 +355,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
             try {
                 Log.d("sentsms", "now send " + context);
                 String messageText;
-                if (message == null || message.length() == 0) { messageText = getString(R.string.Hi_reaching) + placeName + getString(R.string.safely);}
+                if (message == null || message.length() == 0) { messageText = getString(R.string.Hi_reaching) + " " + placeName + " " + getString(R.string.safely);}
                 else {messageText = message;}
 
                 SmsManager smsManager = SmsManager.getDefault();
@@ -285,7 +374,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
             try {
                 Log.d("sentsms", "now send " + context);
                 String messageText;
-                if (message == null || message.length() == 0) { messageText = getString(R.string.Hi) + placeName;}
+                if (message == null || message.length() == 0) { messageText = getString(R.string.Hi) + " " + placeName;}
                 else {messageText = message;}
 
                 SmsManager smsManager = SmsManager.getDefault();
@@ -322,7 +411,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                     .setContentTitle(getString(R.string.you_arrived))
                     .setContentText(getString(R.string.safely_there))
                     .setStyle(new NotificationCompat.BigTextStyle()
-                            .bigText(getString(R.string.let) + getString(R.string.know_about_you)))
+                            .bigText(getString(R.string.let)))
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
             // Dismiss notification once the user touches it.
@@ -343,7 +432,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                     .setContentTitle(getString(R.string.you_departured))
                     .setContentText("Safely on my way!")
                     .setStyle(new NotificationCompat.BigTextStyle()
-                            .bigText(getString(R.string.let) + getString(R.string.know_about_you)))
+                            .bigText(getString(R.string.let)))
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
             // Dismiss notification once the user touches it.

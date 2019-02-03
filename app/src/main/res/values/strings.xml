@@ -133,7 +133,7 @@
 
     <string name="you_arrived">You arrived!</string>
     <string name="safely_there">Safely there!</string>
-    <string name="let">Let your beloved ones </string>
+    <string name="let">Let your beloved ones know!</string>
     <string name="know_about_you">know.</string>
     <string name="you_departured">You just departured!</string>
     <string name="know">know.</string>
@@ -157,7 +157,7 @@
     <string name="departure">Departure</string>
     <string name="with_text">with text</string>
     <string name="Hi">Hi! I just departured from</string>
-    <string name="Hi_reaching">Hi! I just reached</string>
+    <string name="Hi_reaching">Hi! I just reached </string>
     <string name="safely">safely! Have a wonderful day!</string>
     <string name="anywhere">anywhere</string>
     <string name="default_message">default text</string>
@@ -170,4 +170,6 @@
     <string name="default_info_title">Prague</string>
     <string name="default_info_snippet">University of Economics</string>
     <string name="select_from_nearby_places">Select from nearby places</string>
+    <string name="channel_name">My stalkers are curious</string>
+    <string name="channel_description">Channel for notifications about arrivals and departures.</string>
 </resources>
