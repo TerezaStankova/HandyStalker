@@ -23,6 +23,7 @@ public class ProviderChangedBroadcastReceiver extends BroadcastReceiver {
             //network –> (AGPS, CellID, WiFi MACID)
             isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);}
 
+            //ToDO: Try it only for NetworkEnabled
 
             if (isGpsEnabled || isNetworkEnabled) {
                 Intent startServiceIntent = new Intent(context, AddingGeofencesService.class);

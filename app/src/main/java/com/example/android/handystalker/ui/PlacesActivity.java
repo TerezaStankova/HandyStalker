@@ -96,7 +96,6 @@ public class PlacesActivity extends AppCompatActivity {
     // Member variable for the Database
     private AppDatabase mDb;
     private int b;
-    private final int d = 0;
 
     private PlacesClient placesClient;
 
@@ -228,7 +227,7 @@ public class PlacesActivity extends AppCompatActivity {
     /**
      * Override the activity's onActivityResult(), check the request code, and
      * do something with the returned place data (in this example it's place name and place ID).
-     */
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
@@ -285,11 +284,11 @@ public class PlacesActivity extends AppCompatActivity {
                 // The user canceled the operation.
             }
         }
-    }
+    }/*
 
     /***
      * Button Click event handler to handle clicking the "Add new location" Button
-     */
+
     public void onAddPlaceButtonClicked(View view) {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -314,10 +313,10 @@ public class PlacesActivity extends AppCompatActivity {
             /*PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
             Intent i = builder.build(this);
             startActivityForResult(i, PLACE_PICKER_REQUEST);*/
-        } catch (Exception e) {
+      /*  } catch (Exception e) {
             Log.e(TAG, String.format("AutoComplete Exception: %s", e.getMessage()));
         }
-    }
+    }/*
 
 
     /*

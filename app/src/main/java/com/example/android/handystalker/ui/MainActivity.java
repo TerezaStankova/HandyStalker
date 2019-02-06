@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean mIsEnabled;
     private GeofenceStorage mGeofenceStorage;
     private static Geofencing mGeofencing;
-    //private GeoDataClient mGeoDataClient;
 
 
     private PlacesClient placesClient;

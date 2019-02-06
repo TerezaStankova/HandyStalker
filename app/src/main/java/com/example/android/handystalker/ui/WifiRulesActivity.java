@@ -106,6 +106,8 @@ public class WifiRulesActivity extends AppCompatActivity {
     }
 
 
+    //ToDo: set it as not required in Manifest
+
     @Override
     public void onResume() {
         super.onResume();
