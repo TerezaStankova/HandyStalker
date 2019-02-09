@@ -26,8 +26,9 @@ public class ProviderChangedBroadcastReceiver extends BroadcastReceiver {
             //ToDO: Try it only for NetworkEnabled
 
             if (isGpsEnabled || isNetworkEnabled) {
-                Intent startServiceIntent = new Intent(context, AddingGeofencesService.class);
-                context.startService(startServiceIntent);
+                AddingGeofencesService.enqueueWork(context, new Intent());
+                //Intent startServiceIntent = new Intent(context, AddingGeofencesService.class);
+                //context.startService(startServiceIntent);
                 Log.d("GPS or Network", "onConnected");
             }
         }

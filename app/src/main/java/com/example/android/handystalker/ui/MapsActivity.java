@@ -15,9 +15,11 @@ import com.example.android.handystalker.utilities.AppExecutors;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.libraries.places.internal.dv;
 
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -127,7 +129,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     private Marker marker;
-    private LocationRequest mLocationRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,18 +157,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         isConnected();
 
 
-        android.support.v7.app.ActionBar tb = getSupportActionBar();
-        tb.setDisplayHomeAsUpEnabled(true);
+        /*android.support.v7.app.ActionBar tb = getSupportActionBar();
+        tb.setDisplayHomeAsUpEnabled(true);*/
 
 
 
         // Construct a FusedLocationProviderClient.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-        // Build the map.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
 
         // Retrieve a PlacesClient (previously initialized - see MainActivity)
         placesClient = Places.createClient(this);
@@ -185,6 +182,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onPlaceSelected(@NonNull Place place) {
 
                 if (place.getLatLng() == null || place.getName() == null) {
+                    Log.i(TAG, "Place is null");
                     return;
                 }
                 // TODO: Get info about the selected place.
@@ -194,7 +192,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (marker != null) {
                     marker.remove();
                 }
-                Log.i(TAG, "I do this: " + 2);
+                Log.i(TAG, "I do this: " + "place selected");
                 marker = mMap.addMarker(new MarkerOptions().position(latLngLoc).title(place.getName()).draggable(true));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngLoc, DEFAULT_ZOOM));
                 Log.i(TAG, "I do this: " + 3);
@@ -219,13 +217,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        Log.i(TAG, "I do this: " + 4);
+
+        // Build the map.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        assert mapFragment != null;
+        mapFragment.getMapAsync(this);
+
+
+        Log.i(TAG, "I do this: map prepared");
         //createLocationRequest();
 
     }
 
     protected void createLocationRequest() {
-        mLocationRequest = LocationRequest.create();
+        LocationRequest mLocationRequest = LocationRequest.create();
         mLocationRequest.setInterval(10000);
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -269,13 +275,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public boolean isLocationEnabled()
     {
-        /*if (Build.VERSION.SDK_INT >= 28) {
+        if (Build.VERSION.SDK_INT >= 28) {
             // This is new method provided in API 28
             LocationManager lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
             boolean locationEnabled = lm.isLocationEnabled();
             return lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        } else {*/
-
+        } else {
             // This is Deprecated in API 28
             int mode = Settings.Secure.getInt(getApplicationContext().getContentResolver(), Settings.Secure.LOCATION_MODE,
                     Settings.Secure.LOCATION_MODE_OFF);
@@ -283,23 +288,43 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return true;
             }
             else {
-                Toast.makeText(MapsActivity.this, "Location is off.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MapsActivity.this, "Location is off.", Toast.LENGTH_SHORT).show();
 
                 //createLocationRequest();
 
                 return false;}
 
-        //}
+        }
     }
 
     public boolean isConnected()
     {
-        ConnectivityManager cm =
-                (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
+        boolean isConnected = false;
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (cm != null) {
+                NetworkCapabilities capabilities = cm.getNetworkCapabilities(cm.getActiveNetwork());
+                if (capabilities != null) {
+                    if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                        isConnected  = true;
+                    } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                        isConnected  = true;
+                    }
+                }
+            }
+        } else {
+            if (cm != null) {
+                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+                if (activeNetwork != null) {
+                    // connected to the internet
+                    if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
+                        isConnected  = true;
+                    } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
+                        isConnected  = true;
+                    }
+                }
+            }
+        }
 
         if (isConnected) {return true; } else {
             Toast.makeText(MapsActivity.this, "You are not connected to the Internet. Connect and add new places.", Toast.LENGTH_SHORT).show();
@@ -521,9 +546,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         if (nearPlacesMenuItem != null){
                             if (mLastKnownLocation != null) { nearPlacesMenuItem.setVisible(true);}
                             else {nearPlacesMenuItem.setVisible(false);}}
-                        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                            invalidateOptionsMenu();
-                        }
+                        invalidateOptionsMenu();
                     }
                 });
             }
@@ -702,7 +725,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     public void run() {
                         buildDialog();
                     }
-                }, 4000);
+                }, 2000);
 
             }
         };
@@ -723,8 +746,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (mMap == null) {
             return;
         }
+
+        boolean isLocationEnabled = isLocationEnabled();
         try {
-            if (mLocationPermissionGranted && isLocationEnabled()) {
+            if (mLocationPermissionGranted && isLocationEnabled) {
 
                 mMap.setMyLocationEnabled(true);
                 mMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -741,18 +766,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Log.e("Exception: %s", e.getMessage());
         }
 
+        if (!isLocationEnabled) {Toast.makeText(MapsActivity.this, "Location is off.", Toast.LENGTH_SHORT).show();}
+
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void OnActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode ==  REQUEST_CHECK_SETTINGS) {
             if (resultCode == RESULT_OK) {
                 getDeviceLocation();
 
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                // TODO: Handle the error.
                 Status status = Autocomplete.getStatusFromIntent(data);
                 Log.i(TAG, status.getStatusMessage());
             } else if (resultCode == RESULT_CANCELED) {

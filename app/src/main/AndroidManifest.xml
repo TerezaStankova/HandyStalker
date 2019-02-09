@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -16,6 +17,9 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- Needed only if your app targets Android 5.0 (API level 21) or higher. -->
+    <uses-feature android:name="android.hardware.location.gps" />
     
 
     <application
@@ -70,7 +74,9 @@
         <activity android:name=".ui.AddMessageActivity" android:parentActivityName=".ui.TextRulesActivity"/>
         <activity android:name=".ui.MapsActivity" android:parentActivityName=".ui.PlacesActivity"/>
 
-        <service android:name=".geofencing.AddingGeofencesService"/>
+        <service android:name=".geofencing.AddingGeofencesService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <receiver android:name=".geofencing.BootBroadcastReceiver">
             <intent-filter>
@@ -92,7 +98,20 @@
             android:name=".geofencing.GeofenceBroadcastReceiver"
             android:enabled="true"
             android:exported="true"
-            android:permission="" />
+            android:permission=""
+        >
+            <intent-filter android:priority="999">
+                <!-- Using an intent filter with max. priority is important to guarantee that the
+                     the broadcast receiver is called immediately. We could discover that this was
+                     not necessary in less complex apps (like this GeoFencer test app), where the
+                     reiceiver was called immediately. However, in other more complex app (with more
+                     broadcast receivers and background services running), we could see delays up
+                     to 3 minutes until the receiver was actually triggered, often even requiring
+                     the user to unlock the phone first! -->
+                <action android:name="com.example.android.handystalker.geofencing.ACTION_RECEIVE_GEOFENCE" />
+            </intent-filter>
+        </receiver>
+
         <service
             android:name=".utilities.GeofenceTransitionsIntentService"
             android:exported="true"

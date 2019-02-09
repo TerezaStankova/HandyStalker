@@ -1,10 +1,12 @@
 package com.example.android.handystalker.geofencing;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.JobIntentService;
 import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -28,7 +30,7 @@ import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
-public class AddingGeofencesService extends IntentService implements GoogleApiClient.ConnectionCallbacks {
+public class AddingGeofencesService extends JobIntentService {
 
     private static final String TAG = "AddingGeofencesService";
 
@@ -42,33 +44,18 @@ public class AddingGeofencesService extends IntentService implements GoogleApiCl
     // Persistent storage for geofences.
     private GeofenceStorage mGeofenceStorage;
 
-    public AddingGeofencesService() {
+    /*public AddingGeofencesService() {
         super(TAG);
+    }/*/
+
+    public static final int JOB_ID = 222;
+
+    public static void enqueueWork(Context context, Intent work) {
+        enqueueWork(context, AddingGeofencesService.class, JOB_ID, work);
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
-    public static void setmIsEnabled(boolean isEnabled){
-        mIsEnabled = isEnabled;
-    }
-
-
-    //TODO: resolve this
-
-    @Override
-    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
-
-        //Intent intent1;
-        //intent1 = intent.getParcelableExtra("UserID");
-
-    }
-
-    @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
+    protected void onHandleWork(@NonNull Intent intent) {
         //mGeoDataClient = Places.getGeoDataClient(this);
         placesClient = Places.createClient(this);
 
@@ -122,27 +109,5 @@ public class AddingGeofencesService extends IntentService implements GoogleApiCl
                 });
             }
         }
-    }
-
-
-
-    public void onConnected(Bundle bundle) {
-        Log.d(TAG, "onConnected");
-
-        //com.example.android.handystalker.ui.PlacesActivity
-        //Add geofences
-      /*  SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mIsEnabled = prefs.getBoolean(getString(R.string.setting_enabled), false);
-        GeofencingClient mGeoClient = LocationServices.getGeofencingClient(this);
-        mGeofencing = new Geofencing(this, mGeoClient);
-        if (mIsEnabled) mGeofencing.registerAllGeofences();*/
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-        Log.d(TAG, "Connection Suspended");
-
     }
 }

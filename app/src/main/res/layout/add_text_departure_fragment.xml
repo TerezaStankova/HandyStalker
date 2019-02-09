@@ -9,9 +9,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="8dp">
 
         <TextView
             android:id="@+id/add_text_label"
@@ -23,15 +26,14 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:text="@string/add_text_rule_title"
-            android:textAppearance="@style/myDetailTitleStyle"
-           />
+            android:textAppearance="@style/myDetailTitleStyle" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
             android:orientation="horizontal">
 
             <TextView
@@ -43,8 +45,8 @@
 
             <Spinner
                 android:id="@+id/name_departure_spinner"
-                android:layout_width="0dp"
                 style="@style/spinnerItemStyle2"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
@@ -68,10 +70,10 @@
 
             <Spinner
                 android:id="@+id/departure_place_rule_spinner"
+                style="@style/spinnerItemStyle2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@style/spinnerItemStyle2"
                 android:gravity="end"
                 android:minHeight="12dp" />
         </LinearLayout>
@@ -92,8 +94,8 @@
 
             <Spinner
                 android:id="@+id/message_departure_spinner"
-                android:layout_width="0dp"
                 style="@style/spinnerItemStyle2"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
