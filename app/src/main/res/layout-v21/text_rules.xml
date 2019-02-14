@@ -50,7 +50,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
-                    android:background="@color/colorPrimary"
+                    android:background="@android:drawable/checkbox_off_background"
                     android:onClick="onSMSPermissionClicked" />
 
             </RelativeLayout>
@@ -133,22 +133,6 @@
             android:layout_margin="8dp" />
 
     </LinearLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="69dp"
-        android:layout_height="60dp"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="onAddSendRulesButtonClicked"
-        android:visibility="visible"
-        app:backgroundTint="@color/colorAccent"
-        app:backgroundTintMode="add"
-        app:elevation="8dp"
-        app:layout_anchor="@+id/linearLayout2"
-        app:layout_anchorGravity="right|bottom"
-        app:srcCompat="@drawable/ic_add_black_24dp" />
 
 
 </android.support.design.widget.CoordinatorLayout>

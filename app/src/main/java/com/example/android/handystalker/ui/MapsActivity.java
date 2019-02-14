@@ -297,6 +297,38 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    public static boolean checkHighAccuracyLocationMode(Context context) {
+        int locationMode = 0;
+        String locationProviders;
+
+        if (Build.VERSION.SDK_INT >= 28) {
+            // This is new method provided in API 28
+            LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+            boolean locationEnabled = lm.isLocationEnabled();
+            boolean GPSProviderEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            boolean NetProviderEnabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            return GPSProviderEnabled && NetProviderEnabled;
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            //Equal or higher than API 19/KitKat
+            try {
+                locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+                if (locationMode == Settings.Secure.LOCATION_MODE_HIGH_ACCURACY){
+                    return true;
+                }
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+            }
+        }else{
+            //Lower than API 19
+            locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+
+            if (locationProviders.contains(LocationManager.GPS_PROVIDER) && locationProviders.contains(LocationManager.NETWORK_PROVIDER)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isConnected()
     {
         boolean isConnected = false;

@@ -140,7 +140,7 @@ public class PlacesActivity extends AppCompatActivity {
     }
 
     //TODO: Loading bar
-    //TODO: register Geofences boolean
+
     private void showPlacesDataView() {
         /* Then, make sure the data is visible */
         mRecyclerView.setVisibility(View.VISIBLE);
@@ -151,7 +151,9 @@ public class PlacesActivity extends AppCompatActivity {
         mRecyclerView.setVisibility(View.GONE);
     }
 
+
     //TODO: coarse location in manifest
+    //TODO: max 100 places
 
     private void setupViewModel() {
         showPlacesDataView();

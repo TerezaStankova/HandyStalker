@@ -15,11 +15,15 @@ public class GeofenceStorage {
 
     List<String> placeIds;
 
+
     // The SharedPreferences object in which geofences are stored.
     private final SharedPreferences mPrefs;
     // The name of the SharedPreferences.
     private static final String SHARED_PREFERENCES = "SharedPreferences";
     private static final String ISENABLED = "isEnabled";
+    private static final String TEMPORARYGEOFENCES = "simpleGeofences";
+    private static final String TEMPORARYLAT = "temporaryLat";
+    private static final String TEMPORARYLONG = "temporaryLong";
 
     /**
      * Create the SharedPreferences storage with private access only.
@@ -53,6 +57,36 @@ public class GeofenceStorage {
      * Save a geofence.
      * *
      */
+
+    public List<String> getTemporaryLongitudes() {
+
+        List<String> longitutes;
+        Set<String> placeLongitusSet;
+
+        placeLongitusSet = mPrefs.getStringSet(TEMPORARYLONG, null);
+
+
+        if (placeLongitusSet != null) {
+            longitutes = new ArrayList<>(placeLongitusSet);
+            return longitutes;
+        }
+        else return null;
+    }
+
+    public List<String> getTemporaryLatitudes() {
+
+        List<String> latitutes;
+        Set<String> placeLatitusSet;
+
+        placeLatitusSet = mPrefs.getStringSet(TEMPORARYLAT, null);
+
+
+        if (placeLatitusSet != null) {
+            latitutes = new ArrayList<>(placeLatitusSet);
+            return latitutes;
+        }
+        else return null;
+    }
 
 
 
@@ -91,6 +125,24 @@ public class GeofenceStorage {
         }*/
 
         // Commit the changes.
+        prefs.apply();
+    }
+
+    public void setLatitude(List<String> placeLatitudes) {
+        SharedPreferences.Editor prefs = mPrefs.edit();
+        Set<String> placeLatitudesSet = new TreeSet<String>(placeLatitudes);
+        prefs.remove(TEMPORARYLAT);
+
+        prefs.putStringSet(TEMPORARYLAT, placeLatitudesSet);
+        prefs.apply();
+    }
+
+    public void setLongitude(List<String> placeLongitude) {
+        SharedPreferences.Editor prefs = mPrefs.edit();
+        Set<String> placeLongitudeSet = new TreeSet<String>(placeLongitude);
+        prefs.remove(TEMPORARYLONG);
+
+        prefs.putStringSet(TEMPORARYLONG, placeLongitudeSet);
         prefs.apply();
     }
 

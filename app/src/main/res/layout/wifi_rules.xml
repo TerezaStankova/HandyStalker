@@ -49,7 +49,11 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
-                    android:onClick="onWifiPermissionClicked" />
+                    android:background="@android:drawable/checkbox_off_background"
+                    android:onClick="onWifiPermissionClicked"
+                    android:textColor="@color/colorPrimary"
+                    android:textColorHighlight="@color/common_google_signin_btn_text_dark_focused"
+                    android:textColorHint="@color/colorAccent" />
 
             </RelativeLayout>
         </LinearLayout>

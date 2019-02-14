@@ -5,7 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.android.handystalker.R;
+import com.example.android.handystalker.ui.MainActivity;
+import com.example.android.handystalker.ui.PlacesActivity;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
@@ -161,6 +165,14 @@ public class Geofencing {
         mGeofenceList = new ArrayList<>();
         Log.d("updateGeofenceList", "regId" + places.size() + places.isEmpty());
         if (places == null || places.size() == 0) return;
+
+        //Only 100 geofences allowed
+        if (places.size() > 100) {
+            places = places.subList(0, 100);
+            Toast.makeText(mContext, mContext.getString(R.string.only_100), Toast.LENGTH_SHORT).show();
+        };
+
+
         for (Place place : places) {
             // Read the place information from the DB cursor
             String placeID = place.getId();

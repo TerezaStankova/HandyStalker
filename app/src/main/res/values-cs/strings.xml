@@ -127,7 +127,7 @@
 
     <string name="you_arrived">Dorazili jste!</string>
     <string name="safely_there">Bezpečně tady!</string>
-    <string name="let">Dej </string>
+    <string name="let">Dej vědět, že jsi v pořádku.</string>
     <string name="know_about_you">vědět, že jsi v pořádku.</string>
     <string name="you_departured">Vyrazili jste! Dejte o tom vědět.</string>
     <string name="know">know.</string>
@@ -168,6 +168,8 @@
     <string name="select_from_nearby_places">Vyber z míst poblíž</string>
     <string name="channel_name">Hlídáčkovy notifikace</string>
     <string name="channel_description">Notifikace ohledně příchodů a odjezdů.</string>
+    <string name="location_off">Location is off.</string>
+    <string name="only_100">Only 100 places allowed</string>
 
 
 </resources>
