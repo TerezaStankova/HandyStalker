@@ -2,6 +2,8 @@ package com.example.android.handystalker.ui.Adapters;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
@@ -70,11 +73,12 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
 
         String arrivalPlace = mRules.get(position).getArrivalPlace();
         String typeRule = mRules.get(position).getType();
+        String departurePlace = mRules.get(position).getDeparturePlace();
 
         //Set the View for stalking rules
         if (textRule) {
         String contactName = mRules.get(position).getName();
-        String departurePlace = mRules.get(position).getDeparturePlace();
+        //String departurePlace = mRules.get(position).getDeparturePlace();
         String myStalker = mContext.getString(R.string.my_stalker) + " " + contactName;
         holder.nameTextView.setText(myStalker);
 
@@ -99,22 +103,31 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
         }
         }
         else if (notificationRule) {
-            String departurePlace = mRules.get(position).getDeparturePlace();
+            holder.nameTextView.setVisibility(View.GONE);
+            //String departurePlace = mRules.get(position).getDeparturePlace();
 
-            if(arrivalPlace != null){
+            //arrival with departure notice
+            if(departurePlace != null && arrivalPlace != null){
+                holder.arriveTextView.setVisibility(View.VISIBLE);
+                holder.departTextView.setVisibility(View.VISIBLE);
+                String myArrival = mContext.getString(R.string.arrival_to) +" "+ arrivalPlace;
+                holder.arriveTextView.setText(myArrival);
+                String myDeparture = "(" + mContext.getString(R.string.from) + " " + departurePlace + ")";
+                holder.departTextView.setText(myDeparture);
+
+                //departuring rule
+            } else if(departurePlace != null){
+                holder.departTextView.setVisibility(View.VISIBLE);
+                holder.arriveTextView.setVisibility(View.GONE);
+                String myDeparture = mContext.getString(R.string.departure_to) + " " + departurePlace;
+                holder.departTextView.setText(myDeparture);
+
+
+            } else {
+                holder.departTextView.setVisibility(View.GONE);
                 holder.arriveTextView.setVisibility(View.VISIBLE);
                 String myArrival = mContext.getString(R.string.arrival_to) +" "+ arrivalPlace;
                 holder.arriveTextView.setText(myArrival);
-            } else {
-                holder.arriveTextView.setVisibility(View.GONE);
-            }
-
-            if(departurePlace != null){
-                holder.departTextView.setVisibility(View.VISIBLE);
-                String myDeparture = mContext.getString(R.string.departure_to) + " " + departurePlace;
-                holder.departTextView.setText(myDeparture);
-            } else {
-                holder.departTextView.setVisibility(View.GONE);
             }
 
             holder.typeIcon.setImageResource(R.drawable.ic_notifications_active_green_24dp);
@@ -122,35 +135,66 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
         }
         //Set the View for handy rules
         else if (wifiRule) {
-            String myPlace = mContext.getString(R.string.place) +" "+ arrivalPlace;
-            holder.nameTextView.setText(myPlace);
+            holder.nameTextView.setVisibility(View.GONE);
+
+            String myPlace;
+            if(departurePlace != null && arrivalPlace != null){
+                String myDeparture = "(" + mContext.getString(R.string.from) + " " + departurePlace + ")";
+                holder.departTextView.setText(myDeparture);
+                myPlace = mContext.getString(R.string.arrival_to) +" "+ arrivalPlace;
+                holder.departTextView.setVisibility(View.VISIBLE);            }
+            else if (departurePlace != null) {
+                myPlace = mContext.getString(R.string.departure_to) + " " + departurePlace;
+                holder.departTextView.setVisibility(View.VISIBLE);            }
+            else {
+                myPlace = mContext.getString(R.string.arrival_to) +" "+ arrivalPlace;
+                holder.departTextView.setVisibility(View.GONE);
+            }
+            holder.arriveTextView.setText(myPlace);
             holder.arriveTextView.setVisibility(View.VISIBLE);
+
             String WIFI = "wifi";
             String WIFIOFF = "wifioff";
             if(typeRule.equals(WIFI) || typeRule.equals(WIFIOFF)){
-                holder.typeIcon.setImageResource(R.drawable.ic_wifi_green_24dp);
                 if(typeRule.equals(WIFI)){
-                    holder.arriveTextView.setText(R.string.wifi_on_turn);
+                    holder.typeIcon.setImageResource(R.drawable.ic_wifi_green_24dp);
+                    //holder.arriveTextView.setText(R.string.wifi_on_turn);
                 }else{
-                    holder.arriveTextView.setText(R.string.wifi_of_turn);
+                    holder.typeIcon.setImageResource(R.drawable.ic_signal_wifi_off_green_24dp);
+                    //holder.arriveTextView.setText(R.string.wifi_of_turn);
                 }
             }
 
             holder.departTextView.setVisibility(View.GONE);
         }
         else if (soundRule) {
-            String myPlace = mContext.getString(R.string.place) +" "+ arrivalPlace;
-            holder.nameTextView.setText(myPlace);
+            holder.nameTextView.setVisibility(View.GONE);
+            String myPlace;
+            if(departurePlace != null && arrivalPlace != null){
+                String myDeparture = "(" + mContext.getString(R.string.from) + " " + departurePlace + ")";
+                holder.departTextView.setText(myDeparture);
+                myPlace = mContext.getString(R.string.arrival_to) +" "+ arrivalPlace;
+                holder.departTextView.setVisibility(View.VISIBLE);            }
+            else if (departurePlace != null) {
+                myPlace = mContext.getString(R.string.departure_to) + " " + departurePlace;
+                holder.departTextView.setVisibility(View.VISIBLE);
+            }
+            else {
+                myPlace = mContext.getString(R.string.arrival_to) +" "+ arrivalPlace;
+                holder.departTextView.setVisibility(View.GONE);
+            }
+            holder.arriveTextView.setText(myPlace);
             holder.arriveTextView.setVisibility(View.VISIBLE);
             String SOUND = "sound";
             String SOUNDOFF = "soundoff";
 
             if(typeRule.equals(SOUND) || typeRule.equals(SOUNDOFF)) {
-                holder.typeIcon.setImageResource(R.drawable.ic_volume_up_green_24dp);
                 if(typeRule.equals(SOUND)){
-                    holder.arriveTextView.setText(R.string.sound_on_turn);
+                    holder.typeIcon.setImageResource(R.drawable.ic_volume_up_green_24dp);
+                    //holder.arriveTextView.setText(R.string.sound_on_turn);
                 }else{
-                    holder.arriveTextView.setText(R.string.sound_off_turn);
+                    holder.typeIcon.setImageResource(R.drawable.ic_volume_off_green_24dp);
+                    //holder.arriveTextView.setText(R.string.sound_off_turn);
                 }
             }
 
@@ -169,6 +213,13 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
                     public void run() {
                         mDb.ruleDao().deleteByRuleId(ruleId);
                         Log.d("delete task","deleted task: ");
+
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(mContext, "The item was successfully deleted", Toast.LENGTH_LONG).show();
+                            }
+                        });
                     }
                 });
             }

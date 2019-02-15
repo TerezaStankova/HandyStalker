@@ -27,6 +27,9 @@ public interface PlaceDao {
     @Query("SELECT id FROM place WHERE place_id=:placeId")
     Integer findIdByPlaceId(String placeId);
 
+    @Query("SELECT COUNT(*) FROM place")
+    Integer countPlaceIds();
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updatePlace(PlaceEntry placeEntry);
 }

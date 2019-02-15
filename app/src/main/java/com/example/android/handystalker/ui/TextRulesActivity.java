@@ -6,6 +6,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -15,11 +17,13 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.RuleEntry;
 import com.example.android.handystalker.ui.Adapters.RulesAdapter;
+import com.example.android.handystalker.utilities.AppExecutors;
 import com.example.android.handystalker.utilities.TextRulesViewModel;
 
 import java.util.List;
@@ -34,6 +38,9 @@ public class TextRulesActivity extends AppCompatActivity {
     private Parcelable mListState;
     private LinearLayoutManager layoutManager;
 
+    // Member variable for the Database
+    private AppDatabase mDb;
+
 
     private static final int PERMISSIONS_REQUEST = 2222;
 
@@ -44,9 +51,11 @@ public class TextRulesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.text_rules);
         setTitle(R.string.sms_rules);
+        mDb = AppDatabase.getInstance(getApplicationContext());
 
         // Set up the recycler view
         mRecyclerView = findViewById(R.id.sendrules_list_recycler_view);
@@ -63,15 +72,43 @@ public class TextRulesActivity extends AppCompatActivity {
         mAdapter.setHandy(false);
         mRecyclerView.setAdapter(mAdapter);
 
-        AppDatabase mDb = AppDatabase.getInstance(getApplicationContext());
         mAdapter.setDatabase(mDb);
 
         setUpRulesViewModel();
     }
 
     public void onAddSendRulesButtonClicked(View view) {
-        Intent intent = new Intent(this, NewTextRuleActivity.class);
-        startActivity(intent);
+
+        if (ActivityCompat.checkSelfPermission(TextRulesActivity.this,
+                android.Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Allow texting first!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                final int countContacts = mDb.contactDao().countContacts();
+                final int countPlaces = mDb.placeDao().countPlaceIds();
+
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if ((int) countPlaces == 0) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.one_place), Toast.LENGTH_LONG).show();
+                            return;
+                        } else if ((int) countContacts == 0) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.one_contact), Toast.LENGTH_LONG).show();
+                            return;}
+                            else {
+                            Intent intent = new Intent(getApplicationContext(), NewTextRuleActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private void showRulesDataView() {

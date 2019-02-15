@@ -2,6 +2,8 @@ package com.example.android.handystalker.ui.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
@@ -105,6 +108,13 @@ public ContactsAdapter(Context context, List<Contact> contacts) {
                 public void run() {
                 mDb.contactDao().deleteByContactId(placeId);
                 Log.d("delete task","deleted task: ");
+
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(mContext, "The item was successfully deleted", Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
                 });
                 }

@@ -170,6 +170,8 @@
     <string name="channel_description">Notifikace ohledně příchodů a odjezdů.</string>
     <string name="location_off">Location is off.</string>
     <string name="only_100">Only 100 places allowed</string>
+    <string name="one_contact">Add at least one contact first</string>
+    <string name="one_place">Add at least one place first!</string>
 
 
 </resources>

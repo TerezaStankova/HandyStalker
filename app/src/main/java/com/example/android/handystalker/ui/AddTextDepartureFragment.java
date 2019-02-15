@@ -299,8 +299,9 @@ public class AddTextDepartureFragment extends Fragment {
             public void onChanged(@Nullable List<MessagesEntry> messagesEntries) {
                 Log.d("message", "Updating list of messages from LiveData in ViewModel"  + messagesEntries.size() );
                 if (messagesEntries.size() == 0) {
-                    return;
+                    mMessagesTexts.add(0, getString(R.string.default_message));
                 }
+
                 if (messagesEntries != null || messagesEntries.size() != 0) {
                     mMessagesIds.clear();
                     mMessagesTexts.clear();
@@ -311,6 +312,9 @@ public class AddTextDepartureFragment extends Fragment {
                         mMessagesTexts.add(messagesEntries.get(i).getText());
                         mMessagesIds.add(messagesEntries.get(i).getId());
                     }
+
+                    mMessagesTexts.add(0, getString(R.string.default_message));
+                }
 
 
                     ArrayAdapter<String> adapterMessages = new ArrayAdapter<String>(
@@ -324,19 +328,22 @@ public class AddTextDepartureFragment extends Fragment {
                     messageTextSpinner.setAdapter(adapterMessages);
 
 
-                    messageTextSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        public void onItemSelected(AdapterView<?> parent, View view, int position,long id) {
-                            messageId = mMessagesIds.get(position);
-                        }
-                        public void onNothingSelected(AdapterView<?> parent) {
-                            messageId = 0;
-                        }
-                    });
-
-
-                }
+                messageTextSpinner.setOnItemSelectedListener(new MessageSpinnerClass());
             }
 
         });
+    }
+
+    class MessageSpinnerClass implements AdapterView.OnItemSelectedListener
+    {
+        public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
+        { if (position == 0){
+            messageId = null;
+        } else {
+            messageId = mMessagesIds.get(position - 1);}
+        }
+        public void onNothingSelected(AdapterView<?> parent) {
+            messageId = null;
+        }
     }
 }

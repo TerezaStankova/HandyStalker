@@ -1,6 +1,9 @@
 package com.example.android.handystalker.ui.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,9 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
+import com.example.android.handystalker.ui.MapsActivity;
 import com.example.android.handystalker.utilities.AppExecutors;
 //import com.google.android.gms.location.places.PlaceBufferResponse;
 
@@ -74,6 +79,15 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
                     public void run() {
                         mDb.placeDao().deleteByPlaceId(placeId);
                         Log.d("delete task","deleted task: ");
+
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(mContext, "The item was successfully deleted", Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+
                     }
                 });
             }

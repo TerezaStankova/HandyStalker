@@ -6,6 +6,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -15,11 +17,13 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.RuleEntry;
 import com.example.android.handystalker.ui.Adapters.RulesAdapter;
+import com.example.android.handystalker.utilities.AppExecutors;
 import com.example.android.handystalker.utilities.WifiRulesViewModel;
 
 import java.util.List;
@@ -40,12 +44,16 @@ public class WifiRulesActivity extends AppCompatActivity {
     private static final String RULES = "rules";
 
     private static final String LIST_STATE_KEY = "list_state";
+    // Member variable for the Database
+    private AppDatabase mDb;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wifi_rules);
         setTitle("Handy Rules");
+        mDb = AppDatabase.getInstance(getApplicationContext());
 
         // Set up the recycler view
         mRecyclerView = findViewById(R.id.handyrules_list_recycler_view);
@@ -70,8 +78,27 @@ public class WifiRulesActivity extends AppCompatActivity {
     }
 
     public void onAddSendRulesButtonClicked(View view) {
-        Intent intent = new Intent(this, NewWifiRuleActivity.class);
-        startActivity(intent);
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                final int countPlaces = mDb.placeDao().countPlaceIds();
+
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if ((int) countPlaces == 0) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.one_place), Toast.LENGTH_LONG).show();
+                            return;
+                        } else {
+                            Intent intent = new Intent(getApplicationContext(), NewWifiRuleActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private void showContactsDataView() {

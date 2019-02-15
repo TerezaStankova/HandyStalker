@@ -394,6 +394,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             }
                         });
 
+                        Toast.makeText(MapsActivity.this, "Place was added successfully.", Toast.LENGTH_SHORT).show();
+
                         dialog.cancel();
                         Intent intent = new Intent(getApplicationContext(), PlacesActivity.class);
                         startActivity(intent);
@@ -815,6 +817,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Status status = Autocomplete.getStatusFromIntent(data);
                 Log.i(TAG, status.getStatusMessage());
             } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(MapsActivity.this, "Location is off.", Toast.LENGTH_SHORT).show();
                 // The user canceled the operation.
             }
         }

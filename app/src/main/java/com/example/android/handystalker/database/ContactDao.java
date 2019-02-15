@@ -36,6 +36,9 @@ public interface ContactDao {
     @Query("SELECT email FROM contacts WHERE id=:contactId")
     String findEmailForContactId(final Integer contactId);
 
+    @Query("SELECT COUNT(*) FROM contacts")
+    Integer countContacts();
+
     @Query("SELECT * FROM contacts WHERE id=:contactId")
     ContactsEntry findContactsEntryfromContactId(final Integer contactId);
 }

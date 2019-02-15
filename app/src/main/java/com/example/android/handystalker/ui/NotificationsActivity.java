@@ -5,6 +5,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,11 +14,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.RuleEntry;
 import com.example.android.handystalker.ui.Adapters.RulesAdapter;
+import com.example.android.handystalker.utilities.AppExecutors;
 import com.example.android.handystalker.utilities.NotificationRulesViewModel;
 
 import java.util.List;
@@ -35,6 +39,9 @@ public class NotificationsActivity extends AppCompatActivity {
     private static final String RULES = "rules";
 
     private static final String LIST_STATE_KEY = "list_state";
+    // Member variable for the Database
+    private AppDatabase mDb;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,15 +64,34 @@ public class NotificationsActivity extends AppCompatActivity {
         mAdapter.setHandy(false);
         mRecyclerView.setAdapter(mAdapter);
 
-        AppDatabase mDb = AppDatabase.getInstance(getApplicationContext());
+        mDb = AppDatabase.getInstance(getApplicationContext());
         mAdapter.setDatabase(mDb);
 
         setUpRulesViewModel();
     }
 
     public void onAddNotificationRulesButtonClicked(View view) {
-        Intent intent = new Intent(this, NewNotificationRuleActivity.class);
-        startActivity(intent);
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                final int countPlaces = mDb.placeDao().countPlaceIds();
+
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if ((int) countPlaces == 0) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.one_place), Toast.LENGTH_LONG).show();
+                            return;
+                        } else  {
+                            Intent intent = new Intent(getApplicationContext(), NewNotificationRuleActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                });
+            }
+        });
+
     }
 
     private void showRulesDataView() {

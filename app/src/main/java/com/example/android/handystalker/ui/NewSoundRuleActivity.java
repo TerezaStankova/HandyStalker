@@ -155,7 +155,7 @@ public class NewSoundRuleActivity extends AppCompatActivity {
                 }
             });
 
-            Intent intent = new Intent(this, WifiRulesActivity.class);
+            Intent intent = new Intent(this, SoundRulesActivity.class);
             startActivity(intent);
         }
 

@@ -330,7 +330,7 @@ public class AddTextArrivalFragment extends Fragment {
             public void onChanged(@Nullable List<MessagesEntry> messagesEntries) {
                 Log.d("message", "Updating list of messages from LiveData in ViewModel"  + messagesEntries.size() );
                 if (messagesEntries.size() == 0) {
-                    return;
+                    mMessagesTexts.add(0, getString(R.string.default_message));
                 }
                 if (messagesEntries != null || messagesEntries.size() != 0) {
                     mMessagesIds.clear();
@@ -343,7 +343,7 @@ public class AddTextArrivalFragment extends Fragment {
                         mMessagesIds.add(messagesEntries.get(i).getId());
                     }
 
-                    mMessagesTexts.add(0, getString(R.string.default_message));
+                    mMessagesTexts.add(0, getString(R.string.default_message));}
 
                     ArrayAdapter<String> adapterMessages = new ArrayAdapter<String>(
                             getContext(),
@@ -354,11 +354,9 @@ public class AddTextArrivalFragment extends Fragment {
                     adapterMessages.setDropDownViewResource(R.layout.spinner_item);
                     // Apply the adapter to the spinner
                     messageTextSpinner.setAdapter(adapterMessages);
-
-
                     messageTextSpinner.setOnItemSelectedListener(new MessageSpinnerClass());
 
-                }
+
             }
 
         });

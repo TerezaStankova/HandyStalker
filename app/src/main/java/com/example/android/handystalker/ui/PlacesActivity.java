@@ -15,6 +15,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -452,8 +454,36 @@ public class PlacesActivity extends AppCompatActivity {
             Toast.makeText(this, getString(R.string.need_location_permission_message), Toast.LENGTH_LONG).show();
             return;
         }
-        Intent intent = new Intent(this, MapsActivity.class);
-        startActivity(intent);
+
+        final int[] count = new int[1];
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                count[0] = mDb.placeDao().countPlaceIds();
+                controlCount(count[0]);
+            }
+        });
+    }
+
+    public void controlCount(final int i){
+
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                if ((int) i > 99) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.only_100), Toast.LENGTH_LONG).show();
+                    return;
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                    startActivity(intent);
+                }
+
+            }
+        });
+
+
     }
 }
 

@@ -5,6 +5,8 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -13,11 +15,13 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.RuleEntry;
 import com.example.android.handystalker.ui.Adapters.RulesAdapter;
+import com.example.android.handystalker.utilities.AppExecutors;
 import com.example.android.handystalker.utilities.SoundRulesViewModel;
 
 import java.util.List;
@@ -37,12 +41,16 @@ public class SoundRulesActivity extends AppCompatActivity {
     private static final String RULES = "rules";
 
     private static final String LIST_STATE_KEY = "list_state";
+    // Member variable for the Database
+    private AppDatabase mDb;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sound_rules);
         setTitle("Handy Rules");
+        mDb = AppDatabase.getInstance(getApplicationContext());
 
         // Set up the recycler view
         mRecyclerView = findViewById(R.id.soundrules_list_recycler_view);
@@ -66,9 +74,36 @@ public class SoundRulesActivity extends AppCompatActivity {
         setUpRulesViewModel();
     }
 
-    public void onAddSendRulesButtonClicked(View view) {
-        Intent intent = new Intent(this, NewSoundRuleActivity.class);
-        startActivity(intent);
+    public void onAddSoundRulesButtonClicked(View view) {
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        // Check if the API supports such permission change and check if permission is granted
+        if (android.os.Build.VERSION.SDK_INT >= 24 && !notificationManager.isNotificationPolicyAccessGranted()) {
+            Toast.makeText(this, "Allow sound changes first!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                final int countPlaces = mDb.placeDao().countPlaceIds();
+
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if ((int) countPlaces == 0) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.one_place), Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        else {
+                            Intent intent = new Intent(getApplicationContext(), NewSoundRuleActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private void showContactsDataView() {
