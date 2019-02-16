@@ -176,4 +176,22 @@
     <string name="only_100">Only 100 places allowed</string>
     <string name="one_contact">Add at least one contact first</string>
     <string name="one_place">Add at least one place first!</string>
+
+    <string name="yes">Yes</string>
+    <string name="delete">Delete?</string>
+    <string name="delete_rule">Are you sure you want to delete this rule?</string>
+    <string name="delete_place">Are you sure you want to delete this place? Linked rules will be deleted as well.</string>
+    <string name="delete_contact">Are you sure you want to delete this contact? Linked rules will be deleted as well. </string>
+    <string name="delete_message">Are you sure you want to delete this text? This text will be replaced with a default text for linked rules.</string>
+    <string name="item_deleted">The item was successfully deleted</string>
+
+    <!--Maps-->
+    <string name="no_place_around">No Places of interest found around.  Try to press ´Nearby´ again after your location is found and blue circle appears.</string>
+    <string name="place_added">Place was added successfully.</string>
+    <string name="more_specific">This place can not be monitored. Try more specific address.</string>
+    <string name="not_connected">You are not connected to the Internet. Connect and add new places.</string>
+    <string name="not_working">Geofencing can not work properly!</string>
+    <string name="geo_enabled">Geofencing is now enabled!</string>
+    <string name="enable_high_accuracy">Enable high accuracy in location settings or Handy Stalker will not work properly!</string>
+
 </resources>

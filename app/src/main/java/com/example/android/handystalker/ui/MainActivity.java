@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity  {
                     } catch (IntentSender.SendIntentException sendEx) {
                         // Ignore the error.
                         //setCheckedPrivacy(onOffSwitch);
-                        Toast.makeText(MainActivity.this, "Enable high accuracy in location settings or Handy Stalker will not work properly!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, getString(R.string.enable_high_accuracy), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -261,12 +261,12 @@ public class MainActivity extends AppCompatActivity  {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode ==  REQUEST_CHECK_SETTINGS) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(MainActivity.this, "Geofencing is now enabled!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, getString(R.string.geo_enabled), Toast.LENGTH_SHORT).show();
                 setCheckedPrivacy(onOffSwitch);
 
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
-                Toast.makeText(MainActivity.this, "Geofencing can not work properly!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, getString(R.string.not_working), Toast.LENGTH_SHORT).show();
                 onOffSwitch.setChecked(false);
             }
         }

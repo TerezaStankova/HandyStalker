@@ -1,9 +1,11 @@
 package com.example.android.handystalker.ui.Adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -101,25 +103,50 @@ public ContactsAdapter(Context context, List<Contact> contacts) {
                 @Override
                 public void onClick(View v)
                         {
-                final int placeId = mContacts.get(position).getContactId();
+                final int contactId = mContacts.get(position).getContactId();
                 // Delete from database
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                mDb.contactDao().deleteByContactId(placeId);
-                Log.d("delete task","deleted task: ");
-
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(mContext, "The item was successfully deleted", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-                });
+                openDeleteDialog(contactId);
                 }
         });
         }
+
+    private void openDeleteDialog(final int contactId) {
+        // Ask the user if the deletion should continue.
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+        builder.setTitle(R.string.delete)
+                .setMessage(R.string.delete_contact)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Send the positive button event back to the host activity
+
+                        // Delete from database
+                        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                mDb.contactDao().deleteByContactId(contactId);
+                                Log.d("delete task","deleted task: ");
+
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(mContext, "The item was successfully deleted", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Send the negative button event back to the host activity
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder.create();
+        alert11.show();
+    }
 
 
 /**

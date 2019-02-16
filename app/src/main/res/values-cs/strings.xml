@@ -130,7 +130,7 @@
     <string name="let">Dej vědět, že jsi v pořádku.</string>
     <string name="know_about_you">vědět, že jsi v pořádku.</string>
     <string name="you_departured">Vyrazili jste! Dejte o tom vědět.</string>
-    <string name="know">know.</string>
+    <string name="know">vědět.</string>
 
     <!--SMS-->
     <string name="hi_i_am_home">Ahoj, jsem doma.</string>
@@ -168,10 +168,26 @@
     <string name="select_from_nearby_places">Vyber z míst poblíž</string>
     <string name="channel_name">Hlídáčkovy notifikace</string>
     <string name="channel_description">Notifikace ohledně příchodů a odjezdů.</string>
-    <string name="location_off">Location is off.</string>
-    <string name="only_100">Only 100 places allowed</string>
-    <string name="one_contact">Add at least one contact first</string>
-    <string name="one_place">Add at least one place first!</string>
 
+    <string name="location_off">Zjištění polohy není zpřístupněno.</string>
+    <string name="only_100">Je možné uložit jen 100 míst. Nejprve některé smažte.</string>
+    <string name="one_contact">Přidejte nejprve alespoň jeden kontakt!</string>
+    <string name="one_place">Přidejte nejprve alespoň jedno místo!</string>
 
+    <string name="yes">Ano</string>
+    <string name="delete">Smazání</string>
+    <string name="delete_rule">Opravdu chcete smazat toto pravidlo?</string>
+    <string name="delete_place">Opravdu chcete smazat toto místo? Pokud ano, budou smazána i přidružená pravidla. </string>
+    <string name="delete_contact">Opravdu chcete smazat tento kontakt? Pokud ano, budou smazána i přidružená pravidla. </string>
+    <string name="delete_message">Opravdu chcete smazat tuto zprávu? Text u přidružených pravidel bude nahrazen defaultním. </string>
+    <string name="item_deleted">Položka byla úspěšně odstraněna.</string>
+
+    <!--Maps-->
+    <string name="no_place_around">Nebyla nalezena žádná významná místa v okolí. Zkuste je vyhledat znovu po zobrazení modrého kolečka lokace na mapě.</string>
+    <string name="place_added">Místo bylo úspěšně přidáno.</string>
+    <string name="more_specific">Toto místo nemůže být sledováno. Zkuste zadat více specifickou adresu či adresu poblíž.</string>
+    <string name="not_connected">Nejste připojeni k internetu. Připojte se, abyste mohli přidat nové místo.</string>
+    <string name="not_working">Hlídáček nemůže správně fungovat bez přístupu k internetu a vysoké přesnosti zjišťování polohy!</string>
+    <string name="geo_enabled">Hlídáček sleduje navštívená místa!</string>
+    <string name="enable_high_accuracy">Umožněte vysokou přesnost zjišťování polohy, jinak Hlídáček nemůže fungovat!</string>
 </resources>

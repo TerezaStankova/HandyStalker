@@ -359,7 +359,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         if (isConnected) {return true; } else {
-            Toast.makeText(MapsActivity.this, "You are not connected to the Internet. Connect and add new places.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MapsActivity.this, getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
             return false;}
 
     }
@@ -368,7 +368,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Use the Builder class for convenient dialog construction
 
         if (placeIdfromPicker.length() > 100) {
-            Toast.makeText(MapsActivity.this, "This place can not be monitored. Try more specific address.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MapsActivity.this, getString(R.string.more_specific), Toast.LENGTH_SHORT).show();
 
             return;}
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -394,7 +394,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             }
                         });
 
-                        Toast.makeText(MapsActivity.this, "Place was added successfully.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MapsActivity.this, getString(R.string.place_added), Toast.LENGTH_SHORT).show();
 
                         dialog.cancel();
                         Intent intent = new Intent(getApplicationContext(), PlacesActivity.class);
@@ -713,7 +713,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 public void onFailure(@NonNull Exception exception) {
                     if (exception instanceof ApiException) {
                         ApiException apiException = (ApiException) exception;
-                        Toast.makeText(MapsActivity.this, "No Places of interest found around.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MapsActivity.this, getString(R.string.no_place_around), Toast.LENGTH_SHORT).show();
                         Log.e(TAG, "No Places of interest found around. Try to press ´Nearby´ again after your location is found and blue circle appears." + apiException.getStatusCode() + apiException.getMessage());
                     }
                 }
@@ -800,7 +800,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Log.e("Exception: %s", e.getMessage());
         }
 
-        if (!isLocationEnabled) {Toast.makeText(MapsActivity.this, "Location is off.", Toast.LENGTH_SHORT).show();}
+        if (!isLocationEnabled) {Toast.makeText(MapsActivity.this, R.string.location_off, Toast.LENGTH_SHORT).show();}
 
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
@@ -817,7 +817,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Status status = Autocomplete.getStatusFromIntent(data);
                 Log.i(TAG, status.getStatusMessage());
             } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(MapsActivity.this, "Location is off.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapsActivity.this, R.string.location_off, Toast.LENGTH_SHORT).show();
                 // The user canceled the operation.
             }
         }

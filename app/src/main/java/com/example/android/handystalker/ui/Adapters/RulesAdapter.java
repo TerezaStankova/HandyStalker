@@ -1,23 +1,33 @@
 package com.example.android.handystalker.ui.Adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
+import com.example.android.handystalker.database.PlaceEntry;
 import com.example.android.handystalker.database.RuleEntry;
 import com.example.android.handystalker.model.Rule;
+import com.example.android.handystalker.ui.MapsActivity;
+import com.example.android.handystalker.ui.PlacesActivity;
 import com.example.android.handystalker.utilities.AppExecutors;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
@@ -142,16 +152,20 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
                 String myDeparture = "(" + mContext.getString(R.string.from) + " " + departurePlace + ")";
                 holder.departTextView.setText(myDeparture);
                 myPlace = mContext.getString(R.string.arrival_to) +" "+ arrivalPlace;
-                holder.departTextView.setVisibility(View.VISIBLE);            }
+                holder.departTextView.setVisibility(View.VISIBLE);
+                holder.arriveTextView.setText(myPlace);
+                holder.arriveTextView.setVisibility(View.VISIBLE);}
             else if (departurePlace != null) {
                 myPlace = mContext.getString(R.string.departure_to) + " " + departurePlace;
-                holder.departTextView.setVisibility(View.VISIBLE);            }
+                holder.departTextView.setVisibility(View.VISIBLE);
+                holder.departTextView.setText(myPlace);
+                holder.arriveTextView.setVisibility(View.GONE);}
             else {
                 myPlace = mContext.getString(R.string.arrival_to) +" "+ arrivalPlace;
                 holder.departTextView.setVisibility(View.GONE);
+                holder.arriveTextView.setText(myPlace);
+                holder.arriveTextView.setVisibility(View.VISIBLE);
             }
-            holder.arriveTextView.setText(myPlace);
-            holder.arriveTextView.setVisibility(View.VISIBLE);
 
             String WIFI = "wifi";
             String WIFIOFF = "wifioff";
@@ -165,7 +179,6 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
                 }
             }
 
-            holder.departTextView.setVisibility(View.GONE);
         }
         else if (soundRule) {
             holder.nameTextView.setVisibility(View.GONE);
@@ -174,17 +187,22 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
                 String myDeparture = "(" + mContext.getString(R.string.from) + " " + departurePlace + ")";
                 holder.departTextView.setText(myDeparture);
                 myPlace = mContext.getString(R.string.arrival_to) +" "+ arrivalPlace;
-                holder.departTextView.setVisibility(View.VISIBLE);            }
+                holder.departTextView.setVisibility(View.VISIBLE);
+                holder.arriveTextView.setText(myPlace);
+                holder.arriveTextView.setVisibility(View.VISIBLE);
+            }
             else if (departurePlace != null) {
                 myPlace = mContext.getString(R.string.departure_to) + " " + departurePlace;
                 holder.departTextView.setVisibility(View.VISIBLE);
+                holder.departTextView.setText(myPlace);
+                holder.arriveTextView.setVisibility(View.GONE);
             }
             else {
                 myPlace = mContext.getString(R.string.arrival_to) +" "+ arrivalPlace;
                 holder.departTextView.setVisibility(View.GONE);
+                holder.arriveTextView.setText(myPlace);
+                holder.arriveTextView.setVisibility(View.VISIBLE);
             }
-            holder.arriveTextView.setText(myPlace);
-            holder.arriveTextView.setVisibility(View.VISIBLE);
             String SOUND = "sound";
             String SOUNDOFF = "soundoff";
 
@@ -197,8 +215,6 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
                     //holder.arriveTextView.setText(R.string.sound_off_turn);
                 }
             }
-
-            holder.departTextView.setVisibility(View.GONE);
         }
 
         holder.deleteIcon.setOnClickListener(new View.OnClickListener()
@@ -207,23 +223,49 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
             public void onClick(View v)
             {
                 final int ruleId = mRules.get(position).getRuleId();
+                //String name = mRules.get(position).getName();
                 // Delete from database
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        mDb.ruleDao().deleteByRuleId(ruleId);
-                        Log.d("delete task","deleted task: ");
+                openDeleteDialog(ruleId);
+            }
+        });
 
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+    }
+
+    private void openDeleteDialog(final int ruleId) {
+        // Ask the user if the deletion should continue.
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+        builder.setTitle(R.string.delete)
+                .setMessage(R.string.delete_rule)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Send the positive button event back to the host activity
+
+                        // Delete from database
+                        AppExecutors.getInstance().diskIO().execute(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(mContext, "The item was successfully deleted", Toast.LENGTH_LONG).show();
+                                mDb.ruleDao().deleteByRuleId(ruleId);
+
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(mContext, mContext.getString(R.string.item_deleted), Toast.LENGTH_LONG).show();
+                                    }
+                                });
                             }
                         });
                     }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Send the negative button event back to the host activity
+                        dialog.cancel();
+                    }
                 });
-            }
-        });
+
+        AlertDialog alert11 = builder.create();
+        alert11.show();
 
     }
 
@@ -338,7 +380,6 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
                         mRuleDatabase.add(newRule);
                         Log.d("collect rule data", "contact: " + mRuleDatabase.get(i).getArrivalPlace());
                     }
-
             return mRuleDatabase;
         }
 

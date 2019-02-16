@@ -9,25 +9,25 @@
         android:id="@+id/my_place_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="16dp"
-        android:hint="@string/enter_name"
-        android:maxLength="40"
-        android:inputType="text"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="4dp" />
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="4dp"
+        android:hint="@string/enter_name"
+        android:inputType="text"
+        android:maxLength="40" />
 
     <TextView
         android:id="@+id/address_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="4dp"
-        android:fontFamily="sans-serif"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="4dp" />
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="sans-serif" />
 </LinearLayout>
