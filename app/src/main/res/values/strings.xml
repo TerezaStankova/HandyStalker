@@ -89,6 +89,7 @@
     <string name="while_in">while in</string>
     <string name="save_wi_fi_rule">Save Wi-fi Rule</string>
     <string name="turn_sound">Turn sound</string>
+    <string name="sound">Sound</string>
     <string name="save_sound_rule">Save Sound Rule</string>
     <string name="wifi_permission">WiFi Permission</string>
 

@@ -77,9 +77,9 @@
                 android:background="@drawable/rounded_button"
                 android:maxWidth="@dimen/button_width"
                 android:onClick="onSoundSettingsButtonClicked"
+                android:text="@string/sound"
                 android:textAppearance="@style/myButtonStyleSmall"
-                android:text="@string/soundon"
-                android:textColor="@color/text_color_primary"/>
+                android:textColor="@color/text_color_primary" />
 
             <Button
                 android:layout_width="match_parent"

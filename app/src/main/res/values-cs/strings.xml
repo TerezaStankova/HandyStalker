@@ -86,7 +86,7 @@
 
     <!--Handy Rules-->
     <string name="turn_wi_fi">Wi-Fi</string>
-    <string name="while_in">while in</string>
+    <string name="while_in">pokud jsem v</string>
     <string name="save_wi_fi_rule">Uložit pravidlo</string>
     <string name="turn_sound">Zvuk</string>
     <string name="save_sound_rule">Uložit pravidlo</string>
@@ -94,8 +94,8 @@
 
     <string name="wifi_on_turn">Zapnout Wi-Fi.</string>
     <string name="wifi_of_turn">Vypnout Wi-Fi.</string>
-    <string name="sound_on_turn">Zapnout sound ON.</string>
-    <string name="sound_off_turn">Vypnout sound.</string>
+    <string name="sound_on_turn">Zapnout zvuk.</string>
+    <string name="sound_off_turn">Vypnout zvuk.</string>
 
     <string name="data_on_turn">Zapni data.</string>
     <string name="data_off_turn">Vypni data.</string>
@@ -159,6 +159,7 @@
 
     <string name="anywhere">kdekoliv</string>
     <string name="default_message">automatický text</string>
+    <string name="sound">Zvuk</string>
 
     <string name="error_api_key" translatable="false">API klíč nenalezen</string>
     <string name="pick_place">Vyber místo</string>

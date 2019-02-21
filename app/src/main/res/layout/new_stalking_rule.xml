@@ -36,11 +36,11 @@
 
             <Spinner
                 android:id="@+id/name_spinner"
-                style="@style/spinnerItemStyle2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
+                android:background="@drawable/btn_dropdown"
                 android:minHeight="12dp"/>
 
         </LinearLayout>
@@ -63,6 +63,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:background="@drawable/btn_dropdown"
             android:gravity="end"
             android:minHeight="12dp" />
     </LinearLayout>
@@ -84,7 +85,7 @@
             <Spinner
                 android:id="@+id/departure_spinner"
                 android:layout_width="0dp"
-                style="@style/spinnerItemStyle2"
+                android:background="@drawable/btn_dropdown"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
@@ -131,7 +132,7 @@
                 <Spinner
                     android:id="@+id/name_departure_spinner"
                     android:layout_width="0dp"
-                    style="@style/spinnerItemStyle2"
+                    android:background="@drawable/btn_dropdown"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
@@ -158,7 +159,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    style="@style/spinnerItemStyle2"
+                    android:background="@drawable/btn_dropdown"
                     android:gravity="end"
                     android:minHeight="12dp" />
             </LinearLayout>
@@ -205,7 +206,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@style/spinnerItemStyle2"
+                android:background="@drawable/btn_dropdown"
                 android:gravity="end"
                 android:minHeight="12dp" />
 
@@ -230,6 +231,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:background="@drawable/btn_dropdown"
                 android:gravity="end"
                 android:minHeight="12dp" />
         </LinearLayout>
@@ -237,7 +239,7 @@
         <Spinner
             android:id="@+id/place_spinner"
             android:layout_width="match_parent"
-            style="@style/spinnerItemStyle2"
+            android:background="@drawable/btn_dropdown"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"

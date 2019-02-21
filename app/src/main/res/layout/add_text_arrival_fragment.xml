@@ -7,6 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:orientation="vertical">
@@ -21,38 +22,36 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:text="@string/add_text_rule_title"
+            android:textAllCaps="true"
             android:textAppearance="@style/myDetailTitleStyle" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="start"
-            android:text="@string/send_sms_to" />
 
-        <Spinner
-            android:id="@+id/name_spinner"
-            style="@style/spinnerItemStyle2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:minHeight="12dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                style="@android:style/TextAppearance.Large"
+                android:gravity="start"
+                android:text="@string/send_sms_to" />
 
-    </LinearLayout>
+            <Spinner
+                android:id="@+id/name_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/btn_dropdown"
+                android:gravity="end"
+                android:minHeight="12dp" />
+
+
 
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@android:style/TextAppearance.Large"
             android:layout_margin="8dp"
             android:text="@string/after_reaching" />
 
@@ -62,6 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:background="@drawable/btn_dropdown"
             android:gravity="end"
             android:minHeight="12dp" />
 
@@ -70,6 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            style="@android:style/TextAppearance.Large"
             android:gravity="start"
             android:text="@string/while_departuring_from" />
 
@@ -80,33 +81,28 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:background="@drawable/btn_dropdown"
             android:gravity="end"
             android:minHeight="12dp" />
 
-        <LinearLayout
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            style="@android:style/TextAppearance.Large"
+            android:gravity="start"
+            android:text="@string/with_text" />
+
+        <Spinner
+            android:id="@+id/message_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="start"
-                android:text="@string/with_text" />
-
-            <Spinner
-                android:id="@+id/message_spinner"
-                android:layout_width="0dp"
-                style="@style/spinnerItemStyle2"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:minHeight="12dp" />
-        </LinearLayout>
-
+            android:background="@drawable/btn_dropdown"
+            android:gravity="end"
+            android:minHeight="12dp" />
 
         <Button
             android:id="@+id/arrival_save_button"

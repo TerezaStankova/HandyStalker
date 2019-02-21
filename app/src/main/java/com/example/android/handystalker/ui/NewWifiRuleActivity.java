@@ -222,7 +222,7 @@ public class NewWifiRuleActivity extends AppCompatActivity {
 
                     Log.d("placeNames", " " + placeNames.get(0));
                     placeNamesAnywhere.addAll(placeNames);
-                    placeNamesAnywhere.add(0, "anywhere");
+                    placeNamesAnywhere.add(0, getString(R.string.anywhere));
                     Log.d("placeNames", " " + placeNames.get(0));
 
 

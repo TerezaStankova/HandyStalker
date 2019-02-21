@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
@@ -24,6 +25,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:text="@string/add_sound_rule"
+            android:textAllCaps="true"
             android:textAppearance="@style/myDetailTitleStyle" />
 
         <LinearLayout
@@ -42,6 +44,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    style="@android:style/TextAppearance.Large"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -50,14 +53,20 @@
 
                 <Spinner
                     android:id="@+id/sound_on_spinner_arrival"
+                    style="@android:style/Widget.Spinner.DropDown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:background="@drawable/btn_dropdown"
+                    android:descendantFocusability="afterDescendants"
                     android:gravity="end"
-                    android:minHeight="12dp" />
+                    android:minHeight="12dp"
+                    android:scrollbars="vertical"
+                    android:spinnerMode="dropdown"/>
             </LinearLayout>
 
             <TextView
+                style="@android:style/TextAppearance.Large"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
@@ -67,11 +76,13 @@
                 android:id="@+id/arrival_sound_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/btn_dropdown"
                 android:gravity="end"
                 android:minHeight="12dp" />
 
 
             <TextView
+                style="@android:style/TextAppearance.Large"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
@@ -81,8 +92,11 @@
                 android:id="@+id/departure_anywhere_sound_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/btn_dropdown"
+                android:drawingCacheQuality="auto"
                 android:gravity="end"
-                android:minHeight="12dp" />
+                android:minHeight="12dp"
+                tools:listitem="@layout/spinner_item" />
 
 
             <Button
@@ -114,6 +128,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    style="@android:style/TextAppearance.Large"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -125,6 +140,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:background="@drawable/btn_dropdown"
                     android:gravity="end"
                     android:minHeight="12dp" />
             </LinearLayout>
@@ -135,6 +151,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    style="@android:style/TextAppearance.Large"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start"
@@ -144,6 +161,7 @@
                     android:id="@+id/departure_sound_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/btn_dropdown"
                     android:gravity="end"
                     android:minHeight="12dp" />
             </LinearLayout>
