@@ -46,10 +46,6 @@
         <item name="android:layout_gravity">center_horizontal</item>
     </style>
 
-    <style name="mySpinnerStyle" parent="@android:style/Widget.Spinner.DropDown">
-        <item name="android:colorActivatedHighlight">#760003</item>
-    </style>
-
     <style name="mySpinnerStyleItem" parent="Widget.AppCompat.TextView.SpinnerItem">
         <item name="android:textColor">@color/TextOnLight</item>
         <item name="android:textSize">16sp</item>

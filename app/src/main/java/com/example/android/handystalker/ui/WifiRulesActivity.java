@@ -88,7 +88,7 @@ public class WifiRulesActivity extends AppCompatActivity {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        if ((int) countPlaces == 0) {
+                        if (countPlaces == 0) {
                             Toast.makeText(getApplicationContext(), getString(R.string.one_place), Toast.LENGTH_LONG).show();
                             return;
                         } else {

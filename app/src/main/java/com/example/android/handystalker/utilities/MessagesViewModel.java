@@ -8,7 +8,6 @@ import android.util.Log;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.MessagesEntry;
 import com.example.android.handystalker.database.PlaceRepository;
-import com.example.android.handystalker.database.RuleEntry;
 
 import java.util.List;
 

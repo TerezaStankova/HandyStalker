@@ -1,7 +1,6 @@
 package com.example.android.handystalker.ui;
 
 import android.Manifest;
-import android.app.NotificationManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;

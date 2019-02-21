@@ -1,20 +1,11 @@
 package com.example.android.handystalker.ui;
 
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.Status;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-
-
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-
-import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcelable;
@@ -23,51 +14,43 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
 import com.example.android.handystalker.database.PlaceEntry;
 import com.example.android.handystalker.geofencing.GeofenceStorage;
 import com.example.android.handystalker.geofencing.Geofencing;
-import com.example.android.handystalker.R;
 import com.example.android.handystalker.ui.Adapters.PlacesAdapter;
 import com.example.android.handystalker.utilities.AppExecutors;
 import com.example.android.handystalker.utilities.PlacesViewModel;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-
-
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.FetchPlaceResponse;
+import com.google.android.libraries.places.api.net.PlacesClient;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 //import com.google.android.gms.location.places.GeoDataClient;
 //import com.google.android.gms.location.places.Place;
 //import com.google.android.gms.location.places.PlaceBufferResponse;
 //import com.google.android.gms.location.places.Places;
 //import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.api.net.FetchPlaceRequest;
-import com.google.android.libraries.places.api.net.FetchPlaceResponse;
-import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.libraries.places.widget.Autocomplete;
-import com.google.android.libraries.places.widget.AutocompleteActivity;
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 
 //import static com.google.android.gms.location.places.ui.PlacePicker.getPlace;
 
@@ -85,7 +68,7 @@ public class PlacesActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private boolean mIsEnabled;
     //private GeoDataClient mGeoDataClient;
-    private static Geofencing mGeofencing;
+    private Geofencing mGeofencing;
     private String placeIdfromPicker;
     private String AddressfromPicker;
     private GeofenceStorage mGeofenceStorage;
@@ -472,7 +455,7 @@ public class PlacesActivity extends AppCompatActivity {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                if ((int) i > 99) {
+                if (i > 99) {
                     Toast.makeText(getApplicationContext(), getString(R.string.only_100), Toast.LENGTH_LONG).show();
                     return;
                 } else {

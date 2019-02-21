@@ -71,7 +71,6 @@
             android:textColor="@color/text_color_primary" />
 
         <TextView
-            android:id="@+id/add_handy_rule_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"

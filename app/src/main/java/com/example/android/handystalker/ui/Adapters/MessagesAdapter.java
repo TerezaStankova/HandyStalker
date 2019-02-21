@@ -2,7 +2,6 @@ package com.example.android.handystalker.ui.Adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AlertDialog;
@@ -17,10 +16,8 @@ import android.widget.Toast;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
-
 import com.example.android.handystalker.database.MessagesEntry;
 import com.example.android.handystalker.model.Message;
-
 import com.example.android.handystalker.utilities.AppExecutors;
 
 import java.util.List;

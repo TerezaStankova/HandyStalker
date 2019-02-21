@@ -8,21 +8,18 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.android.handystalker.R;
-import com.example.android.handystalker.ui.MainActivity;
-import com.example.android.handystalker.ui.PlacesActivity;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
-//import com.google.android.gms.location.places.Place;
-//import com.google.android.gms.location.places.PlaceBufferResponse;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-
-import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 
 import java.util.ArrayList;
 import java.util.List;
+
+//import com.google.android.gms.location.places.Place;
+//import com.google.android.gms.location.places.PlaceBufferResponse;
 
 /*
 * Special THANK YOU! belongs to the creator of The ShushMe project which was used to get better understanding of Geofences
@@ -170,7 +167,7 @@ public class Geofencing {
         if (places.size() > 100) {
             places = places.subList(0, 100);
             Toast.makeText(mContext, mContext.getString(R.string.only_100), Toast.LENGTH_SHORT).show();
-        };
+        }
 
 
         for (Place place : places) {

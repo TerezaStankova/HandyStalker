@@ -2,7 +2,6 @@ package com.example.android.handystalker.ui.Adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AlertDialog;
@@ -17,11 +16,11 @@ import android.widget.Toast;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
-import com.example.android.handystalker.ui.MapsActivity;
 import com.example.android.handystalker.utilities.AppExecutors;
-//import com.google.android.gms.location.places.PlaceBufferResponse;
 
 import java.util.List;
+
+//import com.google.android.gms.location.places.PlaceBufferResponse;
 
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewHolder> {
 

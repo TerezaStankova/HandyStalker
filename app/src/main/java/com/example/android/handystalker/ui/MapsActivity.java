@@ -1,22 +1,12 @@
 package com.example.android.handystalker.ui;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
-
-import com.example.android.handystalker.database.AppDatabase;
-import com.example.android.handystalker.database.PlaceEntry;
-import com.example.android.handystalker.utilities.AppExecutors;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.libraries.places.internal.dv;
-
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
@@ -29,6 +19,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,10 +32,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.handystalker.R;
+import com.example.android.handystalker.database.AppDatabase;
+import com.example.android.handystalker.database.PlaceEntry;
+import com.example.android.handystalker.utilities.AppExecutors;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
@@ -56,7 +52,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -71,12 +66,9 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.Toolbar;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static com.example.android.handystalker.BuildConfig.API_KEY;
@@ -284,15 +276,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             // This is Deprecated in API 28
             int mode = Settings.Secure.getInt(getApplicationContext().getContentResolver(), Settings.Secure.LOCATION_MODE,
                     Settings.Secure.LOCATION_MODE_OFF);
-            if (mode != Settings.Secure.LOCATION_MODE_OFF) {
-                return true;
-            }
-            else {
-                //Toast.makeText(MapsActivity.this, "Location is off.", Toast.LENGTH_SHORT).show();
-
-                //createLocationRequest();
-
-                return false;}
+            //Toast.makeText(MapsActivity.this, "Location is off.", Toast.LENGTH_SHORT).show();
+//createLocationRequest();
+            return mode != Settings.Secure.LOCATION_MODE_OFF;
 
         }
     }
@@ -322,9 +308,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             //Lower than API 19
             locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 
-            if (locationProviders.contains(LocationManager.GPS_PROVIDER) && locationProviders.contains(LocationManager.NETWORK_PROVIDER)){
-                return true;
-            }
+            return locationProviders.contains(LocationManager.GPS_PROVIDER) && locationProviders.contains(LocationManager.NETWORK_PROVIDER);
         }
         return false;
     }
@@ -461,7 +445,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         menu.findItem(R.id.option_get_place);
 
-        nearPlacesMenuItem = (MenuItem) menu.findItem(R.id.option_get_place);
+        nearPlacesMenuItem = menu.findItem(R.id.option_get_place);
 
         if (nearPlacesMenuItem != null && isLocationEnabled()){
             if (mLastKnownLocation != null) { nearPlacesMenuItem.setVisible(true);Log.d(TAG, "show current on prepare" + 16);

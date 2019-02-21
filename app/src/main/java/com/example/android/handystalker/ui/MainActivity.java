@@ -1,19 +1,15 @@
 package com.example.android.handystalker.ui;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.os.Build;
-import android.preference.PreferenceManager;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -24,13 +20,9 @@ import com.example.android.handystalker.R;
 import com.example.android.handystalker.geofencing.GeofenceStorage;
 import com.example.android.handystalker.geofencing.Geofencing;
 import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-//import com.google.android.gms.location.places.GeoDataClient;
-//import com.google.android.gms.location.places.PlaceBufferResponse;
-//import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
@@ -43,19 +35,21 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.libraries.places.widget.Autocomplete;
-import com.google.android.libraries.places.widget.AutocompleteActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+//import com.google.android.gms.location.places.GeoDataClient;
+//import com.google.android.gms.location.places.PlaceBufferResponse;
+//import com.google.android.gms.location.places.Places;
 
 
 public class MainActivity extends AppCompatActivity  {
     private static final String TAG = "MainActivity";
     private boolean mIsEnabled;
     private GeofenceStorage mGeofenceStorage;
-    private static Geofencing mGeofencing;
+    private Geofencing mGeofencing;
 
 
     private PlacesClient placesClient;

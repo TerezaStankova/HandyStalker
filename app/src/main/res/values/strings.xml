@@ -11,9 +11,6 @@
     <string name="my_rules">My rules</string>
 
     <!--Rules Buttons -->
-    <string name="send_sms">Send SMS</string>
-    <string name="send_rules">Stalking Rules</string>
-    <string name="settings_rules">Handy Rules</string>
 
     <!--Dialog -->
     <string name="save">Save this place</string>
@@ -38,11 +35,6 @@
     <string name="browse_my_contacts">Browse my contacts</string>
     <string name="update_contact">Update Contact</string>
 
-    <string-array name="type_array">
-        <item>arrival to </item>
-        <item>departure from </item>
-    </string-array>
-
     <string-array name="on_array">
         <item> on </item>
         <item> off </item>
@@ -52,11 +44,9 @@
     <string name="new_rule">New Rule</string>
 
     <!--Ads-->
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 
 
     <!--Layout description-->
-    <string name="app_image">Eye with location in the middle</string>
     <string name="sms_icon">SMS icon</string>
     <string name="location_icon">Location icon</string>
     <string name="geofencing_icon">Geofencing icon</string>
@@ -78,47 +68,30 @@
     <string name="save_departuring_sms_rule">Save departuring SMS Rule</string>
 
     <!--Notification Rules-->
-    <string name="notify_me_to_let">Notify me to let</string>
-    <string name="know_about_my_safe">know about my safe</string>
     <string name="save_notification_rule">Save Notification Rule</string>
     <string name="arrival">Arrival</string>
     <string name="depart_from">Depart from</string>
 
     <!--Handy Rules-->
     <string name="turn_wi_fi">Turn Wi-Fi</string>
-    <string name="while_in">while in</string>
     <string name="save_wi_fi_rule">Save Wi-fi Rule</string>
     <string name="turn_sound">Turn sound</string>
     <string name="sound">Sound</string>
     <string name="save_sound_rule">Save Sound Rule</string>
     <string name="wifi_permission">WiFi Permission</string>
 
-    <string name="wifi_on_turn">Turn Wi-Fi ON.</string>
-    <string name="wifi_of_turn">Turn Wi-Fi OFF.</string>
-    <string name="sound_on_turn">Turn sound ON.</string>
-    <string name="sound_off_turn">Turn sound OFF.</string>
-    <string name="data_on_turn">Turn mobile data ON.</string>
-    <string name="data_off_turn">Turn mobile data OFF.</string>
-
     <!--Widget-->
-    <string name="call">Call</string>
-    <string name="whatsapp">WhatsApp</string>
-    <string name="go_to_app">Set new rules!</string>
-    <string name="reached">You recently reached</string>
 
     <!--List Item Description-->
     <string name="my_stalker">My Stalker:</string>
     <string name="arrival_to">Arrival:</string>
     <string name="departure_to">Departure:</string>
-    <string name="place">Place:</string>
 
     <string name="stalker_update_toast">Stalker updated successfully</string>
     <string name="new_stalker_toast">New stalker saved successfully</string>
 
-    <string name="rule_update_toast">Rule updated successfully</string>
     <string name="rule_saved_toast">Rule stalker saved successfully</string>
 
-    <string name="message_update_toast">Text updated successfully!</string>
     <string name="new_message_toast">New text saved successfully</string>
 
     <!--Dialog-->
@@ -135,9 +108,7 @@
     <string name="you_arrived">You arrived!</string>
     <string name="safely_there">Safely there!</string>
     <string name="let">Let your beloved ones know!</string>
-    <string name="know_about_you">know.</string>
     <string name="you_departured">You just departured!</string>
-    <string name="know">know.</string>
     <string name="hi_i_am_home">Hi, I am home.</string>
     <string name="add_a_text_message">Add a Text Message</string>
     <string name="my_text_messages">My Text Messages</string>
@@ -170,7 +141,6 @@
     <string name="option_get_place">Near me</string>
     <string name="default_info_title">Prague</string>
     <string name="default_info_snippet">University of Economics</string>
-    <string name="select_from_nearby_places">Select from nearby places</string>
     <string name="channel_name">My stalkers are curious</string>
     <string name="channel_description">Channel for notifications about arrivals and departures.</string>
     <string name="location_off">Location is off.</string>
@@ -194,5 +164,6 @@
     <string name="not_working">Geofencing can not work properly!</string>
     <string name="geo_enabled">Geofencing is now enabled!</string>
     <string name="enable_high_accuracy">Enable high accuracy in location settings or Handy Stalker will not work properly!</string>
+    <string name="insert">Insert your message.</string>
 
 </resources>

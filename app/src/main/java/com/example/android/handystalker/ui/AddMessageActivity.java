@@ -2,7 +2,6 @@ package com.example.android.handystalker.ui;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -16,10 +15,7 @@ import android.widget.Toast;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
-import com.example.android.handystalker.database.ContactsEntry;
 import com.example.android.handystalker.database.MessagesEntry;
-import com.example.android.handystalker.model.Message;
-
 import com.example.android.handystalker.ui.Adapters.MessagesAdapter;
 import com.example.android.handystalker.utilities.AppExecutors;
 import com.example.android.handystalker.utilities.MessagesViewModel;

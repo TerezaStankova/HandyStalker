@@ -1,34 +1,24 @@
 package com.example.android.handystalker.geofencing;
 
-import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.JobIntentService;
 import android.util.Log;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.LocationServices;
-
-/**import com.google.android.gms.location.places.GeoDataClient;
-import com.google.android.gms.location.places.PlaceBufferResponse;
-import com.google.android.gms.location.places.Places;
- **/
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class AddingGeofencesService extends JobIntentService {
 
@@ -43,10 +33,6 @@ public class AddingGeofencesService extends JobIntentService {
     private static boolean mIsEnabled;
     // Persistent storage for geofences.
     private GeofenceStorage mGeofenceStorage;
-
-    /*public AddingGeofencesService() {
-        super(TAG);
-    }/*/
 
     public static final int JOB_ID = 222;
 

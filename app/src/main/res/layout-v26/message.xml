@@ -37,7 +37,8 @@
             android:inputType="textShortMessage|textLongMessage"
             android:lines="5"
             android:maxLength="160"
-            android:minLines="2"/>
+            android:minLines="2"
+            android:autofillHints="@string/insert" />
 
 
         <Button

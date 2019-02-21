@@ -2,7 +2,6 @@ package com.example.android.handystalker.database;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
-import android.arch.persistence.room.Dao;
 
 import java.util.List;
 

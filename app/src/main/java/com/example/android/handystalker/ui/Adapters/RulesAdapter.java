@@ -2,7 +2,6 @@ package com.example.android.handystalker.ui.Adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -12,22 +11,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
-import com.example.android.handystalker.database.PlaceEntry;
 import com.example.android.handystalker.database.RuleEntry;
 import com.example.android.handystalker.model.Rule;
-import com.example.android.handystalker.ui.MapsActivity;
-import com.example.android.handystalker.ui.PlacesActivity;
 import com.example.android.handystalker.utilities.AppExecutors;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 

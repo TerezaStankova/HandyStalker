@@ -1,17 +1,13 @@
 package com.example.android.handystalker.ui;
 
-import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -21,17 +17,13 @@ import android.widget.Spinner;
 
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.database.AppDatabase;
-import com.example.android.handystalker.database.ContactsEntry;
 import com.example.android.handystalker.database.PlaceEntry;
 import com.example.android.handystalker.database.RuleEntry;
 import com.example.android.handystalker.utilities.AppExecutors;
-import com.example.android.handystalker.utilities.ContactsViewModel;
 import com.example.android.handystalker.utilities.PlacesViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.google.android.gms.common.util.ArrayUtils.newArrayList;
 
 public class NewNotificationRuleActivity extends AppCompatActivity {
 

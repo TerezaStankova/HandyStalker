@@ -11,9 +11,6 @@
     <string name="my_rules">Moje pravidla</string>
 
     <!--Rules Buttons -->
-    <string name="send_sms">Odeslat SMS</string>
-    <string name="send_rules">SMS a upozornění</string>
-    <string name="settings_rules">Nastavení telefonu</string>
 
     <!--Dialog -->
     <string name="save">Uložit</string>
@@ -38,11 +35,6 @@
     <string name="browse_my_contacts">Procházet kontakty</string>
     <string name="update_contact">Upravit kontakt</string>
 
-    <string-array name="type_array">
-        <item>příjezdu do </item>
-        <item>odjezdu z </item>
-    </string-array>
-
     <string-array name="on_array">
         <item> zapnout </item>
         <item> vypnout </item>
@@ -52,11 +44,9 @@
     <string name="new_rule">Nové pravidlo</string>
 
     <!--Ads-->
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 
 
     <!--Layout description-->
-    <string name="app_image">Eye with location in the middle</string>
     <string name="sms_icon">SMS icon</string>
     <string name="location_icon">Location icon</string>
     <string name="geofencing_icon">Geofencing icon</string>
@@ -78,47 +68,29 @@
     <string name="with_text">zprávu s textem</string>
 
     <string name="save_departuring_sms_rule">Uložit pravidlo</string>
-    <string name="notify_me_to_let">Upozorni mne, abych kontaktoval </string>
-    <string name="know_about_my_safe"> ohledně mého bezpečného </string>
     <string name="save_notification_rule">Uložit pravidlo</string>
     <string name="arrival">Příjezd</string>
     <string name="depart_from">Odjezd z</string>
 
     <!--Handy Rules-->
     <string name="turn_wi_fi">Wi-Fi</string>
-    <string name="while_in">pokud jsem v</string>
     <string name="save_wi_fi_rule">Uložit pravidlo</string>
     <string name="turn_sound">Zvuk</string>
     <string name="save_sound_rule">Uložit pravidlo</string>
     <string name="wifi_permission">Povolení WiFi</string>
 
-    <string name="wifi_on_turn">Zapnout Wi-Fi.</string>
-    <string name="wifi_of_turn">Vypnout Wi-Fi.</string>
-    <string name="sound_on_turn">Zapnout zvuk.</string>
-    <string name="sound_off_turn">Vypnout zvuk.</string>
-
-    <string name="data_on_turn">Zapni data.</string>
-    <string name="data_off_turn">Vypni data.</string>
-
     <!--Widget-->
-    <string name="call">Hovor</string>
-    <string name="whatsapp">WhatsApp</string>
-    <string name="go_to_app">Nastavit nová pravidla!</string>
-    <string name="reached">Nedávno jste se vyskytnuli v </string>
 
     <!--List Item Description-->
     <string name="my_stalker">Můj stalker:</string>
     <string name="arrival_to">Příjezd:</string>
     <string name="departure_to">Odjezd:</string>
-    <string name="place">Lokalita:</string>
 
     <string name="stalker_update_toast">Stalker úspěšně změněn!</string>
     <string name="new_stalker_toast">Nový stalker úspěšně uložen</string>
 
-    <string name="message_update_toast">Text zprávy úspěšně změněn!</string>
     <string name="new_message_toast">Nový text zprávy úspěšně uložen</string>
 
-    <string name="rule_update_toast">Pravidlo úspěšně upraveno</string>
     <string name="rule_saved_toast">Pravidlo úspěšně uloženo</string>
 
     <!--Dialog-->
@@ -128,9 +100,7 @@
     <string name="you_arrived">Dorazili jste!</string>
     <string name="safely_there">Bezpečně tady!</string>
     <string name="let">Dej vědět, že jsi v pořádku.</string>
-    <string name="know_about_you">vědět, že jsi v pořádku.</string>
     <string name="you_departured">Vyrazili jste! Dejte o tom vědět.</string>
-    <string name="know">vědět.</string>
 
     <!--SMS-->
     <string name="hi_i_am_home">Ahoj, jsem doma.</string>
@@ -161,12 +131,11 @@
     <string name="default_message">automatický text</string>
     <string name="sound">Zvuk</string>
 
-    <string name="error_api_key" translatable="false">API klíč nenalezen</string>
+    <string name="error_api_key">API klíč nenalezen</string>
     <string name="pick_place">Vyber místo</string>
     <string name="option_get_place">Poblíž mě</string>
     <string name="default_info_title">Praha</string>
     <string name="default_info_snippet">VŠE</string>
-    <string name="select_from_nearby_places">Vyber z míst poblíž</string>
     <string name="channel_name">Hlídáčkovy notifikace</string>
     <string name="channel_description">Notifikace ohledně příchodů a odjezdů.</string>
 
@@ -191,4 +160,5 @@
     <string name="not_working">Hlídáček nemůže správně fungovat bez přístupu k internetu a vysoké přesnosti zjišťování polohy!</string>
     <string name="geo_enabled">Hlídáček sleduje navštívená místa!</string>
     <string name="enable_high_accuracy">Umožněte vysokou přesnost zjišťování polohy, jinak Hlídáček nemůže fungovat!</string>
+    <string name="insert">Insert your message.</string>
 </resources>

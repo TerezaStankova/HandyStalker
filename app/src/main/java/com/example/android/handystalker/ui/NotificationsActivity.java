@@ -3,7 +3,6 @@ package com.example.android.handystalker.ui;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -80,7 +79,7 @@ public class NotificationsActivity extends AppCompatActivity {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        if ((int) countPlaces == 0) {
+                        if (countPlaces == 0) {
                             Toast.makeText(getApplicationContext(), getString(R.string.one_place), Toast.LENGTH_LONG).show();
                             return;
                         } else  {
