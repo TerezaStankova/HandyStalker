@@ -52,7 +52,7 @@ public class WifiRulesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wifi_rules);
-        setTitle("Handy Rules");
+        setTitle(R.string.wifi_rules);
         mDb = AppDatabase.getInstance(getApplicationContext());
 
         // Set up the recycler view

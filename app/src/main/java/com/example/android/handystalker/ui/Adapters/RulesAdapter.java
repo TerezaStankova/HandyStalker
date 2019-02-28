@@ -380,7 +380,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
 
             Log.d("collect rule data","contact: " + mRuleDatabase.size());
 
-            if (mRuleDatabase != null && mRuleDatabase.size() != 0) {
+            if (mRuleDatabase.size() != 0) {
                 setRules(mRuleDatabase);
             }
         }

@@ -89,7 +89,19 @@ public class PlacesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.places);
 
-        // Retrieve a PlacesClient (previously initialized - see MainActivity)
+        String apiKey = getString(R.string.GOOGLE_PLACES_ANDROID_API_KEY);
+
+        if (apiKey.equals("")) {
+            Toast.makeText(this, getString(R.string.error_api_key), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // Setup Places Client
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), apiKey);
+        }
+
+        // Retrieve a PlacesClient
         placesClient = Places.createClient(this);
 
         // Instantiate a new geofence storage area.

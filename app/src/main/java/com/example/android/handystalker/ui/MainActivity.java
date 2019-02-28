@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -19,6 +22,7 @@ import android.widget.Toast;
 import com.example.android.handystalker.R;
 import com.example.android.handystalker.geofencing.GeofenceStorage;
 import com.example.android.handystalker.geofencing.Geofencing;
+import com.example.android.handystalker.utilities.ConnectionUtils;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.LocationRequest;
@@ -40,10 +44,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-//import com.google.android.gms.location.places.GeoDataClient;
-//import com.google.android.gms.location.places.PlaceBufferResponse;
-//import com.google.android.gms.location.places.Places;
-
 
 public class MainActivity extends AppCompatActivity  {
     private static final String TAG = "MainActivity";
@@ -63,7 +63,9 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String apiKey = getString(R.string.GOOGLE_PLACES_ANDROID_API_KEY);
+
+        // Instantiate a new geofence storage area.
+        mGeofenceStorage = new GeofenceStorage(this);String apiKey = getString(R.string.GOOGLE_PLACES_ANDROID_API_KEY);
 
         if (apiKey.equals("")) {
             Toast.makeText(this, getString(R.string.error_api_key), Toast.LENGTH_LONG).show();
@@ -77,9 +79,6 @@ public class MainActivity extends AppCompatActivity  {
 
         placesClient = Places.createClient(this);
 
-        // Instantiate a new geofence storage area.
-        mGeofenceStorage = new GeofenceStorage(this);
-        //mGeoDataClient = Places.getGeoDataClient(this);
 
         mIsEnabled = getPreferences(MODE_PRIVATE).getBoolean(getString(R.string.setting_enabled), false);
         Log.d("Preference","getPref" + mIsEnabled);
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity  {
         setCheckedPrivacy(onOffSwitch);
     }
 
-    private void setCheckedPrivacy(Switch onOffSwitch){
+    private void setCheckedPrivacy(final Switch onOffSwitch){
         onOffSwitch.setChecked(mIsEnabled && checkHighAccuracyLocationMode(getApplicationContext()));
         onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -107,16 +106,22 @@ public class MainActivity extends AppCompatActivity  {
                 editor.apply();
                 if (isChecked) {
 
+                    if (!ConnectionUtils.getInstance(getApplicationContext()).isConnected()) {
+                        Toast.makeText(MainActivity.this, getString(R.string.not_connected) + " " + getString(R.string.connect_to), Toast.LENGTH_LONG).show();
+                        onOffSwitch.setChecked(false);
+                        return;
+                    }
+
                     if (!checkHighAccuracyLocationMode(getApplicationContext())) {
 
-                        Toast.makeText(MainActivity.this, getString(R.string.location_off), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, getString(R.string.location_off), Toast.LENGTH_LONG).show();
                         createLocationRequest();
                         return;
                     }
 
                     final List<String> placeIds = mGeofenceStorage.getGeofenceIds();
                     if (placeIds == null || placeIds.size() < 1) {return;}
-                    if (placeIds.size() > 100) {Toast.makeText(MainActivity.this, getString(R.string.only_100), Toast.LENGTH_SHORT).show(); return;}
+                    if (placeIds.size() > 100) {Toast.makeText(MainActivity.this, getString(R.string.only_100), Toast.LENGTH_LONG).show(); return;}
 
                     List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
                     count = 1;
@@ -228,15 +233,13 @@ public class MainActivity extends AppCompatActivity  {
                     } catch (IntentSender.SendIntentException sendEx) {
                         // Ignore the error.
                         //setCheckedPrivacy(onOffSwitch);
-                        Toast.makeText(MainActivity.this, getString(R.string.enable_high_accuracy), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, getString(R.string.enable_high_accuracy), Toast.LENGTH_LONG).show();
                     }
                 }
             }
         });
 
     }
-
-
 
     /** Called when the user taps the Place button */
     public void onPlaceButtonClicked(View view) {
@@ -255,12 +258,12 @@ public class MainActivity extends AppCompatActivity  {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode ==  REQUEST_CHECK_SETTINGS) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(MainActivity.this, getString(R.string.geo_enabled), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, getString(R.string.geo_enabled), Toast.LENGTH_LONG).show();
                 setCheckedPrivacy(onOffSwitch);
 
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
-                Toast.makeText(MainActivity.this, getString(R.string.not_working), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, getString(R.string.not_working), Toast.LENGTH_LONG).show();
                 onOffSwitch.setChecked(false);
             }
         }

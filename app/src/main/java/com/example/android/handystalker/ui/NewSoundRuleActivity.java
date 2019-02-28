@@ -63,7 +63,7 @@ public class NewSoundRuleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_sound_rule);
-        setTitle("New Sound Rule");
+        setTitle(R.string.new_sound_rule);
 
         //place spinner
         arrivalSpinner = findViewById(R.id.arrival_sound_spinner);

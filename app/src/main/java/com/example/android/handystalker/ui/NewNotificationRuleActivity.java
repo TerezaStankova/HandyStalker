@@ -40,9 +40,6 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
     Spinner departureSpinner;
     Spinner departureAnywhereSpinner;
 
-    Spinner contactNameSpinnerNotify;
-    Spinner placeNotificationSpinner;
-
     Integer arrivalId = null;
     Integer departureAnywhereId = null;
     Integer departureId = null;
@@ -53,18 +50,14 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_notification_rule);
-        setTitle("New Notification Rule");
+        setTitle(R.string.new_notification_rule);
 
-        //SMS for arrival spinners
+        //Notification spinners
         arrivalSpinner = findViewById(R.id.arrival_notification_spinner);
         departureSpinner = findViewById(R.id.departure_notification_spinner);
 
-        //Departure SMS spinners
+        //Departure spinner
         departureAnywhereSpinner = findViewById(R.id.departure_anywhere_notification_spinner);
-
-        //Notification spinners
-        contactNameSpinnerNotify = findViewById(R.id.name_spinner2);
-        placeNotificationSpinner = findViewById(R.id.place_spinner);
 
         mDb = AppDatabase.getInstance(getApplicationContext());
         setupPlacesViewModel();
@@ -194,16 +187,21 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
     }
 
     private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
+        /***
+        * Create the NotificationChannel, but only on API 26+
+        *(the NotificationChannel class is new and not in the support library)
+        ***/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = getString(R.string.channel_name);
             String description = getString(R.string.channel_description);
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
+
+            /***
+             * Register the channel with the system
+             *(I can't change the importance or other notification behaviors after this)
+             ***/
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }

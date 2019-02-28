@@ -81,7 +81,7 @@ public class TextRulesActivity extends AppCompatActivity {
 
         if (ActivityCompat.checkSelfPermission(TextRulesActivity.this,
                 android.Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "Allow texting first!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.allow_texting), Toast.LENGTH_LONG).show();
             return;
         }
 

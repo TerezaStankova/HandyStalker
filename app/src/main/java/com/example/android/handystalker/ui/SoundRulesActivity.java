@@ -36,10 +36,6 @@ public class SoundRulesActivity extends AppCompatActivity {
     private Parcelable mListState;
     private LinearLayoutManager layoutManager;
 
-
-    // Final String to store state information about the rules
-    private static final String RULES = "rules";
-
     private static final String LIST_STATE_KEY = "list_state";
     // Member variable for the Database
     private AppDatabase mDb;
@@ -49,7 +45,7 @@ public class SoundRulesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sound_rules);
-        setTitle("Handy Rules");
+        setTitle(R.string.sound_rules);
         mDb = AppDatabase.getInstance(getApplicationContext());
 
         // Set up the recycler view
@@ -79,7 +75,7 @@ public class SoundRulesActivity extends AppCompatActivity {
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         // Check if the API supports such permission change and check if permission is granted
         if (android.os.Build.VERSION.SDK_INT >= 24 && !notificationManager.isNotificationPolicyAccessGranted()) {
-            Toast.makeText(this, "Allow sound changes first!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.allow_sound), Toast.LENGTH_LONG).show();
             return;
         }
 

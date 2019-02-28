@@ -96,7 +96,7 @@ public class AddMessageActivity extends AppCompatActivity {
 
                 }
             });
-            Toast.makeText(getApplicationContext(), R.string.new_message_toast, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.new_message_toast, Toast.LENGTH_LONG).show();
         }
 
     }

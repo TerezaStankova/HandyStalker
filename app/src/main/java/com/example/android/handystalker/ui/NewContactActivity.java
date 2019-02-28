@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +28,7 @@ public class NewContactActivity extends AppCompatActivity {
     Button saveButton;
 
     final int RESULT_PICK_CONTACT = 789;
-    private Contact mComtact;
+    private Contact mContact;
 
 
     @Override
@@ -43,10 +42,10 @@ public class NewContactActivity extends AppCompatActivity {
 
         String CONTACTS = "contacts";
         if (getIntent().getParcelableExtra(CONTACTS) != null){
-            mComtact = getIntent().getParcelableExtra(CONTACTS);
+            mContact = getIntent().getParcelableExtra(CONTACTS);
             saveButton.setText(R.string.update_contact);
-            nameEditText.setText(mComtact.getName());
-            phoneEditText.setText(mComtact.getPhone());
+            nameEditText.setText(mContact.getName());
+            phoneEditText.setText(mContact.getPhone());
             saveButton.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -67,16 +66,16 @@ public class NewContactActivity extends AppCompatActivity {
         String phone = phoneEditText.getText().toString();
 
         if (name != null) {
-            final ContactsEntry contactEntry = new ContactsEntry(name, phone, null);
+            final ContactsEntry contactEntry = new ContactsEntry(name, phone);
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
-                    // insert new contact
+                    // Insert new contact
                     mDb.contactDao().insertContact(contactEntry);
 
                 }
             });
-            Toast.makeText(getApplicationContext(), R.string.new_stalker_toast, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.new_stalker_toast, Toast.LENGTH_LONG).show();
         }
 
         Intent intent = new Intent(this, ContactsActivity.class);
@@ -92,23 +91,23 @@ public class NewContactActivity extends AppCompatActivity {
 
 
         if (name != null) {
-            final Integer contactsId = mComtact.getContactId();
+            final Integer contactsId = mContact.getContactId();
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
-                    // update contact
+                    // Update contact
                     ContactsEntry contactEntry = mDb.contactDao().findContactsEntryfromContactId(contactsId);
                     contactEntry.setName(name);
                     contactEntry.setPhone(phone);
                     mDb.contactDao().updateContact(contactEntry);
                 }
             });
-            Toast.makeText(getApplicationContext(), R.string.stalker_update_toast, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.stalker_update_toast, Toast.LENGTH_LONG).show();
 
-        Intent intent = new Intent(this, ContactsActivity.class);
-        startActivity(intent);
+            Intent intent = new Intent(this, ContactsActivity.class);
+            startActivity(intent);
 
-    }
+        }
     }
 
 
@@ -120,34 +119,28 @@ public class NewContactActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // check whether the result is ok
         if (resultCode == RESULT_OK) {
-            // Check for the request code, we might be usign multiple startActivityForReslut
             switch (requestCode) {
                 case RESULT_PICK_CONTACT:
-                    Cursor cursor = null;
                     try {
-                        String phoneNumber = null ;
-                        String name = null;
                         Uri uri = data.getData();
                         if (uri != null){
-                        cursor = getContentResolver().query(uri, null, null, null, null);
-                        cursor.moveToFirst();
-                        int  phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-                        name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.DISPLAY_NAME));
-                        phoneNumber = cursor.getString(phoneIndex);
-                        nameEditText.setText(name);
-                        phoneEditText.setText(phoneNumber);
-                        cursor.close();}
+                            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+                            if (cursor != null) {
+                                cursor.moveToFirst();
+                                int  phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                                String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.DISPLAY_NAME));
+                                String phoneNumber = cursor.getString(phoneIndex);
+                                nameEditText.setText(name);
+                                phoneEditText.setText(phoneNumber);
+                                cursor.close();}}
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
             }
         } else {
-            Log.e("NewContact", "No contact added");
+            Toast.makeText(getApplicationContext(), getString(R.string.no_contact), Toast.LENGTH_LONG).show();
         }
     }
-
-
 }

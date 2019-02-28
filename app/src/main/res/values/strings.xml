@@ -160,10 +160,23 @@
     <string name="no_place_around">No Places of interest found around.  Try to press ´Nearby´ again after your location is found and blue circle appears.</string>
     <string name="place_added">Place was added successfully.</string>
     <string name="more_specific">This place can not be monitored. Try more specific address.</string>
-    <string name="not_connected">You are not connected to the Internet. Connect and add new places.</string>
+    <string name="not_connected">You are not connected to the Internet.</string>
+    <string name="connect">Connect and add new places.</string>
+
+
+
     <string name="not_working">Geofencing can not work properly!</string>
     <string name="geo_enabled">Geofencing is now enabled!</string>
     <string name="enable_high_accuracy">Enable high accuracy in location settings or Handy Stalker will not work properly!</string>
     <string name="insert">Insert your message.</string>
+    <string name="no_contact">No contact added. Did you pick one?</string>
+    <string name="allow_sound">Allow sound changes first!</string>
+    <string name="connect_to">Connect to use Handy Stalker!</string>
+    <string name="new_notification_rule">New Notification Rule</string>
+    <string name="new_sound_rule">New Sound Rule</string>
+    <string name="new_wifi_rule">New WiFi Rule</string>
+    <string name="sound_rules">Sound Rules</string>
+    <string name="wifi_rules">WiFi Rules</string>
+    <string name="allow_texting">Allow texting first!</string>
 
 </resources>

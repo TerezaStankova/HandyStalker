@@ -156,9 +156,23 @@
     <string name="no_place_around">Nebyla nalezena žádná významná místa v okolí. Zkuste je vyhledat znovu po zobrazení modrého kolečka lokace na mapě.</string>
     <string name="place_added">Místo bylo úspěšně přidáno.</string>
     <string name="more_specific">Toto místo nemůže být sledováno. Zkuste zadat více specifickou adresu či adresu poblíž.</string>
-    <string name="not_connected">Nejste připojeni k internetu. Připojte se, abyste mohli přidat nové místo.</string>
+    <string name="not_connected">Nejste připojeni k internetu.</string>
+    <string name="connect">Připojte se, abyste mohli přidat nové místo.</string>
     <string name="not_working">Hlídáček nemůže správně fungovat bez přístupu k internetu a vysoké přesnosti zjišťování polohy!</string>
     <string name="geo_enabled">Hlídáček sleduje navštívená místa!</string>
     <string name="enable_high_accuracy">Umožněte vysokou přesnost zjišťování polohy, jinak Hlídáček nemůže fungovat!</string>
-    <string name="insert">Insert your message.</string>
+
+    <string name="insert">Vložte svoji zprávu.</string>
+    <string name="no_contact">Nebyl přidán žádný kontakt. Vybrali jste ho?</string>
+    <string name="allow_sound">Povolte nejprve nastavení zvuku!</string>
+    <string name="connect_to">Připojte se, aby Hlídáček mohl fungovat správně!</string>
+
+
+    <string name="new_notification_rule">Nové pravidlo</string>
+    <string name="new_sound_rule">Nové pravidlo</string>
+    <string name="new_wifi_rule">Nové pravidlo</string>
+
+    <string name="sound_rules">Pravidla zvuku</string>
+    <string name="wifi_rules">WiFi pravidla</string>
+    <string name="allow_texting">Povolte nejprve odesílání SMS zpráv!</string>
 </resources>

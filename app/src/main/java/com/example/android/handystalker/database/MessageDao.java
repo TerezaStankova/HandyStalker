@@ -15,12 +15,12 @@ public interface MessageDao {
     LiveData<List<MessagesEntry>> loadAllMessages();
 
     //It will ignore the transaction if the same MessageText already exists in DB
-    //New Contact will be created
+    //New Message will be created
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertMessage(MessagesEntry messagesEntry);
 
     //It will ignore the transaction if the same MessageText already exists in DB
-    //Contact will be updated
+    //Message will be updated
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateMessage(MessagesEntry messagesEntry);
 

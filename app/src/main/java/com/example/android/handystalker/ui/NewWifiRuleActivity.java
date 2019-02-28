@@ -66,7 +66,7 @@ public class NewWifiRuleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_wifi_rule);
-        setTitle("New WiFi Rule");
+        setTitle(R.string.new_wifi_rule);
 
         //place spinner
         arrivalSpinner = findViewById(R.id.arrival_wifi_spinner);

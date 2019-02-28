@@ -40,12 +40,6 @@
             android:text="@string/name" />
 
         <TextView
-            android:id="@+id/contact_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/email" />
-
-        <TextView
             android:id="@+id/contact_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

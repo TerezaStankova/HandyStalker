@@ -68,16 +68,8 @@ public ContactsAdapter(Context context, List<Contact> contacts) {
 @Override
         public void onBindViewHolder(ContactViewHolder holder, final int position) {
         String contactName = mContacts.get(position).getName();
-        String contactEmail = mContacts.get(position).getEmail();
         String contactPhone = mContacts.get(position).getPhone();
         holder.nameTextView.setText(contactName);
-
-        if(contactEmail != null){
-            holder.emailTextView.setVisibility(View.VISIBLE);
-            holder.emailTextView.setText(contactEmail);
-        } else {
-            holder.emailTextView.setVisibility(View.GONE);
-        }
 
         if(contactPhone != null){
             holder.phoneTextView.setVisibility(View.VISIBLE);
@@ -168,7 +160,6 @@ class ContactViewHolder extends RecyclerView.ViewHolder {
     ImageView deleteIcon;
     ImageView updateIcon;
     TextView nameTextView;
-    TextView emailTextView;
     TextView phoneTextView;
 
     public ContactViewHolder(View itemView) {
@@ -176,7 +167,6 @@ class ContactViewHolder extends RecyclerView.ViewHolder {
         deleteIcon = itemView.findViewById(R.id.delete_contact_icon);
         updateIcon = itemView.findViewById(R.id.edit_contact_icon);
         nameTextView = itemView.findViewById(R.id.contact_name);
-        emailTextView = itemView.findViewById(R.id.contact_email);
         phoneTextView = itemView.findViewById(R.id.contact_phone);
     }
 }
@@ -205,10 +195,9 @@ class ContactViewHolder extends RecyclerView.ViewHolder {
 
                 String name = contactsEntries.get(i).getName();
                 String phone = contactsEntries.get(i).getPhone();
-                String email = contactsEntries.get(i).getEmail();
                 int id = contactsEntries.get(i).getId();
 
-                Contact newContact = new Contact(id, phone, name, email);
+                Contact newContact = new Contact(id, phone, name);
                 mContactDatabase.add(newContact);
             }
             setContacts(mContactDatabase);

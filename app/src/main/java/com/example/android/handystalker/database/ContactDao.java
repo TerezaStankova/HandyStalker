@@ -11,15 +11,15 @@ import java.util.List;
 
 @Dao
 public interface ContactDao {
-    @Query("SELECT * FROM contacts ORDER BY id")
+    @Query("SELECT * FROM contacts ORDER BY name")
     LiveData<List<ContactsEntry>> loadAllContacts();
 
-    //It will ignore the transaction if the same placeId already exists in DB
+    //It will ignore the transaction if the same contact already exists in DB
     //New Contact will be created
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertContact(ContactsEntry contactsEntry);
 
-    //It will ignore the transaction if the same placeId already exists in DB
+    //It will replace the contact if the same contactId already exists in DB
     //Contact will be updated
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateContact(ContactsEntry contactsEntry);
@@ -32,9 +32,6 @@ public interface ContactDao {
 
     @Query("SELECT phone FROM contacts WHERE id=:contactId")
     String findPhoneForContactId(final Integer contactId);
-
-    @Query("SELECT email FROM contacts WHERE id=:contactId")
-    String findEmailForContactId(final Integer contactId);
 
     @Query("SELECT COUNT(*) FROM contacts")
     Integer countContacts();

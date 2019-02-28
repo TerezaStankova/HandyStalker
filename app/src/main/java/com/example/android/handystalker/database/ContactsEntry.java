@@ -23,17 +23,13 @@ public class ContactsEntry {
     @ColumnInfo(name = "phone")
     private String phone;
 
-    @ColumnInfo(name = "email")
-    private String email;
-
     @Ignore
     public ContactsEntry() {
     }
 
-    public ContactsEntry(@NonNull String name, String phone, String email) {
+    public ContactsEntry(@NonNull String name, String phone) {
         this.name = name;
         this.phone = phone;
-        this.email = email;
     }
 
     // Getters and setters are required for Room to work.
@@ -50,13 +46,6 @@ public class ContactsEntry {
     }
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.name = email;
     }
 
     public String getPhone() {

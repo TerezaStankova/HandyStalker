@@ -160,7 +160,7 @@ public class AddTextDepartureFragment extends Fragment {
 
                     }
                 });
-                Toast.makeText(getContext(), R.string.rule_saved_toast, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.rule_saved_toast, Toast.LENGTH_LONG).show();
             }
 
             Intent intent = new Intent(getActivity(), TextRulesActivity.class);

@@ -83,15 +83,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String placeIdfromPicker;
     private String AddressfromPicker;
 
-    private AutocompleteSupportFragment autocompleteFragment;
     private final String TAG = "MapActivity";
     private boolean mLocationPermissionGranted;
-    private CameraPosition mCameraPosition;
 
     // The entry point to the Fused Location Provider.
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
-    // A default location (Sydney, Australia) and default zoom to use when location permission is
+    // A default location (University of Economics, Prague) and default zoom to use when location permission is
     // not granted.
     private final LatLng mDefaultLocation = new LatLng(50.084430, 14.441220);
     private static final int DEFAULT_ZOOM = 15;
@@ -133,7 +131,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Retrieve location and camera position from saved instance state.
         if (savedInstanceState != null) {
             mLastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
-            mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
+            CameraPosition mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
         }
         mDb = AppDatabase.getInstance(getApplicationContext());
 
@@ -141,10 +139,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
          * Initialize Places.
          */
 
-        if (!Places.isInitialized()) {
-            Log.d(TAG, "initialized");
-            Places.initialize(getApplicationContext(), API_KEY);
+        String apiKey = getString(R.string.GOOGLE_PLACES_ANDROID_API_KEY);
+
+        if (apiKey.equals("")) {
+            Toast.makeText(this, getString(R.string.error_api_key), Toast.LENGTH_LONG).show();
+            return;
         }
+
+        // Setup Places Client
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), apiKey);
+        }
+
 
         isConnected();
 
@@ -164,7 +170,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.i(TAG, "I do this: " + 1);
 
         // Initialize the AutocompleteSupportFragment.
-        autocompleteFragment = (AutocompleteSupportFragment)
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG));
@@ -205,7 +211,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onError(@NonNull Status status) {
                 Log.i(TAG, "An error occurred: " + status);
-                Toast.makeText(MapsActivity.this, "" + status.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapsActivity.this, "" + status.toString(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -276,7 +282,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             // This is Deprecated in API 28
             int mode = Settings.Secure.getInt(getApplicationContext().getContentResolver(), Settings.Secure.LOCATION_MODE,
                     Settings.Secure.LOCATION_MODE_OFF);
-            //Toast.makeText(MapsActivity.this, "Location is off.", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MapsActivity.this, "Location is off.", Toast.LENGTH_LONG).show();
 //createLocationRequest();
             return mode != Settings.Secure.LOCATION_MODE_OFF;
 
@@ -343,7 +349,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         if (isConnected) {return true; } else {
-            Toast.makeText(MapsActivity.this, getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
+            Toast.makeText(MapsActivity.this, getString(R.string.not_connected) + " " + getString(R.string.connect), Toast.LENGTH_LONG).show();
             return false;}
 
     }
@@ -352,7 +358,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Use the Builder class for convenient dialog construction
 
         if (placeIdfromPicker.length() > 100) {
-            Toast.makeText(MapsActivity.this, getString(R.string.more_specific), Toast.LENGTH_SHORT).show();
+            Toast.makeText(MapsActivity.this, getString(R.string.more_specific), Toast.LENGTH_LONG).show();
 
             return;}
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -378,7 +384,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             }
                         });
 
-                        Toast.makeText(MapsActivity.this, getString(R.string.place_added), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MapsActivity.this, getString(R.string.place_added), Toast.LENGTH_LONG).show();
 
                         dialog.cancel();
                         Intent intent = new Intent(getApplicationContext(), PlacesActivity.class);
@@ -394,12 +400,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         AlertDialog alert11 = builder.create();
         alert11.show();
-
-        /*
-        Intent serviceIntent = new Intent(AddingGeofencesService.class.getName());
-        serviceIntent.putExtra("UserID", (Parcelable) mGeofencing);
-        this.startService(serviceIntent);*/
-
     }
 
     @Override
@@ -697,7 +697,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 public void onFailure(@NonNull Exception exception) {
                     if (exception instanceof ApiException) {
                         ApiException apiException = (ApiException) exception;
-                        Toast.makeText(MapsActivity.this, getString(R.string.no_place_around), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MapsActivity.this, getString(R.string.no_place_around), Toast.LENGTH_LONG).show();
                         Log.e(TAG, "No Places of interest found around. Try to press ´Nearby´ again after your location is found and blue circle appears." + apiException.getStatusCode() + apiException.getMessage());
                     }
                 }
@@ -784,11 +784,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Log.e("Exception: %s", e.getMessage());
         }
 
-        if (!isLocationEnabled) {Toast.makeText(MapsActivity.this, R.string.location_off, Toast.LENGTH_SHORT).show();}
+        if (!isLocationEnabled) {Toast.makeText(MapsActivity.this, R.string.location_off, Toast.LENGTH_LONG).show();}
 
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
     }
+
+
 
     protected void OnActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -801,7 +803,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Status status = Autocomplete.getStatusFromIntent(data);
                 Log.i(TAG, status.getStatusMessage());
             } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(MapsActivity.this, R.string.location_off, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapsActivity.this, R.string.location_off, Toast.LENGTH_LONG).show();
                 // The user canceled the operation.
             }
         }

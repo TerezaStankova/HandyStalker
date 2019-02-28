@@ -8,17 +8,15 @@ public class Contact implements Parcelable {
     private int id;
     private String phone;
     private String name;
-    private String email;
 
     /* No args constructor */
     public Contact() {
     }
 
-    public Contact(int id, String phone, String name, String email) {
+    public Contact(int id, String phone, String name) {
         this.id = id;
         this.phone = phone;
         this.name = name;
-        this.email = email;
     }
 
     public int getContactId() {
@@ -30,16 +28,12 @@ public class Contact implements Parcelable {
     public String getName() {
         return name;
     }
-    public String getEmail() {
-        return email;
-    }
 
 
     private Contact(Parcel in){
         id = in.readInt();
         phone = in.readString();
         name = in.readString();
-        email = in.readString();
     }
 
     @Override
@@ -52,7 +46,6 @@ public class Contact implements Parcelable {
         parcel.writeInt(id);
         parcel.writeString(phone);
         parcel.writeString(name);
-        parcel.writeString(email);
     }
 
     public static final Parcelable.Creator<Contact> CREATOR = new Parcelable.Creator<Contact>() {

@@ -20,22 +20,18 @@ public class GPSGeofencing {
     private PlacesClient placesClient;
     private int count;
 
-    private static boolean mIsEnabled;
-    // Persistent storage for geofences.
-    private GeofenceStorage mGeofenceStorage;
-    private List<SimpleGeofence> mSimpleGeofenceList;
-
     public GPSGeofencing(Context context) {
         mContext = context;
-        mSimpleGeofenceList = new ArrayList<>();
+        List<SimpleGeofence> mSimpleGeofenceList = new ArrayList<>();
     }
 
     public void isGeofenceTrigerred(Location currentLocation){
 
         // Instantiate a new geofence storage area.
-        mGeofenceStorage = new GeofenceStorage(mContext);
+        // Persistent storage for geofences.
+        GeofenceStorage mGeofenceStorage = new GeofenceStorage(mContext);
 
-        mIsEnabled = mGeofenceStorage.getIsEnabled();
+        boolean mIsEnabled = mGeofenceStorage.getIsEnabled();
         if (!mIsEnabled) {
             Log.d("GPS", "handling service" + mIsEnabled);
         return;
