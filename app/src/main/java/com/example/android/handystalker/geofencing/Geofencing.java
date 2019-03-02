@@ -166,7 +166,7 @@ public class Geofencing {
         //Only 100 geofences allowed
         if (places.size() > 100) {
             places = places.subList(0, 100);
-            Toast.makeText(mContext, mContext.getString(R.string.only_100), Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, mContext.getString(R.string.only_30), Toast.LENGTH_LONG).show();
         }
 
 

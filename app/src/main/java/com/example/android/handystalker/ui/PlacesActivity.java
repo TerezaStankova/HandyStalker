@@ -150,7 +150,6 @@ public class PlacesActivity extends AppCompatActivity {
 
 
     //TODO: coarse location in manifest
-    //TODO: max 100 places
 
     private void setupViewModel() {
         showPlacesDataView();
@@ -467,8 +466,8 @@ public class PlacesActivity extends AppCompatActivity {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                if (i > 99) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.only_100), Toast.LENGTH_LONG).show();
+                if (i > 29) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.only_30), Toast.LENGTH_LONG).show();
                     return;
                 } else {
                     Intent intent = new Intent(getApplicationContext(), MapsActivity.class);

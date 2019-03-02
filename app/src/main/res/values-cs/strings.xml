@@ -140,7 +140,7 @@
     <string name="channel_description">Notifikace ohledně příchodů a odjezdů.</string>
 
     <string name="location_off">Zjištění polohy není zpřístupněno.</string>
-    <string name="only_100">Je možné uložit jen 100 míst. Nejprve některé smažte.</string>
+    <string name="only_30">Je možné uložit jen 30 míst. Nejprve některé smažte.</string>
     <string name="one_contact">Přidejte nejprve alespoň jeden kontakt!</string>
     <string name="one_place">Přidejte nejprve alespoň jedno místo!</string>
 

@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -121,7 +118,7 @@ public class MainActivity extends AppCompatActivity  {
 
                     final List<String> placeIds = mGeofenceStorage.getGeofenceIds();
                     if (placeIds == null || placeIds.size() < 1) {return;}
-                    if (placeIds.size() > 100) {Toast.makeText(MainActivity.this, getString(R.string.only_100), Toast.LENGTH_LONG).show(); return;}
+                    if (placeIds.size() > 100) {Toast.makeText(MainActivity.this, getString(R.string.only_30), Toast.LENGTH_LONG).show(); return;}
 
                     List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
                     count = 1;
