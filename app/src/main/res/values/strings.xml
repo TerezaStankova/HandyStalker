@@ -178,5 +178,9 @@
     <string name="sound_rules">Sound Rules</string>
     <string name="wifi_rules">WiFi Rules</string>
     <string name="allow_texting">Allow texting first!</string>
+    <string name="type_name">Type name first!</string>
+    <string name="type_phone">Type phone number first!</string>
+    <string name="add_text">Add some text first!</string>
+    <string name="place_name">Add place name before saving it. Click the location icon to add its name.</string>
 
 </resources>

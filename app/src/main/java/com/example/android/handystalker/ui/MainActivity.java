@@ -62,7 +62,8 @@ public class MainActivity extends AppCompatActivity  {
 
 
         // Instantiate a new geofence storage area.
-        mGeofenceStorage = new GeofenceStorage(this);String apiKey = getString(R.string.GOOGLE_PLACES_ANDROID_API_KEY);
+        mGeofenceStorage = new GeofenceStorage(this);
+        String apiKey = getString(R.string.GOOGLE_PLACES_ANDROID_API_KEY);
 
         if (apiKey.equals("")) {
             Toast.makeText(this, getString(R.string.error_api_key), Toast.LENGTH_LONG).show();

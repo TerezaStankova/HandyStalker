@@ -165,6 +165,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                                                 rulesForThisPlace.get(i).setActive(false);
                                                 mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
                                                 setSound(context, 2);
+                                                Log.d(TAG, "setting 2 departuru " + rulesForThisPlace.get(i).getType() + rulesForThisPlace.get(i).getDepartureId());
                                                 Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
                                             }
                                         } else {
@@ -183,6 +184,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                                                 mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
                                                 setSound(context, 0);
                                                 Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
+                                                Log.d(TAG, "setting 0 departuru " + rulesForThisPlace.get(i).getType() + rulesForThisPlace.get(i).getDepartureId());
                                             }
                                         } else {
                                             setSound(context, 0);
@@ -272,7 +274,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                                             mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
                                         } else {
                                             Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
-                                            setWiFi(context, false);
+                                            setWiFi(context, true);
                                         }
 
                                     } else if (rulesForThisPlace.get(i).getType().equals(getString(R.string.wifioff))) {
@@ -282,7 +284,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                                             mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
                                         } else {
                                             Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
-                                            setWiFi(context, true);
+                                            setWiFi(context, false);
                                         }
 
                                     } else if (rulesForThisPlace.get(i).getType().equals(getString(R.string.soundon))) {
@@ -292,7 +294,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                                             mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
                                         } else {
                                             Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
-                                            setSound(context, 0);
+                                            setSound(context, 2);
                                         }
 
 
@@ -302,7 +304,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                                             mDb.ruleDao().updateRule(rulesForThisPlace.get(i));
                                         } else {
                                             Log.d(TAG, "rulesForThisPlace.get(i).getType()" + rulesForThisPlace.get(i).getType());
-                                            setSound(context, 2);
+                                            setSound(context, 0);
                                         }
 
 
@@ -391,13 +393,19 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
         //Constant Value: 2 (0x00000002)
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         // Check for DND permissions for API 24+
-        assert notificationManager != null;
-        if (android.os.Build.VERSION.SDK_INT < 24 ||
-                (android.os.Build.VERSION.SDK_INT >= 24 && !notificationManager.isNotificationPolicyAccessGranted())) {
-            AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-            if (audioManager != null){
-            audioManager.setRingerMode(mode);}
+        if (notificationManager != null) {
+
+            if (android.os.Build.VERSION.SDK_INT < 24 ||
+                    (android.os.Build.VERSION.SDK_INT >= 24 && notificationManager.isNotificationPolicyAccessGranted())) {
+                Log.d("sdk", "sound to mode: " + mode);
+                AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+                if (audioManager != null){
+                    Log.d("turn audionot null", "sound to mode: " + mode);
+                    audioManager.setRingerMode(mode);}
+            }
+
         }
+
     }
 
 

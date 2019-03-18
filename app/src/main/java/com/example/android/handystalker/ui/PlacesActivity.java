@@ -362,6 +362,12 @@ public class PlacesActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         // Send the positive button event back to the host activity
                         String name = nameEdit.getText().toString();
+
+                        if (name == null || name.length() < 1) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.type_name), Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
                         final PlaceEntry placeEntry = new PlaceEntry(placeIdfromPicker, name);
                         AppExecutors.getInstance().diskIO().execute(new Runnable() {
                             @Override

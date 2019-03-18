@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.JobIntentService;
 import android.util.Log;
 
+import com.example.android.handystalker.R;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,6 +40,13 @@ public class AddingGeofencesService extends JobIntentService {
 
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
+        String apiKey = getString(R.string.GOOGLE_PLACES_ANDROID_API_KEY);
+
+        // Setup Places Client
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), apiKey);
+        }
+
         //mGeoDataClient = Places.getGeoDataClient(this);
         PlacesClient placesClient = Places.createClient(this);
 

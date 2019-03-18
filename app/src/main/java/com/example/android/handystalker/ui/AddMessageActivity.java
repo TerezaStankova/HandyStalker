@@ -84,20 +84,24 @@ public class AddMessageActivity extends AppCompatActivity {
     public void onSaveMessageButtonClick(View view) {
 
         String text = textEditText.getText().toString();
-        
-        
-        if (text != null) {
-            final MessagesEntry messagesEntry = new MessagesEntry(text);
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    // insert new contact
-                    mDb.messageDao().insertMessage(messagesEntry);
 
-                }
-            });
-            Toast.makeText(getApplicationContext(), R.string.new_message_toast, Toast.LENGTH_LONG).show();
+        if (text == null || text.length() < 1) {
+            Toast.makeText(getApplicationContext(), getString(R.string.add_text), Toast.LENGTH_LONG).show();
+            return;
         }
+        
+
+        final MessagesEntry messagesEntry = new MessagesEntry(text);
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                // insert new contact
+                mDb.messageDao().insertMessage(messagesEntry);
+
+            }
+        });
+        Toast.makeText(getApplicationContext(), R.string.new_message_toast, Toast.LENGTH_LONG).show();
+
 
     }
 

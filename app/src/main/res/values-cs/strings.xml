@@ -167,7 +167,6 @@
     <string name="allow_sound">Povolte nejprve nastavení zvuku!</string>
     <string name="connect_to">Připojte se, aby Hlídáček mohl fungovat správně!</string>
 
-
     <string name="new_notification_rule">Nové pravidlo</string>
     <string name="new_sound_rule">Nové pravidlo</string>
     <string name="new_wifi_rule">Nové pravidlo</string>
@@ -175,4 +174,9 @@
     <string name="sound_rules">Pravidla zvuku</string>
     <string name="wifi_rules">WiFi pravidla</string>
     <string name="allow_texting">Povolte nejprve odesílání SMS zpráv!</string>
+
+    <string name="type_name">Zadejte jméno kontaktu.</string>
+    <string name="type_phone">Zadejte telefoní číslo.</string>
+    <string name="add_text">Zadejte nejprve text zprávy.</string>
+    <string name="place_name">Zadejte jméno místa, jinak nebude uloženo. Klikněte teď na ikonu lokace značící místo k uložení.</string>
 </resources>

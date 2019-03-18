@@ -100,7 +100,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(mContext, "The item was successfully deleted", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(mContext, mContext.getString(R.string.item_deleted), Toast.LENGTH_LONG).show();
                                     }
                                 });
                             }

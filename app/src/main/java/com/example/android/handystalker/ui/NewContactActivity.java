@@ -65,7 +65,17 @@ public class NewContactActivity extends AppCompatActivity {
         String name = nameEditText.getText().toString();
         String phone = phoneEditText.getText().toString();
 
-        if (name != null) {
+        if (name == null || name.length() < 1) {
+            Toast.makeText(getApplicationContext(), getString(R.string.type_name), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (phone == null || phone.length() < 1) {
+            Toast.makeText(getApplicationContext(), getString(R.string.type_phone), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+
             final ContactsEntry contactEntry = new ContactsEntry(name, phone);
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
@@ -76,7 +86,7 @@ public class NewContactActivity extends AppCompatActivity {
                 }
             });
             Toast.makeText(getApplicationContext(), R.string.new_stalker_toast, Toast.LENGTH_LONG).show();
-        }
+
 
         Intent intent = new Intent(this, ContactsActivity.class);
         startActivity(intent);
@@ -89,8 +99,17 @@ public class NewContactActivity extends AppCompatActivity {
         final String name = nameEditText.getText().toString();
         final String phone = phoneEditText.getText().toString();
 
+        if (name == null || name.length() < 1) {
+            Toast.makeText(getApplicationContext(), getString(R.string.type_name), Toast.LENGTH_LONG).show();
+            return;
+        }
 
-        if (name != null) {
+        if (phone == null || phone.length() < 1) {
+            Toast.makeText(getApplicationContext(), getString(R.string.type_phone), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+
             final Integer contactsId = mContact.getContactId();
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
@@ -106,8 +125,6 @@ public class NewContactActivity extends AppCompatActivity {
 
             Intent intent = new Intent(this, ContactsActivity.class);
             startActivity(intent);
-
-        }
     }
 
 
