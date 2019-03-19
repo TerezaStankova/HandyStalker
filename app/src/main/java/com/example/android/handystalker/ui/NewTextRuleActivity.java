@@ -11,8 +11,6 @@ import com.example.android.handystalker.ui.Adapters.TextRulesPagerAdapter;
 
 public class NewTextRuleActivity extends AppCompatActivity {
 
-    //final ActionBar actionBar = getActionBar();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,10 +29,6 @@ public class NewTextRuleActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-
-        // Specify that tabs should be displayed in the action bar.
-        //assert actionBar != null;
-        //actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         // Create a tab listener that is called when the user changes tabs.
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

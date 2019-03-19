@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GeofenceTransitionsIntentService extends JobIntentService {
-    // ...
-
     // Member variable for the Database
     private AppDatabase mDb;
     public final String CHANNEL_ID = "default";
@@ -59,14 +57,6 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
             // Get the geofences that were triggered. A single event can trigger
             // multiple geofences.
             final List<Geofence> triggeringGeofence = geofencingEvent.getTriggeringGeofences();
-
-            //ToDO: Solve SMS rules for case when multiple geofences triggered
-            /*final String[] triggerIds = new String[triggeringGeofence.size()];
-
-            for (int i = 0; i < triggerIds.length; i++) {
-                triggerIds[i] = triggeringGeofence.get(i).getRequestId();
-            }*/
-
             mDb = AppDatabase.getInstance(context);
 
 
@@ -92,9 +82,6 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
 
                             if (rulesForThisPlace != null && rulesForThisPlace.size() != 0) {
                                 Log.d(TAG, "rulesForThisPlace.size= " + rulesForThisPlace.size());
-
-                                //List<Integer> rulesIdForThisPlace = mDb.ruleDao().findRulesById(arrivalId);
-                                //Log.d(TAG, "rulesIdForThisPlace.size= " + rulesIdForThisPlace.size());
 
                                 for (int i = 0; i < rulesForThisPlace.size(); i++) {
                                     if (rulesForThisPlace.get(i).getType().equals("sms")) {
@@ -360,7 +347,6 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
 
                 SmsManager smsManager = SmsManager.getDefault();
                 smsManager.sendTextMessage(phoneNumber, null, messageText, null, null);
-                //  smsManager.sendTextMessage(number,null,matn,null,null);
             } catch (Exception e) {
             }
         }

@@ -13,10 +13,6 @@ public class RulesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rules);
-
-        /*AdView mAdView = findViewById(R.id.adViewRules);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);*/
     }
 
     public void onSMSButtonClicked(View view) {

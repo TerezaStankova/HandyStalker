@@ -18,9 +18,6 @@ import com.google.android.libraries.places.api.model.Place;
 import java.util.ArrayList;
 import java.util.List;
 
-//import com.google.android.gms.location.places.Place;
-//import com.google.android.gms.location.places.PlaceBufferResponse;
-
 /*
 * Special THANK YOU! belongs to the creator of The ShushMe project which was used to get better understanding of Geofences
 * https://github.com/udacity/AdvancedAndroid_Shushme
@@ -33,10 +30,14 @@ public class Geofencing {
     // Constants
     public static final String TAG = Geofencing.class.getSimpleName();
 
-    private static final float GEOFENCE_RADIUS = 150; // 150 meters
-    //for getting best results from your geofences set a minimum radius of 100 meters
+    /*
+    * 150 meters
+    * for getting best results from your geofences set a minimum radius of 100 meters
+    */
 
-    private static final long GEOFENCE_TIMEOUT = 24 * 60 * 60 * 1000 * 365 * 10; // 10 years
+    private static final float GEOFENCE_RADIUS = 150;
+    // 10 years
+    private static final long GEOFENCE_TIMEOUT = 24 * 60 * 60 * 1000 * 365 * 10;
 
     private List<Geofence> mGeofenceList;
     private PendingIntent mGeofencePendingIntent;
@@ -51,7 +52,7 @@ public class Geofencing {
     }
 
     /***
-     * Registers the list of Geofences specified in mGeofenceList with Google Place Services
+     * Registers the list of Geofences specified in mGeofenceList
      * when the Geofence is triggered     *
      */
     public void registerAllGeofences() {
@@ -123,49 +124,14 @@ public class Geofencing {
         }
     }
 
-
-    /***
-     * Updates the local ArrayList of Geofences
-     * Uses the Place ID defined by the API as the Geofence object Id
-     *
-     * @param place the Place result of the fetchPlace call
-     */
-    public void updateGeofencesList(Place place) {
-        //mGeofenceList = new ArrayList<>();
-        if (place == null) return;
-
-            // Read the place information from the DB cursor
-            String placeUID = place.getId();
-            Log.d("updateGeofenceList", "regId" + placeUID);
-            double placeLat = place.getLatLng().latitude;
-            double placeLng = place.getLatLng().longitude;
-            // Build a Geofence object
-            Geofence geofence = new Geofence.Builder()
-                    /***
-                     *   Set the request ID of the geofence.
-                     * This is a string to identify this
-                     * geofence.
-                    */
-                    .setRequestId(placeUID)
-                    .setExpirationDuration(GEOFENCE_TIMEOUT)
-                    .setCircularRegion(placeLat, placeLng, GEOFENCE_RADIUS)
-                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
-                    .build();
-            // Add it to the list
-            mGeofenceList.add(geofence);
-
-        //places.release();
-    }
-
-
     public void updateGeofencesList(List<Place> places) {
         mGeofenceList = new ArrayList<>();
         Log.d("updateGeofenceList", "regId" + places.size() + places.isEmpty());
         if (places == null || places.size() == 0) return;
 
-        //Only 100 geofences allowed
-        if (places.size() > 100) {
-            places = places.subList(0, 100);
+        //Only 30 geofences allowed for the user (100 originally)
+        if (places.size() > 30) {
+            places = places.subList(0, 30);
             Toast.makeText(mContext, mContext.getString(R.string.only_30), Toast.LENGTH_LONG).show();
         }
 

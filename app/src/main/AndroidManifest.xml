@@ -117,8 +117,6 @@
             </intent-filter>
         </receiver>
 
-        <receiver
-            android:name=".geofencing.TimedGPSFixReceiver" />
         <service
             android:name=".utilities.GeofenceTransitionsIntentService"
             android:exported="true"

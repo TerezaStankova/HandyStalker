@@ -26,7 +26,6 @@ public class AddingGeofencesService extends JobIntentService {
     private static final String TAG = "AddingGeofencesService";
 
     private Geofencing mGeofencing;
-    //private GeoDataClient mGeoDataClient;
 
     private int count;
 
@@ -47,7 +46,6 @@ public class AddingGeofencesService extends JobIntentService {
             Places.initialize(getApplicationContext(), apiKey);
         }
 
-        //mGeoDataClient = Places.getGeoDataClient(this);
         PlacesClient placesClient = Places.createClient(this);
 
         Log.d(TAG, "handling service" + mIsEnabled);
@@ -55,7 +53,6 @@ public class AddingGeofencesService extends JobIntentService {
         mGeofencing = new Geofencing(getApplicationContext(), mGeoClient);
 
         // Instantiate a new geofence storage area.
-        // Persistent storage for geofences.
         GeofenceStorage mGeofenceStorage = new GeofenceStorage(this);
 
         final List<String> placeIds;

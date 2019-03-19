@@ -46,31 +46,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-//import com.google.android.gms.location.places.GeoDataClient;
-//import com.google.android.gms.location.places.Place;
-//import com.google.android.gms.location.places.PlaceBufferResponse;
-//import com.google.android.gms.location.places.Places;
-//import com.google.android.gms.location.places.ui.PlacePicker;
-
-//import static com.google.android.gms.location.places.ui.PlacePicker.getPlace;
 
 public class PlacesActivity extends AppCompatActivity {
 
     // Constants
     public static final String TAG = PlacesActivity.class.getSimpleName();
     private static final int PERMISSIONS_REQUEST_FINE_LOCATION = 111;
-    //private static final int PLACE_PICKER_REQUEST = 1;
-    private static final int AUTOCOMPLETE_REQUEST_CODE = 23456;
-    private static final int AUTOCOMPLETE_REQUEST_CODE_WITH_MAP = 56789;
 
     // Member variables
     private PlacesAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private boolean mIsEnabled;
-    //private GeoDataClient mGeoDataClient;
+
     private Geofencing mGeofencing;
-    private String placeIdfromPicker;
-    private String AddressfromPicker;
     private GeofenceStorage mGeofenceStorage;
 
     //Variable to save position in the list
@@ -218,183 +206,6 @@ public class PlacesActivity extends AppCompatActivity {
         });
     }
 
-
-
-
-
-    /**
-     * Override the activity's onActivityResult(), check the request code, and
-     * do something with the returned place data (in this example it's place name and place ID).
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Place place = Autocomplete.getPlaceFromIntent(data);
-                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
-
-                if (place == null) {
-                    Log.i(TAG, "No place selected");
-                    return;
-                }
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    AddressfromPicker = Objects.requireNonNull(place.getAddress()).toString();
-                } else {
-                    if (place.getAddress() != null) AddressfromPicker = place.getAddress().toString();
-                }
-                placeIdfromPicker = place.getId();
-                buildDialog();
-
-
-            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                // TODO: Handle the error.
-                Status status = Autocomplete.getStatusFromIntent(data);
-                Log.i(TAG, status.getStatusMessage());
-            } else if (resultCode == RESULT_CANCELED) {
-                // The user canceled the operation.
-            }
-        }
-        if (requestCode == AUTOCOMPLETE_REQUEST_CODE_WITH_MAP) {
-            if (resultCode == RESULT_OK) {
-                Place place = Autocomplete.getPlaceFromIntent(data);
-                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
-
-                if (place == null) {
-                    Log.i(TAG, "No place selected");
-                    return;
-                }
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    AddressfromPicker = Objects.requireNonNull(place.getAddress()).toString();
-                } else {
-                    if (place.getAddress() != null) AddressfromPicker = place.getAddress().toString();
-                }
-                placeIdfromPicker = place.getId();
-                buildDialog();
-
-
-            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                // TODO: Handle the error.
-                Status status = Autocomplete.getStatusFromIntent(data);
-                Log.i(TAG, status.getStatusMessage());
-            } else if (resultCode == RESULT_CANCELED) {
-                // The user canceled the operation.
-            }
-        }
-    }/*
-
-    /***
-     * Button Click event handler to handle clicking the "Add new location" Button
-
-    public void onAddPlaceButtonClicked(View view) {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, getString(R.string.need_location_permission_message), Toast.LENGTH_LONG).show();
-            return;
-        }
-        try {
-            // Start a new Activity for the Place Picker API, this will trigger {@code #onActivityResult}
-            // when a place is selected or the user cancels.
-
-
-            // Set the fields to specify which types of place data to return.
-            List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
-
-            // Start the autocomplete intent.
-            Intent intent = new Autocomplete.IntentBuilder(
-                    AutocompleteActivityMode.FULLSCREEN, fields)
-                    .build(this);
-            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
-
-
-            /*PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-            Intent i = builder.build(this);
-            startActivityForResult(i, PLACE_PICKER_REQUEST);*/
-      /*  } catch (Exception e) {
-            Log.e(TAG, String.format("AutoComplete Exception: %s", e.getMessage()));
-        }
-    }/*
-
-
-    /*
-     * Called when the Place Picker Activity returns back with a selected place (or after canceling)
-     *
-     * @param requestCode The request code passed when calling startActivityForResult
-     * @param resultCode  The result code specified by the second activity
-     * @param data        The Intent that carries the result data.
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
-            Place place = getPlace(this, data);
-            if (place == null) {
-                Log.i(TAG, "No place selected");
-                return;
-            }
-
-            // Extract the place information from the API
-            //String placeName = place.getName().toString();
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                AddressfromPicker = Objects.requireNonNull(place.getAddress()).toString();
-            } else {
-                if (place.getAddress() != null) AddressfromPicker = place.getAddress().toString();
-            }
-            placeIdfromPicker = place.getId();
-            buildDialog();
-        }
-    }*/
-
-
-    public void buildDialog(){
-        // Use the Builder class for convenient dialog construction
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = this.getLayoutInflater();
-        View placeLayout = inflater.inflate(R.layout.place_name_dialog, null);
-        TextView address = placeLayout.findViewById(R.id.address_textView);
-        final EditText nameEdit= placeLayout.findViewById(R.id.my_place_name);
-        address.setText(AddressfromPicker);
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
-        builder.setTitle(R.string.set_place_name)
-                .setView(placeLayout)
-                .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // Send the positive button event back to the host activity
-                        String name = nameEdit.getText().toString();
-
-                        if (name == null || name.length() < 1) {
-                            Toast.makeText(getApplicationContext(), getString(R.string.type_name), Toast.LENGTH_LONG).show();
-                            return;
-                        }
-
-                        final PlaceEntry placeEntry = new PlaceEntry(placeIdfromPicker, name);
-                        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                // insert new task
-                                mDb.placeDao().insertPlace(placeEntry);
-                            }
-                        });
-                        dialog.cancel();
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // Send the negative button event back to the host activity
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alert11 = builder.create();
-        alert11.show();
-
-        /*
-        Intent serviceIntent = new Intent(AddingGeofencesService.class.getName());
-        serviceIntent.putExtra("UserID", (Parcelable) mGeofencing);
-        this.startService(serviceIntent);*/
-
-    }
 
     @Override
     public void onResume() {

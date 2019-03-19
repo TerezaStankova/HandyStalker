@@ -14,8 +14,6 @@ public class ConnectionUtils {
 
     private static ConnectionUtils instance = new ConnectionUtils();
     static Context context;
-    ConnectivityManager connectivityManager;
-    NetworkInfo wifiInfo, mobileInfo;
     boolean isConnected = false;
 
     public static ConnectionUtils getInstance(Context ctx) {

@@ -282,8 +282,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             // This is Deprecated in API 28
             int mode = Settings.Secure.getInt(getApplicationContext().getContentResolver(), Settings.Secure.LOCATION_MODE,
                     Settings.Secure.LOCATION_MODE_OFF);
-            //Toast.makeText(MapsActivity.this, "Location is off.", Toast.LENGTH_LONG).show();
-//createLocationRequest();
             return mode != Settings.Secure.LOCATION_MODE_OFF;
 
         }
@@ -410,7 +408,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        //LatLng position=marker.getPosition();
         Log.i(TAG, "I do this: markert cklicke " + 4);
         buildDialog();
         return false;
@@ -519,12 +516,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // Turn on the My Location layer and the related control on the map.
         updateLocationUI();
-
-        // Get the current location of the device and set the position of the map.
-        //getDeviceLocation();
-
-        //mMap.setOnMarkerDragListener((GoogleMap.OnMarkerDragListener) this);
-
         mMap.setOnMarkerClickListener(this);
     }
 

@@ -20,8 +20,6 @@ import com.example.android.handystalker.utilities.AppExecutors;
 
 import java.util.List;
 
-//import com.google.android.gms.location.places.PlaceBufferResponse;
-
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewHolder> {
 
     private Context mContext;
