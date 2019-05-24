@@ -1,5 +1,4 @@
 # Handy Stalker
-## Android Developer Nanodegree: Capstone Project
 
 Is your mother also worried sick every time you forget to let her know about your safe arrival? 
 Does your boyfriend freak out if you don´t remember to call him after you reached your travel destination? 
@@ -13,15 +12,12 @@ You can also easily turn on/off sound or Wi-Fi while you are inside a place (hom
 
 ## About the app:
 + This app allows users to send messages automatically after setting rules.  
-+ It handles media loading, verifies user interfaces with UI tests, and integrates third party libraries. 
-+ It also provides a complete user experience with a home screen widget.
 + It integrates third party libraries. 
 
 ## Skills used to complete this project:
 + Room
 + Places API
 + **Geofences** 
-+ Handle error cases in Android.
 + **Widget** 
 + Leverage a third-party library.
 
