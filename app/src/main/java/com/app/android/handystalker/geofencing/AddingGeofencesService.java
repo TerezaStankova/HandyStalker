@@ -86,8 +86,8 @@ public class AddingGeofencesService extends JobIntentService {
 
                             if (count == placeIds.size()) {
                                 Log.i(TAG, "Place size2: " + places.size());
-                                mGeofencing.updateGeofencesList(places);
-                                if (mIsEnabled) mGeofencing.registerAllGeofences();
+                                mGeofencing.updateGeofencesList(places, mIsEnabled);
+                                //if (mIsEnabled) mGeofencing.registerAllGeofences();
                             }
                         } else {
                             Log.i(TAG, "Place size: " + places.size());

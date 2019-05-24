@@ -161,7 +161,7 @@ public class PlacesActivity extends AppCompatActivity {
                     Log.d("PreferenceView","success" + mIsEnabled);
                     mAdapter.refreshPlaces(placeIds, placeNames);
 
-                   mGeofenceStorage.setGeofence(placeIds);
+                    mGeofenceStorage.setGeofence(placeIds);
 
                     // Specify the fields to return.
                     List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
@@ -186,7 +186,8 @@ public class PlacesActivity extends AppCompatActivity {
 
                                     if (b == placeIds.size()) {
                                         Log.i(TAG, "Place size2: " + places.size());
-                                        mGeofencing.updateGeofencesList(places);
+                                        //mGeofencing.updateGeofencesList(places);
+                                        mGeofencing.updateGeofencesList(places, mIsEnabled);
                                         if (mIsEnabled) mGeofencing.registerAllGeofences();
                                     }
                                 } else {

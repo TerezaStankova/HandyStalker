@@ -71,10 +71,13 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                         protected List<String> doInBackground(String... params) {
                             final int arrivalId;
 
-                            String requestId = triggeringGeofence.get(triggeringGeofence.size() - 1).getRequestId();
+                            /*String requestId = triggeringGeofence.get(triggeringGeofence.size() - 1).getRequestId();
 
                             Log.d(TAG, "requestId " + requestId);
-                            arrivalId = mDb.placeDao().findIdByPlaceId(requestId);
+                            arrivalId = mDb.placeDao().findIdByPlaceId(requestId);*/
+
+                            arrivalId = Integer.valueOf(triggeringGeofence.get(triggeringGeofence.size() - 1).getRequestId());
+
                             Log.d(TAG, "triggeringGeofence.size()" + triggeringGeofence.size() + " " + arrivalId);
                             String namePlace = mDb.placeDao().findPlaceNameById(arrivalId);
                             List<RuleEntry> rulesForThisPlace = mDb.ruleDao().findRulesForArrivalPlace(arrivalId);
@@ -216,10 +219,13 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                         protected List<String> doInBackground(String... params) {
                             final int departureId;
 
-                            String requestId = triggeringGeofence.get(triggeringGeofence.size() - 1).getRequestId();
+                            //String requestId = triggeringGeofence.get(triggeringGeofence.size() - 1).getRequestId();
 
-                            Log.d(TAG, "requestId " + requestId);
-                            departureId = mDb.placeDao().findIdByPlaceId(requestId);
+                            //Log.d(TAG, "requestId " + requestId);
+                            //departureId = mDb.placeDao().findIdByPlaceId(requestId);
+
+                            departureId = (int) Integer.valueOf(triggeringGeofence.get(triggeringGeofence.size() - 1).getRequestId());
+
                             Log.d(TAG, "triggeringGeofence.size()" + triggeringGeofence.size() + " " + departureId);
                             List<RuleEntry> rulesForThisPlace = mDb.ruleDao().findRulesForDeparturePlace(departureId);
                             List<String> phoneNumbers = new ArrayList<String>();

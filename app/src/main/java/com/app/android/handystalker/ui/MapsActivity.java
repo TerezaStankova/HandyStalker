@@ -350,10 +350,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void buildDialog() {
         // Use the Builder class for convenient dialog construction
 
-        if (placeIdfromPicker.length() > 100) {
+       /* if (placeIdfromPicker.length() > 100) {
             Toast.makeText(MapsActivity.this, getString(R.string.more_specific), Toast.LENGTH_LONG).show();
 
-            return;}
+            return;}*/
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         View placeLayout = inflater.inflate(R.layout.place_name_dialog, null);
@@ -596,13 +596,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                            @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
         mLocationPermissionGranted = false;
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mLocationPermissionGranted = true;
-                }
+        // If request is cancelled, the result arrays are empty.
+        if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                mLocationPermissionGranted = true;
             }
         }
         updateLocationUI();
