@@ -46,7 +46,7 @@
                     style="@android:style/TextAppearance.Large"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:gravity="start"
                     android:text="@string/turn_sound" />
 
@@ -94,8 +94,7 @@
                 android:background="@drawable/btn_dropdown"
                 android:drawingCacheQuality="auto"
                 android:gravity="end"
-                android:minHeight="12dp"
-                tools:listitem="@layout/spinner_item" />
+                android:minHeight="12dp" />
 
 
             <Button
@@ -130,7 +129,7 @@
                     style="@android:style/TextAppearance.Large"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:gravity="start"
                     android:text="@string/turn_sound" />
 

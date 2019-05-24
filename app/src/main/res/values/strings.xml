@@ -134,8 +134,6 @@
     <string name="anywhere">anywhere</string>
     <string name="default_message">default text</string>
 
-
-
     <string name="error_api_key" translatable="false">No API key defined in gradle.properties</string>
     <string name="pick_place">Pick place</string>
     <string name="option_get_place">Near me</string>
@@ -159,10 +157,9 @@
     <!--Maps-->
     <string name="no_place_around">No Places of interest found around.  Try to press ´Nearby´ again after your location is found and blue circle appears.</string>
     <string name="place_added">Place was added successfully.</string>
-    <string name="more_specific">This place can not be monitored. Try more specific address.</string>
+    <string name="more_specific">This place can not be monitored. Try more specific or nearby address.</string>
     <string name="not_connected">You are not connected to the Internet.</string>
     <string name="connect">Connect and add new places.</string>
-
 
 
     <string name="not_working">Geofencing can not work properly!</string>

@@ -38,10 +38,10 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    style="@android:style/TextAppearance.Large"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    style="@android:style/TextAppearance.Large"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:gravity="start"
                     android:text="@string/turn_wi_fi" />
 
@@ -117,11 +117,11 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    style="@android:style/TextAppearance.Large"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:gravity="start"
-                    style="@android:style/TextAppearance.Large"
                     android:text="@string/turn_wi_fi" />
 
                 <Spinner

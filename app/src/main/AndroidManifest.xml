@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.android.handystalker">
+    package="com.app.android.handystalker">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -35,7 +35,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:fullBackupContent="@xml/backup_descriptor">
-        <activity android:name=".ui.MainActivity">
+        <activity android:name="com.app.android.handystalker.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -48,49 +48,49 @@
 
 
         <activity
-            android:name=".ui.PlacesActivity"
-            android:parentActivityName=".ui.MainActivity" />
+            android:name="com.app.android.handystalker.ui.PlacesActivity"
+            android:parentActivityName="com.app.android.handystalker.ui.MainActivity" />
         <activity
-            android:name=".ui.RulesActivity"
-            android:parentActivityName=".ui.MainActivity" />
+            android:name="com.app.android.handystalker.ui.RulesActivity"
+            android:parentActivityName="com.app.android.handystalker.ui.MainActivity" />
 
         <activity
-            android:name=".ui.TextRulesActivity"
-            android:parentActivityName=".ui.RulesActivity" />
+            android:name="com.app.android.handystalker.ui.TextRulesActivity"
+            android:parentActivityName="com.app.android.handystalker.ui.RulesActivity" />
         <activity
-            android:name=".ui.ContactsActivity"
-            android:parentActivityName=".ui.TextRulesActivity" />
+            android:name="com.app.android.handystalker.ui.ContactsActivity"
+            android:parentActivityName="com.app.android.handystalker.ui.TextRulesActivity" />
 
-        <activity android:name=".ui.WifiRulesActivity"
-            android:parentActivityName=".ui.RulesActivity" />
-        <activity android:name=".ui.SoundRulesActivity"
-            android:parentActivityName=".ui.RulesActivity" />
-        <activity android:name=".ui.NotificationsActivity"
-            android:parentActivityName=".ui.RulesActivity" />
-        <activity android:name=".ui.NewNotificationRuleActivity"
-            android:parentActivityName=".ui.NotificationsActivity" />
+        <activity android:name="com.app.android.handystalker.ui.WifiRulesActivity"
+            android:parentActivityName="com.app.android.handystalker.ui.RulesActivity" />
+        <activity android:name="com.app.android.handystalker.ui.SoundRulesActivity"
+            android:parentActivityName="com.app.android.handystalker.ui.RulesActivity" />
+        <activity android:name="com.app.android.handystalker.ui.NotificationsActivity"
+            android:parentActivityName="com.app.android.handystalker.ui.RulesActivity" />
+        <activity android:name="com.app.android.handystalker.ui.NewNotificationRuleActivity"
+            android:parentActivityName="com.app.android.handystalker.ui.NotificationsActivity" />
 
-        <activity android:name=".ui.NewTextRuleActivity" android:parentActivityName=".ui.TextRulesActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name="com.app.android.handystalker.ui.NewTextRuleActivity" android:parentActivityName="com.app.android.handystalker.ui.TextRulesActivity" android:theme="@style/AppTheme.NoActionBar"/>
 
-        <activity android:name=".ui.NewContactActivity" android:parentActivityName=".ui.ContactsActivity"/>
+        <activity android:name="com.app.android.handystalker.ui.NewContactActivity" android:parentActivityName="com.app.android.handystalker.ui.ContactsActivity"/>
 
-        <activity android:name=".ui.NewSoundRuleActivity" android:parentActivityName=".ui.SoundRulesActivity"/>
-        <activity android:name=".ui.NewWifiRuleActivity" android:parentActivityName=".ui.WifiRulesActivity"/>
-        <activity android:name=".ui.AddMessageActivity" android:parentActivityName=".ui.TextRulesActivity"/>
-        <activity android:name=".ui.MapsActivity" android:parentActivityName=".ui.PlacesActivity"/>
+        <activity android:name="com.app.android.handystalker.ui.NewSoundRuleActivity" android:parentActivityName="com.app.android.handystalker.ui.SoundRulesActivity"/>
+        <activity android:name="com.app.android.handystalker.ui.NewWifiRuleActivity" android:parentActivityName="com.app.android.handystalker.ui.WifiRulesActivity"/>
+        <activity android:name="com.app.android.handystalker.ui.AddMessageActivity" android:parentActivityName="com.app.android.handystalker.ui.TextRulesActivity"/>
+        <activity android:name="com.app.android.handystalker.ui.MapsActivity" android:parentActivityName="com.app.android.handystalker.ui.PlacesActivity"/>
 
-        <service android:name=".geofencing.AddingGeofencesService"
+        <service android:name="com.app.android.handystalker.geofencing.AddingGeofencesService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
-        <receiver android:name=".geofencing.BootBroadcastReceiver">
+        <receiver android:name="com.app.android.handystalker.geofencing.BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
         <receiver
-            android:name=".geofencing.ProviderChangedBroadcastReceiver"
+            android:name="com.app.android.handystalker.geofencing.ProviderChangedBroadcastReceiver"
             android:exported="false" >
             <intent-filter>
                 <action android:name="android.location.PROVIDERS_CHANGED" />
@@ -100,7 +100,7 @@
 
 
         <receiver
-            android:name=".geofencing.GeofenceBroadcastReceiver"
+            android:name="com.app.android.handystalker.geofencing.GeofenceBroadcastReceiver"
             android:enabled="true"
             android:exported="true"
             android:permission=""
@@ -113,12 +113,12 @@
                      broadcast receivers and background services running), we could see delays up
                      to 3 minutes until the receiver was actually triggered, often even requiring
                      the user to unlock the phone first! -->
-                <action android:name="com.example.android.handystalker.geofencing.ACTION_RECEIVE_GEOFENCE" />
+                <action android:name="com.app.android.handystalker.geofencing.ACTION_RECEIVE_GEOFENCE" />
             </intent-filter>
         </receiver>
 
         <service
-            android:name=".utilities.GeofenceTransitionsIntentService"
+            android:name="com.app.android.handystalker.utilities.GeofenceTransitionsIntentService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 

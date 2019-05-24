@@ -62,7 +62,8 @@
             android:layout_marginRight="8dp"
             android:background="@drawable/btn_dropdown"
             android:gravity="end"
-            android:minHeight="12dp" />
+            android:minHeight="12dp"
+            android:spinnerMode="dropdown" />
 
 
         <TextView
@@ -100,6 +101,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:background="@drawable/btn_dropdown"
+            android:dropDownWidth="match_parent"
             android:gravity="end"
             android:minHeight="12dp" />
 

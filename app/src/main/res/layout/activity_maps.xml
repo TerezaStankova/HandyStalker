@@ -34,7 +34,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/autocomplete_view"
-        tools:context="com.example.android.handystalker.ui.MapsActivity" />
+        tools:context="com.app.android.handystalker.ui.MapsActivity" />
 
 
 </android.support.constraint.ConstraintLayout>
