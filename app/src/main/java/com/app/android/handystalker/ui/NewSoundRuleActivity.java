@@ -108,8 +108,55 @@ public class NewSoundRuleActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     // insert new contact
-                    mDb.ruleDao().insertRule(ruleEntry);
+                    //mDb.ruleDao().insertRule(ruleEntry);
 
+
+                    List<RuleEntry> ruleEntries = mDb.ruleDao().findRulesForArrivalPlace(arrivalId);
+                    boolean update = false;
+
+                    if (departureAnywhereId == null) {
+
+
+                        if(ruleEntries != null && ruleEntries.size() > 0){
+
+                            for (RuleEntry rule : ruleEntries) {
+
+                                if (rule.getType().equals(SOUND) || rule.getType().equals(SOUNDOFF)) {
+                                    rule.setType(type);
+                                    mDb.ruleDao().updateRule(rule);
+                                    update = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (!update){
+                            mDb.ruleDao().insertRule(ruleEntry);
+                        }
+
+                    } else {
+
+
+                        for (RuleEntry rule : ruleEntries) {
+
+                            if (rule.getDepartureId() != null) {
+                            int depId = rule.getDepartureId();
+
+
+                            if (depId == departureAnywhereId && (rule.getType().equals(SOUND) || rule.getType().equals(SOUNDOFF))) {
+                                update = true;
+                                rule.setType(type);
+                                mDb.ruleDao().updateRule(rule);
+                                break;
+                            }
+                        }
+
+                        }
+
+                        if (!update) {
+                            mDb.ruleDao().insertRule(ruleEntry);
+                        }
+                    }
                 }
             });
 
@@ -145,15 +192,32 @@ public class NewSoundRuleActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     // insert new contact
-                    mDb.ruleDao().insertRule(ruleEntry);
 
+                    List<RuleEntry> ruleEntries = mDb.ruleDao().findRulesForDeparturePlace(departureId);
+                    boolean update = false;
+
+                    if(ruleEntries != null && ruleEntries.size() > 0){
+
+                        for (RuleEntry rule : ruleEntries) {
+
+                            if (rule.getArrivalId() == null && rule.getType().equals(SOUND) || rule.getType().equals(SOUNDOFF)) {
+                                rule.setType(type);
+                                mDb.ruleDao().updateRule(rule);
+                                update = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!update){
+                        mDb.ruleDao().insertRule(ruleEntry);
+                    }
                 }
             });
 
             Intent intent = new Intent(this, SoundRulesActivity.class);
             startActivity(intent);
         }
-
     }
 
 

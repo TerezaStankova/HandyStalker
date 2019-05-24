@@ -132,7 +132,23 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // Insert new rule
-                mDb.ruleDao().insertRule(ruleEntry);
+
+                List<RuleEntry> ruleEntries = mDb.ruleDao().findRulesForDeparturePlace(departureId);
+                boolean update = false;
+
+                if(ruleEntries != null && ruleEntries.size() > 0){
+
+                    for (RuleEntry rule : ruleEntries) {
+
+                        if (rule.getArrivalId() == null && rule.getType().equals(type)) {
+                            update = true;
+                        }
+                    }
+                }
+
+                if (!update){
+                    mDb.ruleDao().insertRule(ruleEntry);
+                }
 
             }});
         Intent intent = new Intent(this, NotificationsActivity.class);
@@ -146,7 +162,49 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // Insert new rule
-                mDb.ruleDao().insertRule(ruleEntry);
+
+                List<RuleEntry> ruleEntries = mDb.ruleDao().findRulesForArrivalPlace(arrivalId);
+                boolean update = false;
+
+                if (departureAnywhereId == null) {
+
+
+                    if(ruleEntries != null && ruleEntries.size() > 0){
+
+                        for (RuleEntry rule : ruleEntries) {
+
+                            if (rule.getType().equals(type)) {
+                                update = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!update){
+                        mDb.ruleDao().insertRule(ruleEntry);
+                    }
+
+                } else {
+
+
+                    for (RuleEntry rule : ruleEntries) {
+
+                        if (rule.getDepartureId() != null) {
+                            int depId = rule.getDepartureId();
+
+
+                            if (depId == departureAnywhereId && (rule.getType().equals(type))) {
+                                update = true;
+                                break;
+                            }
+                        }
+
+                    }
+
+                    if (!update) {
+                        mDb.ruleDao().insertRule(ruleEntry);
+                    }
+                }
 
             }});
         Intent intent = new Intent(this, NotificationsActivity.class);
