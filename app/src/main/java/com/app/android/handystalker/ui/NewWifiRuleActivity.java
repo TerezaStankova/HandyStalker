@@ -317,8 +317,53 @@ public class NewWifiRuleActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         // insert new contact
-                        mDb.ruleDao().insertRule(ruleEntry);
 
+                        List<RuleEntry> ruleEntries = mDb.ruleDao().findRulesForArrivalPlace(arrivalId);
+                        boolean update = false;
+
+                        if (departureAnywhereId == null) {
+
+
+                            if(ruleEntries != null && ruleEntries.size() > 0){
+
+                                for (RuleEntry rule : ruleEntries) {
+
+                                    if (rule.getType().equals(WIFI) || rule.getType().equals(WIFIOFF)) {
+                                        rule.setType(type);
+                                        mDb.ruleDao().updateRule(rule);
+                                        update = true;
+                                        break;
+                                    }
+                                }
+
+                            }
+
+                            if (!update){
+                                mDb.ruleDao().insertRule(ruleEntry);
+                            }
+
+                        } else {
+
+                            for (RuleEntry rule : ruleEntries) {
+
+                                if (rule.getDepartureId() != null) {
+                                    int depId = rule.getDepartureId();
+
+
+                                    if (depId == departureAnywhereId && (rule.getType().equals(WIFI) || rule.getType().equals(WIFIOFF))) {
+                                        update = true;
+                                        rule.setType(type);
+                                        mDb.ruleDao().updateRule(rule);
+                                        break;
+                                    }
+                                }
+
+                            }
+
+                            if (!update) {
+                                mDb.ruleDao().insertRule(ruleEntry);
+                            }
+                        }
                     }
                 });
 
@@ -357,7 +402,25 @@ public class NewWifiRuleActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         // insert new contact
-                        mDb.ruleDao().insertRule(ruleEntry);
+
+                        List<RuleEntry> ruleEntries = mDb.ruleDao().findRulesForDeparturePlace(departureId);
+                        boolean update = false;
+
+                        if(ruleEntries != null && ruleEntries.size() > 0){
+
+                            for (RuleEntry rule : ruleEntries) {
+
+                                if (rule.getArrivalId() == null && rule.getType().equals(WIFI) || rule.getType().equals(WIFIOFF)) {
+                                    rule.setType(type);
+                                    mDb.ruleDao().updateRule(rule);
+                                    update = true;
+                                }
+                            }
+                        }
+
+                        if (!update){
+                            mDb.ruleDao().insertRule(ruleEntry);
+                        }
 
                     }
                 });
