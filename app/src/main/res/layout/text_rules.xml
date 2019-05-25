@@ -1,19 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="8dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="44dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="44dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/rounded_button"
+            android:contentDescription="@string/add_new_rule"
+            android:maxWidth="@dimen/button_width"
+            android:onClick="onAddSendRulesButtonClicked"
+            android:text="@string/new_rule"
+            android:textAppearance="@style/myButtonStyleSmall"
+            android:textColor="@color/text_color_primary" />
 
         <LinearLayout
+            android:id="@+id/linearLayout5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
@@ -24,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="44dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="44dp"
                 android:layout_marginBottom="8dp"
@@ -34,7 +63,7 @@
                 android:padding="8dp"
                 android:text="@string/contacts"
                 android:textAppearance="@style/myButtonStyleSmall"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/text_color_primary" />
 
 
             <Button
@@ -42,6 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="44dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="44dp"
                 android:layout_marginBottom="8dp"
@@ -52,25 +82,27 @@
                 android:onClick="onMessagesButtonClicked"
                 android:text="@string/my_texts"
                 android:textAppearance="@style/myButtonStyleSmall"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/text_color_primary" />
 
         </LinearLayout>
+    </LinearLayout>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="44dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="44dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/rounded_button"
-            android:contentDescription="@string/add_new_rule"
-            android:maxWidth="@dimen/button_width"
-            android:onClick="onAddSendRulesButtonClicked"
-            android:text="@string/new_rule"
-            android:textAppearance="@style/myButtonStyleSmall"
-            android:textColor="@color/text_color_primary" />
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout6">
+
 
         <TextView
             android:layout_width="match_parent"
@@ -80,7 +112,6 @@
             android:textAppearance="@style/myDetailTitleStyle" />
 
 
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/sendrules_list_recycler_view"
             android:layout_width="match_parent"
@@ -88,21 +119,7 @@
             android:layout_gravity="top"
             android:layout_margin="8dp" />
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="44dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="44dp"
-            android:layout_marginBottom="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/rounded_button"
-            android:contentDescription="@string/add_new_contact"
-            android:maxWidth="@dimen/button_width"
-            android:onClick="onAddSendRulesButtonClicked"
-            android:text="@string/new_rule"
-            android:textAppearance="@style/myButtonStyleSmall" />
     </LinearLayout>
 
-</ScrollView>
+
+</android.support.constraint.ConstraintLayout>

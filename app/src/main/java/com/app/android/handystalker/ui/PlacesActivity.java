@@ -207,14 +207,14 @@ public class PlacesActivity extends AppCompatActivity {
         super.onResume();
 
         // Initialize location permissions checkbox
-        CheckBox locationPermissions = findViewById(R.id.location_permission_checkbox);
+        /*CheckBox locationPermissions = findViewById(R.id.location_permission_checkbox);
         if (ActivityCompat.checkSelfPermission(PlacesActivity.this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             locationPermissions.setChecked(false);
         } else {
             locationPermissions.setChecked(true);
             locationPermissions.setEnabled(false);
-        }
+        }*/
 
         if (mListState != null) {
             layoutManager.onRestoreInstanceState(mListState);
@@ -258,19 +258,13 @@ public class PlacesActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, getString(R.string.need_location_permission_message), Toast.LENGTH_LONG).show();
+            ActivityCompat.requestPermissions(PlacesActivity.this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_FINE_LOCATION);
             return;
         }
 
-        final int[] count = new int[1];
-
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-
-                count[0] = mDb.placeDao().countPlaceIds();
-                controlCount(count[0]);
-            }
-        });
+        goToMap();
     }
 
     public void controlCount(final int i){
@@ -290,6 +284,34 @@ public class PlacesActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    public void goToMap(){
+        final int[] count = new int[1];
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                count[0] = mDb.placeDao().countPlaceIds();
+                controlCount(count[0]);
+            }
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission was granted
+                    goToMap();
+                }
+            }
+        }
     }
 }
 

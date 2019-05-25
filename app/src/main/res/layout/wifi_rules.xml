@@ -22,7 +22,7 @@
             android:contentDescription="@string/add_new_contact"
             android:onClick="onAddSendRulesButtonClicked"
             android:text="@string/new_rule"
-            android:textAppearance="@style/myButtonStyleSmall"
+            android:textAppearance="@style/myDetailTitleStyle"
             android:textColor="@color/text_color_primary" />
 
         <TextView

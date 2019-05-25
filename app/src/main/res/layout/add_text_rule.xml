@@ -23,6 +23,9 @@
         android:layout_below="@+id/toolbar"
         android:background="@color/colorPrimaryDark"
         android:minHeight="?attr/actionBarSize"
+        app:tabMaxWidth="0dp"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <android.support.v4.view.ViewPager
