@@ -182,4 +182,5 @@
     <string name="change_existing_place_rule">V pravidle se shodnou lokací a kontaktem byl změněn text zprávy.</string>
     <string name="already_saved">Toto pravidlo je již nastaveno.</string>
     <string name="setting_changed">Nastavení změněno</string>
+    <string name="storage">Povolte nejprve ukládání dat.</string>
 </resources>

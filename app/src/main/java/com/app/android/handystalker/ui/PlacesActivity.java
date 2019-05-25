@@ -1,5 +1,6 @@
 package com.app.android.handystalker.ui;
 
+import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -47,6 +48,7 @@ public class PlacesActivity extends AppCompatActivity {
     // Constants
     public static final String TAG = PlacesActivity.class.getSimpleName();
     private static final int PERMISSIONS_REQUEST_FINE_LOCATION = 111;
+    private static final int PERMISSIONS_REQUEST_STORAGE = 161;
 
     // Member variables
     private PlacesAdapter mAdapter;
@@ -264,6 +266,15 @@ public class PlacesActivity extends AppCompatActivity {
             return;
         }
 
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, getString(R.string.storage), Toast.LENGTH_LONG).show();
+            ActivityCompat.requestPermissions(PlacesActivity.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    PERMISSIONS_REQUEST_STORAGE);
+            return;
+        }
+
         goToMap();
     }
 
@@ -287,6 +298,24 @@ public class PlacesActivity extends AppCompatActivity {
     }
 
     public void goToMap(){
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, getString(R.string.need_location_permission_message), Toast.LENGTH_LONG).show();
+            ActivityCompat.requestPermissions(PlacesActivity.this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_FINE_LOCATION);
+            return;
+        }
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            //Toast.makeText(this, getString(R.string.need_location_permission_message), Toast.LENGTH_LONG).show();
+            ActivityCompat.requestPermissions(PlacesActivity.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    PERMISSIONS_REQUEST_STORAGE);
+            return;
+        }
+
         final int[] count = new int[1];
 
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -304,6 +333,14 @@ public class PlacesActivity extends AppCompatActivity {
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
             case PERMISSIONS_REQUEST_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission was granted
+                    goToMap();
+                }
+            }
+            case PERMISSIONS_REQUEST_STORAGE: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

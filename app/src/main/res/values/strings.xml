@@ -183,5 +183,6 @@
     <string name="change_existing_place_rule">Text was changed successfully!</string>
     <string name="already_saved">This rule is already in use.</string>
     <string name="setting_changed">Setting changed successfully!</string>
+    <string name="storage">Allow storage before saving new place.</string>
 
 </resources>
