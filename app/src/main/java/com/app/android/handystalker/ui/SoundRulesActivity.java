@@ -76,6 +76,11 @@ public class SoundRulesActivity extends AppCompatActivity {
         // Check if the API supports such permission change and check if permission is granted
         if (android.os.Build.VERSION.SDK_INT >= 24 && !notificationManager.isNotificationPolicyAccessGranted()) {
             Toast.makeText(this, getString(R.string.allow_sound), Toast.LENGTH_LONG).show();
+            Intent intent = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+            }
+            startActivity(intent);
             return;
         }
 
@@ -90,7 +95,8 @@ public class SoundRulesActivity extends AppCompatActivity {
                     public void run() {
                         if (countPlaces == 0) {
                             Toast.makeText(getApplicationContext(), getString(R.string.one_place), Toast.LENGTH_LONG).show();
-                            return;
+                            Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                            startActivity(intent);
                         }
                         else {
                             Intent intent = new Intent(getApplicationContext(), NewSoundRuleActivity.class);
@@ -138,7 +144,7 @@ public class SoundRulesActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        // Initialize permissions checkbox
+        /*// Initialize permissions checkbox
         CheckBox soundPermissions = findViewById(R.id.sound_permission_checkbox);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         // Check if the API supports such permission change and check if permission is granted
@@ -147,7 +153,7 @@ public class SoundRulesActivity extends AppCompatActivity {
         } else {
             soundPermissions.setChecked(true);
             soundPermissions.setEnabled(false);
-        }
+        }*/
 
         if (mListState != null) {
             layoutManager.onRestoreInstanceState(mListState);
@@ -180,13 +186,13 @@ public class SoundRulesActivity extends AppCompatActivity {
             mListState = state.getParcelable(LIST_STATE_KEY);
     }
 
-    public void onSoundPermissionClicked(View view) {
+    /*public void onSoundPermissionClicked(View view) {
         Intent intent = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
         }
         startActivity(intent);
-    }
+    }*/
 }
 
 

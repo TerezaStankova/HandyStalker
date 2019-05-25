@@ -82,9 +82,18 @@ public class TextRulesActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(TextRulesActivity.this,
                 android.Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, getString(R.string.allow_texting), Toast.LENGTH_LONG).show();
+
+            ActivityCompat.requestPermissions(TextRulesActivity.this,
+                    new String[]{Manifest.permission.SEND_SMS},
+                    PERMISSIONS_REQUEST);
             return;
         }
 
+        checkDatabase();
+
+    }
+
+    private void checkDatabase(){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -97,11 +106,14 @@ public class TextRulesActivity extends AppCompatActivity {
                     public void run() {
                         if (countPlaces == 0) {
                             Toast.makeText(getApplicationContext(), getString(R.string.one_place), Toast.LENGTH_LONG).show();
-                            return;
+                            Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                            startActivity(intent);
                         } else if (countContacts == 0) {
                             Toast.makeText(getApplicationContext(), getString(R.string.one_contact), Toast.LENGTH_LONG).show();
-                            return;}
-                            else {
+                            Intent intent = new Intent(getApplicationContext(), NewContactActivity.class);
+                            startActivity(intent);
+                        }
+                        else {
                             Intent intent = new Intent(getApplicationContext(), NewTextRuleActivity.class);
                             startActivity(intent);
                         }
@@ -144,9 +156,9 @@ public class TextRulesActivity extends AppCompatActivity {
     }
 
     public void onSMSPermissionClicked(View view) {
-        ActivityCompat.requestPermissions(TextRulesActivity.this,
+        /*ActivityCompat.requestPermissions(TextRulesActivity.this,
                 new String[]{Manifest.permission.SEND_SMS},
-                PERMISSIONS_REQUEST);
+                PERMISSIONS_REQUEST);*/
     }
 
     @Override
@@ -154,7 +166,7 @@ public class TextRulesActivity extends AppCompatActivity {
         super.onResume();
 
         // Initialize location permissions checkbox
-        CheckBox smsPermissions = findViewById(R.id.sms_permission_checkbox);
+        /*CheckBox smsPermissions = findViewById(R.id.sms_permission_checkbox);
         if (ActivityCompat.checkSelfPermission(TextRulesActivity.this,
                 android.Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
             smsPermissions.setChecked(false);
@@ -165,7 +177,7 @@ public class TextRulesActivity extends AppCompatActivity {
 
         if (mListState != null) {
             layoutManager.onRestoreInstanceState(mListState);
-        }
+        }*/
     }
 
     private void restoreLayoutManagerPosition() {
@@ -202,6 +214,21 @@ public class TextRulesActivity extends AppCompatActivity {
     public void onContactsButtonClicked(View view) {
         Intent intent = new Intent(this, ContactsActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted
+                    checkDatabase();
+                }
+            }
+        }
     }
 }
 

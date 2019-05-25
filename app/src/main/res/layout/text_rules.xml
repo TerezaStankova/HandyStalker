@@ -1,62 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.design.widget.CoordinatorLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="8dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <Button
+            android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:contentDescription="@string/sms_icon"
-                android:paddingTop="4dp"
-                android:paddingEnd="8dp"
-                android:paddingStart="8dp"
-                android:paddingBottom="4dp"
-                app:srcCompat="@drawable/ic_sms_green_24dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/sms_permission"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@android:color/black" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <CheckBox
-                    android:id="@+id/sms_permission_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="@android:drawable/checkbox_off_background"
-                    android:onClick="onSMSPermissionClicked" />
-
-            </RelativeLayout>
-        </LinearLayout>
-
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="44dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="44dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/rounded_button"
+            android:contentDescription="@string/add_new_rule"
+            android:maxWidth="@dimen/button_width"
+            android:onClick="onAddSendRulesButtonClicked"
+            android:text="@string/new_rule"
+            android:textAppearance="@style/myButtonStyleSmall"
+            android:textColor="@color/text_color_primary" />
 
         <LinearLayout
+            android:id="@+id/linearLayout5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
@@ -67,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="44dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="44dp"
                 android:layout_marginBottom="8dp"
@@ -77,7 +63,7 @@
                 android:padding="8dp"
                 android:text="@string/contacts"
                 android:textAppearance="@style/myButtonStyleSmall"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/text_color_primary" />
 
 
             <Button
@@ -85,6 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="44dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="44dp"
                 android:layout_marginBottom="8dp"
@@ -95,25 +82,27 @@
                 android:onClick="onMessagesButtonClicked"
                 android:text="@string/my_texts"
                 android:textAppearance="@style/myButtonStyleSmall"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/text_color_primary" />
 
         </LinearLayout>
+    </LinearLayout>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="44dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="44dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/rounded_button"
-            android:contentDescription="@string/add_new_rule"
-            android:maxWidth="@dimen/button_width"
-            android:onClick="onAddSendRulesButtonClicked"
-            android:text="@string/new_rule"
-            android:textAppearance="@style/myButtonStyleSmall"
-            android:textColor="@color/text_color_primary" />
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout6">
+
 
         <TextView
             android:layout_width="match_parent"
@@ -123,7 +112,6 @@
             android:textAppearance="@style/myDetailTitleStyle" />
 
 
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/sendrules_list_recycler_view"
             android:layout_width="match_parent"
@@ -131,21 +119,7 @@
             android:layout_gravity="top"
             android:layout_margin="8dp" />
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="44dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="44dp"
-            android:layout_marginBottom="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/rounded_button"
-            android:contentDescription="@string/add_new_contact"
-            android:maxWidth="@dimen/button_width"
-            android:onClick="onAddSendRulesButtonClicked"
-            android:text="@string/new_rule"
-            android:textAppearance="@style/myButtonStyleSmall" />
     </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+
+</android.support.constraint.ConstraintLayout>

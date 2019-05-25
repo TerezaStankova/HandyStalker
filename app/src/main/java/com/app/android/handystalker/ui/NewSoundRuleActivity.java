@@ -5,6 +5,8 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.app.android.handystalker.R;
 import com.app.android.handystalker.database.AppDatabase;
@@ -108,7 +111,6 @@ public class NewSoundRuleActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     // insert new contact
-                    //mDb.ruleDao().insertRule(ruleEntry);
 
 
                     List<RuleEntry> ruleEntries = mDb.ruleDao().findRulesForArrivalPlace(arrivalId);
@@ -121,9 +123,27 @@ public class NewSoundRuleActivity extends AppCompatActivity {
 
                             for (RuleEntry rule : ruleEntries) {
 
-                                if (rule.getType().equals(SOUND) || rule.getType().equals(SOUNDOFF)) {
-                                    rule.setType(type);
-                                    mDb.ruleDao().updateRule(rule);
+                                if ((rule.getType().equals(SOUND) || rule.getType().equals(SOUNDOFF)) && rule.getDepartureId() == null) {
+                                    if (type.equals(rule.getType())) {
+                                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Toast.makeText(getApplicationContext(), getString(R.string.already_saved), Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+
+                                    } else {
+                                        rule.setType(type);
+                                        mDb.ruleDao().updateRule(rule);
+
+                                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Toast.makeText(getApplicationContext(), getString(R.string.setting_changed), Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+
+                                    }
                                     update = true;
                                     break;
                                 }
@@ -132,6 +152,12 @@ public class NewSoundRuleActivity extends AppCompatActivity {
 
                         if (!update){
                             mDb.ruleDao().insertRule(ruleEntry);
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getApplicationContext(), getString(R.string.rule_saved_toast), Toast.LENGTH_LONG).show();
+                                }
+                            });
                         }
 
                     } else {
@@ -144,9 +170,27 @@ public class NewSoundRuleActivity extends AppCompatActivity {
 
 
                             if (depId == departureAnywhereId && (rule.getType().equals(SOUND) || rule.getType().equals(SOUNDOFF))) {
+                                if (type.equals(rule.getType())) {
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getApplicationContext(), getString(R.string.already_saved), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
+                                } else {
+                                    rule.setType(type);
+                                    mDb.ruleDao().updateRule(rule);
+
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getApplicationContext(), getString(R.string.setting_changed), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
+                                }
                                 update = true;
-                                rule.setType(type);
-                                mDb.ruleDao().updateRule(rule);
                                 break;
                             }
                         }
@@ -155,6 +199,12 @@ public class NewSoundRuleActivity extends AppCompatActivity {
 
                         if (!update) {
                             mDb.ruleDao().insertRule(ruleEntry);
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getApplicationContext(), getString(R.string.rule_saved_toast), Toast.LENGTH_LONG).show();
+                                }
+                            });
                         }
                     }
                 }
@@ -200,9 +250,29 @@ public class NewSoundRuleActivity extends AppCompatActivity {
 
                         for (RuleEntry rule : ruleEntries) {
 
-                            if (rule.getArrivalId() == null && rule.getType().equals(SOUND) || rule.getType().equals(SOUNDOFF)) {
-                                rule.setType(type);
-                                mDb.ruleDao().updateRule(rule);
+                            if (rule.getArrivalId() == null && (rule.getType().equals(SOUND) || rule.getType().equals(SOUNDOFF))) {
+
+                                if (type.equals(rule.getType())) {
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getApplicationContext(), getString(R.string.already_saved), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
+                                } else {
+                                    rule.setType(type);
+                                    mDb.ruleDao().updateRule(rule);
+
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getApplicationContext(), getString(R.string.setting_changed), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
+                                }
+
                                 update = true;
                                 break;
                             }
@@ -211,6 +281,13 @@ public class NewSoundRuleActivity extends AppCompatActivity {
 
                     if (!update){
                         mDb.ruleDao().insertRule(ruleEntry);
+
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), getString(R.string.rule_saved_toast), Toast.LENGTH_LONG).show();
+                            }
+                        });
                     }
                 }
             });

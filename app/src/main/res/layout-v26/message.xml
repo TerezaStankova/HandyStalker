@@ -53,9 +53,9 @@
             android:onClick="onSaveMessageButtonClick"
             android:padding="8dp"
             android:text="@string/save_text"
-            android:textAppearance="@style/myButtonStyleSmall"
-            app:srcCompat="@android:drawable/ic_menu_save"
-            android:textColor="@color/text_color_primary"/>
+            android:textAppearance="@style/myDetailTitleStyle"
+            android:textColor="@color/text_color_primary"
+            app:srcCompat="@android:drawable/ic_menu_save" />
     </LinearLayout>
 
 
@@ -70,15 +70,7 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/save_message_layout">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/my_text_messages"
-            android:textAppearance="@style/myDetailTitleStyle" />
+        app:layout_constraintStart_toStartOf="parent">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/texts_list_recycler_view"

@@ -7,6 +7,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.app.android.handystalker.R;
 import com.app.android.handystalker.database.AppDatabase;
@@ -141,13 +144,26 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
                     for (RuleEntry rule : ruleEntries) {
 
                         if (rule.getArrivalId() == null && rule.getType().equals(type)) {
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getApplicationContext(), getString(R.string.already_saved), Toast.LENGTH_LONG).show();
+                                }
+                            });
                             update = true;
+                            break;
                         }
                     }
                 }
 
                 if (!update){
                     mDb.ruleDao().insertRule(ruleEntry);
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), getString(R.string.rule_saved_toast), Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
 
             }});
@@ -173,8 +189,14 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
 
                         for (RuleEntry rule : ruleEntries) {
 
-                            if (rule.getType().equals(type)) {
+                            if (rule.getType().equals(type) && rule.getDepartureId() == null) {
                                 update = true;
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(getApplicationContext(), getString(R.string.already_saved), Toast.LENGTH_LONG).show();
+                                    }
+                                });
                                 break;
                             }
                         }
@@ -182,6 +204,12 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
 
                     if (!update){
                         mDb.ruleDao().insertRule(ruleEntry);
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), getString(R.string.rule_saved_toast), Toast.LENGTH_LONG).show();
+                            }
+                        });
                     }
 
                 } else {
@@ -195,6 +223,12 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
 
                             if (depId == departureAnywhereId && (rule.getType().equals(type))) {
                                 update = true;
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(getApplicationContext(), getString(R.string.already_saved), Toast.LENGTH_LONG).show();
+                                    }
+                                });
                                 break;
                             }
                         }
@@ -203,6 +237,12 @@ public class NewNotificationRuleActivity extends AppCompatActivity {
 
                     if (!update) {
                         mDb.ruleDao().insertRule(ruleEntry);
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), getString(R.string.rule_saved_toast), Toast.LENGTH_LONG).show();
+                            }
+                        });
                     }
                 }
 

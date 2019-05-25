@@ -179,4 +179,8 @@
     <string name="type_phone">Zadejte telefoní číslo.</string>
     <string name="add_text">Zadejte nejprve text zprávy.</string>
     <string name="place_name">Zadejte jméno místa, jinak nebude uloženo. Klikněte teď na ikonu lokace značící místo k uložení.</string>
+    <string name="change_existing_place_rule">V pravidle se shodnou lokací a kontaktem byl změněn text zprávy.</string>
+    <string name="already_saved">Toto pravidlo je již nastaveno.</string>
+    <string name="setting_changed">Nastavení změněno</string>
+    <string name="storage">Povolte nejprve ukládání dat.</string>
 </resources>

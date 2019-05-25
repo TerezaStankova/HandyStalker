@@ -14,7 +14,7 @@
         android:elevation="6dp"
         android:onClick="onAddContactButtonClicked"
         android:text="@string/add_new_contact"
-        android:textAppearance="@style/myButtonStyleSmall"
+        android:textAppearance="@style/myDetailTitleStyle"
         android:textColor="@color/text_color_primary"
         android:visibility="visible" />
 
