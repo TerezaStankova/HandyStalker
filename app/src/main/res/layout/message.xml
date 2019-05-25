@@ -34,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:layout_margin="8dp"
             android:hint="@string/hi_i_am_home"
             android:inputType="textShortMessage|textLongMessage"
             android:lines="5"

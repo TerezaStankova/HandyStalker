@@ -40,6 +40,7 @@ public class WifiRulesActivity extends AppCompatActivity {
     private LinearLayoutManager layoutManager;
 
     private static final int MY_PERMISSIONS_REQUEST_WIFI = 1234;
+    private static final int PERMISSIONS_REQUEST_STORAGE = 161;
 
     // Final String to store state information about the rules
     private static final String RULES = "rules";
@@ -79,6 +80,18 @@ public class WifiRulesActivity extends AppCompatActivity {
     }
 
     public void onAddSendRulesButtonClicked(View view) {
+            goToNewRule();
+    }
+
+    private void goToNewRule(){
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            //Toast.makeText(this, getString(R.string.storage), Toast.LENGTH_LONG).show();
+            ActivityCompat.requestPermissions(WifiRulesActivity.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    PERMISSIONS_REQUEST_STORAGE);
+            return;
+        }
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CHANGE_WIFI_STATE)
@@ -198,14 +211,18 @@ public class WifiRulesActivity extends AppCompatActivity {
             mListState = state.getParcelable(LIST_STATE_KEY);
     }
 
-    /*public void onWifiPermissionClicked(View view) {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.CHANGE_WIFI_STATE},
-                MY_PERMISSIONS_REQUEST_WIFI);
-    }*/
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission was granted
+                    goToNewRule();
+                }
+            }
+        }
+    }
 }
-
-
-
-
