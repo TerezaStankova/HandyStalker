@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.design.widget.CoordinatorLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,15 +13,14 @@
         android:layout_margin="8dp"
         android:orientation="vertical">
 
-
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
             android:layout_margin="16dp"
             android:background="@drawable/rounded_button"
-            android:contentDescription="@string/add_new_rule"
-            android:onClick="onAddSoundRulesButtonClicked"
+            android:contentDescription="@string/add_new_contact"
+            android:onClick="onAddSendRulesButtonClicked"
             android:text="@string/new_rule"
             android:textAppearance="@style/myButtonStyleSmall"
             android:textColor="@color/text_color_primary" />
@@ -39,7 +38,7 @@
 
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/soundrules_list_recycler_view"
+            android:id="@+id/handyrules_list_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
@@ -47,4 +46,4 @@
     </LinearLayout>
 
 
-</android.support.design.widget.CoordinatorLayout>
+</ScrollView>

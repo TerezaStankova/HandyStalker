@@ -6,6 +6,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -92,41 +94,7 @@ public class AddTextDepartureFragment extends Fragment {
         //There is a library out there that helps you taking permissions.
         //https://github.com/googlesamples/easypermissions
 
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.SEND_SMS)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Permission is not granted
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.SEND_SMS)) {
-                // Show an explanation to the user *asynchronously*
-            } else {
-                // No explanation needed
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.SEND_SMS},
-                        MY_PERMISSIONS_REQUEST_SEND_SMS);
-            }
-        } else {
-            // Permission has already been granted
-            String name = (String) contactNameSpinner.getSelectedItem();
-            Log.d("rules entred", "r " + departureId + contactId + messageId + type);
-
-            if (name != null && departureId != null) {
-                final RuleEntry ruleEntry = new RuleEntry(null, departureId, contactId, messageId, type, false);
-                Log.d("rules entred", "r " + departureId + contactId + messageId + type);
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Insert new rule
-                        mDb.ruleDao().insertRule(ruleEntry);
-
-                    }
-                });
-            }
-
-            Intent intent = new Intent(getActivity(), TextRulesActivity.class);
-            startActivity(intent);
-        }
+        saveRule();
     }
 
 
@@ -156,11 +124,53 @@ public class AddTextDepartureFragment extends Fragment {
                     @Override
                     public void run() {
                         // Insert new rule
-                        mDb.ruleDao().insertRule(ruleEntry);
+                        List<RuleEntry> ruleEntries = mDb.ruleDao().findRulesForDeparturePlace(departureId);
+                        boolean update = false;
 
-                    }
+
+                            for (RuleEntry rule : ruleEntries) {
+
+
+                                    if (rule.getType().equals(type) && contactId.equals(rule.getContactId())) {
+                                        if ((rule.getMessageId() == null && messageId == null) || (rule.getMessageId() != null && rule.getMessageId().equals(messageId))) {
+                                            update = true;
+                                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Toast.makeText(getContext(), getString(R.string.already_saved), Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+                                            break;
+                                        } else {
+                                            rule.setMessageId(messageId);
+                                            mDb.ruleDao().insertRule(rule);
+                                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Toast.makeText(getContext(), getString(R.string.change_existing_place_rule), Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+                                            break;
+                                        }
+                                    }
+
+                            }
+
+                            if (!update) {
+                                Log.d("rules entred update", "r " + update);
+                                mDb.ruleDao().insertRule(ruleEntry);
+
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(getContext(), getString(R.string.rule_saved_toast), Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                        }
+
+
                 });
-                Toast.makeText(getContext(), R.string.rule_saved_toast, Toast.LENGTH_LONG).show();
             }
 
             Intent intent = new Intent(getActivity(), TextRulesActivity.class);

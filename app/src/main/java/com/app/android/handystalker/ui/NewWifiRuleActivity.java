@@ -6,6 +6,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.app.android.handystalker.R;
 import com.app.android.handystalker.database.AppDatabase;
@@ -102,35 +105,11 @@ public class NewWifiRuleActivity extends AppCompatActivity {
             } else {
 
                 if (arrival) {
-
                     // Permission has already been granted
-                    final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureAnywhereId, contactId, null, type, false);
-                    Log.d("rules entred", "r " + arrivalId + contactId + type);
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Insert new rule
-                            mDb.ruleDao().insertRule(ruleEntry);
-
-                        }
-                    });
-
+                    saveArrivalInDatabase();
                 } else {
-                    final RuleEntry ruleEntry = new RuleEntry(null, departureId, contactId, null, type, false);
-                    Log.d("rules entred", "r " + departureId + contactId + type);
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            // insert new rule
-                            mDb.ruleDao().insertRule(ruleEntry);
-
-                        }
-                    });
+                    saveDepartureInDatabase();
                 }
-
-
-                Intent intent = new Intent(this, WifiRulesActivity.class);
-                startActivity(intent);
             }
     }
 
@@ -287,6 +266,117 @@ public class NewWifiRuleActivity extends AppCompatActivity {
         }
     }
 
+    private void saveArrivalInDatabase(){
+        final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureAnywhereId, contactId, null, type, false);
+        Log.d("rules entred", "r " +  arrivalId + contactId + type);
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                // insert new contact
+
+                List<RuleEntry> ruleEntries = mDb.ruleDao().findRulesForArrivalPlace(arrivalId);
+                boolean update = false;
+
+                if (departureAnywhereId == null) {
+
+
+                    if(ruleEntries != null && ruleEntries.size() > 0){
+
+                        for (RuleEntry rule : ruleEntries) {
+
+                            if ((rule.getType().equals(WIFI) || rule.getType().equals(WIFIOFF)) && rule.getDepartureId() == null) {
+                                if (type.equals(rule.getType())) {
+
+                                    Log.d("rules entred", "r "  );
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getApplicationContext(), getString(R.string.already_saved), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
+                                } else {
+                                    rule.setType(type);
+                                    mDb.ruleDao().updateRule(rule);
+
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getApplicationContext(), getString(R.string.setting_changed), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
+                                }
+                                update = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!update){
+                        mDb.ruleDao().insertRule(ruleEntry);
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), getString(R.string.rule_saved_toast), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+
+                } else {
+
+
+                    for (RuleEntry rule : ruleEntries) {
+
+                        if (rule.getDepartureId() != null) {
+                            int depId = rule.getDepartureId();
+
+
+                            if (depId == departureAnywhereId && (rule.getType().equals(WIFI) || rule.getType().equals(WIFIOFF))) {
+                                if (type.equals(rule.getType())) {
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getApplicationContext(), getString(R.string.already_saved), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
+                                } else {
+                                    rule.setType(type);
+                                    mDb.ruleDao().updateRule(rule);
+
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getApplicationContext(), getString(R.string.setting_changed), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
+                                }
+                                update = true;
+                                break;
+                            }
+                        }
+
+                    }
+
+                    if (!update) {
+                        mDb.ruleDao().insertRule(ruleEntry);
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), getString(R.string.rule_saved_toast), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+        Intent intent = new Intent(this, WifiRulesActivity.class);
+        startActivity(intent);
+    }
+
     public void onSaveWifiArrivalRuleClick(View view) {
 
         if (onWifi) {type = WIFI;} else {
@@ -311,66 +401,71 @@ public class NewWifiRuleActivity extends AppCompatActivity {
         } else {
             // Permission has already been granted
 
-            final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureAnywhereId, contactId, null, type, false);
-                Log.d("rules entred", "r " +  arrivalId + contactId + type);
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        // insert new contact
+            saveArrivalInDatabase();
+        }
+    }
 
-                        List<RuleEntry> ruleEntries = mDb.ruleDao().findRulesForArrivalPlace(arrivalId);
-                        boolean update = false;
+        private void saveDepartureInDatabase(){
+            final RuleEntry ruleEntry = new RuleEntry(null, departureId, contactId, null, type, false);
+            Log.d("rules entred", "r " + departureId + contactId + type);
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    // insert new contact
 
-                        if (departureAnywhereId == null) {
+                    List<RuleEntry> ruleEntries = mDb.ruleDao().findRulesForDeparturePlace(departureId);
+                    boolean update = false;
 
+                    if(ruleEntries != null && ruleEntries.size() > 0){
 
-                            if(ruleEntries != null && ruleEntries.size() > 0){
+                        for (RuleEntry rule : ruleEntries) {
 
-                                for (RuleEntry rule : ruleEntries) {
+                            if (rule.getArrivalId() == null && (rule.getType().equals(WIFI) || rule.getType().equals(WIFIOFF))) {
 
-                                    if (rule.getType().equals(WIFI) || rule.getType().equals(WIFIOFF)) {
-                                        rule.setType(type);
-                                        mDb.ruleDao().updateRule(rule);
-                                        update = true;
-                                        break;
-                                    }
+                                if (type.equals(rule.getType())) {
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getApplicationContext(), getString(R.string.already_saved), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
+                                } else {
+                                    rule.setType(type);
+                                    mDb.ruleDao().updateRule(rule);
+
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getApplicationContext(), getString(R.string.setting_changed), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
                                 }
 
-                            }
-
-                            if (!update){
-                                mDb.ruleDao().insertRule(ruleEntry);
-                            }
-
-                        } else {
-
-                            for (RuleEntry rule : ruleEntries) {
-
-                                if (rule.getDepartureId() != null) {
-                                    int depId = rule.getDepartureId();
-
-
-                                    if (depId == departureAnywhereId && (rule.getType().equals(WIFI) || rule.getType().equals(WIFIOFF))) {
-                                        update = true;
-                                        rule.setType(type);
-                                        mDb.ruleDao().updateRule(rule);
-                                        break;
-                                    }
-                                }
-
-                            }
-
-                            if (!update) {
-                                mDb.ruleDao().insertRule(ruleEntry);
+                                update = true;
+                                break;
                             }
                         }
                     }
-                });
+
+                    if (!update){
+                        mDb.ruleDao().insertRule(ruleEntry);
+
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), getString(R.string.rule_saved_toast), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                }
+            });
 
             Intent intent = new Intent(this, WifiRulesActivity.class);
             startActivity(intent);
         }
-    }
+
 
         public void onSaveWifiDepartureRuleClick(View view) {
 
@@ -395,38 +490,7 @@ public class NewWifiRuleActivity extends AppCompatActivity {
             }
         } else {
             // Permission has already been granted
-
-                final RuleEntry ruleEntry = new RuleEntry(null, departureId, contactId, null, type, false);
-                Log.d("rules entred", "r " + departureId + contactId + type);
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        // insert new contact
-
-                        List<RuleEntry> ruleEntries = mDb.ruleDao().findRulesForDeparturePlace(departureId);
-                        boolean update = false;
-
-                        if(ruleEntries != null && ruleEntries.size() > 0){
-
-                            for (RuleEntry rule : ruleEntries) {
-
-                                if (rule.getArrivalId() == null && rule.getType().equals(WIFI) || rule.getType().equals(WIFIOFF)) {
-                                    rule.setType(type);
-                                    mDb.ruleDao().updateRule(rule);
-                                    update = true;
-                                }
-                            }
-                        }
-
-                        if (!update){
-                            mDb.ruleDao().insertRule(ruleEntry);
-                        }
-
-                    }
-                });
-
-            Intent intent = new Intent(this, WifiRulesActivity.class);
-            startActivity(intent);
+                saveDepartureInDatabase();
         }
     }
 }

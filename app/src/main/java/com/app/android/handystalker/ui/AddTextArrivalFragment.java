@@ -6,6 +6,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -97,6 +99,12 @@ public class AddTextArrivalFragment extends Fragment {
 
         //There is a library out there that helps you taking permissions.
         //https://github.com/googlesamples/easypermissions
+        saveRule();
+
+    }
+
+
+    public void saveRule(){
 
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.SEND_SMS)
@@ -124,54 +132,119 @@ public class AddTextArrivalFragment extends Fragment {
                     @Override
                     public void run() {
                         // Insert new rule
-                        mDb.ruleDao().insertRule(ruleEntry);
 
-                    }
+
+                        List<RuleEntry> ruleEntries = mDb.ruleDao().findRulesForArrivalPlace(arrivalId);
+                        boolean update = false;
+
+
+                        if (departureId == null) {
+
+                            if(ruleEntries != null && ruleEntries.size() > 0){
+
+                                for (RuleEntry rule : ruleEntries) {
+                                    if (rule.getType().equals(type)) {
+
+                                        if (contactId.equals(rule.getContactId()) && rule.getDepartureId() == null) {
+                                            if ((rule.getMessageId() == null && messageId == null) || (rule.getMessageId() != null && rule.getMessageId().equals(messageId))) {
+                                                update = true;
+                                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Toast.makeText(getContext(), getString(R.string.already_saved), Toast.LENGTH_LONG).show();
+                                                    }
+                                                });
+
+
+                                                break;
+                                            } else {
+                                                rule.setMessageId(messageId);
+                                                mDb.ruleDao().insertRule(rule);
+
+                                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Toast.makeText(getContext(), getString(R.string.change_existing_place_rule), Toast.LENGTH_LONG).show();
+                                                    }
+                                                });
+
+                                                break;
+                                            }
+
+                                        }
+                                    }
+                                }
+
+                            }
+
+                            if (!update){
+                                mDb.ruleDao().insertRule(ruleEntry);
+
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Toast.makeText(getContext(), getString(R.string.rule_saved_toast), Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+
+                                    }
+                                });
+                            }
+
+                        } else {
+
+                            for (RuleEntry rule : ruleEntries) {
+                                if (rule.getType().equals(type)) {
+
+                                    if (rule.getDepartureId() != null && rule.getArrivalId().equals(arrivalId)) {
+                                        int depId = rule.getDepartureId();
+
+                                        if (depId == departureId && contactId.equals(rule.getContactId())) {
+                                            update = true;
+                                            if ((rule.getMessageId() == null && messageId == null) || (rule.getMessageId() != null && rule.getMessageId().equals(messageId))) {
+
+
+                                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Toast.makeText(getContext(), getString(R.string.already_saved), Toast.LENGTH_LONG).show();
+                                                    }
+                                                });
+
+                                                break;
+                                            } else {
+                                                rule.setMessageId(messageId);
+                                                mDb.ruleDao().insertRule(rule);
+
+                                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Toast.makeText(getContext(), getString(R.string.change_existing_place_rule), Toast.LENGTH_LONG).show();
+                                                    }
+                                                });
+
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+
+                            if (!update) {
+                                mDb.ruleDao().insertRule(ruleEntry);
+                            }
+
+                        }}
                 });
             }
 
             Intent intent = new Intent(getActivity(), TextRulesActivity.class);
             startActivity(intent);
         }
-    }
-
-
-    public void saveRule(){
-
-            if (ContextCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.SEND_SMS)
-                    != PackageManager.PERMISSION_GRANTED) {
-
-                // Permission is not granted
-                if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                        Manifest.permission.SEND_SMS)) {
-                } else {
-                    // No explanation needed
-                    ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{Manifest.permission.SEND_SMS},
-                            MY_PERMISSIONS_REQUEST_SEND_SMS);
-                }
-            } else {
-                // Permission has already been granted
-                Log.d("rules entred", "r " + arrivalId + departureId + contactId + type);
-                String name = (String) contactNameSpinner.getSelectedItem();
-                if (name != null && arrivalId != null) {
-                    final RuleEntry ruleEntry = new RuleEntry(arrivalId, departureId, contactId, messageId, type, false);
-                    Log.d("rules entred", "r " + arrivalId + departureId + contactId + messageId + type);
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Insert new rule
-                            mDb.ruleDao().insertRule(ruleEntry);
-
-                        }
-                    });
-                    Toast.makeText(getContext(), R.string.rule_saved_toast, Toast.LENGTH_LONG).show();
-                }
-
-                Intent intent = new Intent(getActivity(), TextRulesActivity.class);
-                startActivity(intent);
-            }
         }
 
 

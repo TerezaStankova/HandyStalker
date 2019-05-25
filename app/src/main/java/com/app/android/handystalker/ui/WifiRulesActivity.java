@@ -11,6 +11,7 @@ import android.os.Looper;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -79,6 +80,24 @@ public class WifiRulesActivity extends AppCompatActivity {
 
     public void onAddSendRulesButtonClicked(View view) {
 
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CHANGE_WIFI_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.CHANGE_WIFI_STATE)) {
+                // Show an explanation to the user *asynchronously*
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CHANGE_WIFI_STATE},
+                        MY_PERMISSIONS_REQUEST_WIFI);
+            }
+
+            return;
+        }
+
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -90,7 +109,8 @@ public class WifiRulesActivity extends AppCompatActivity {
                     public void run() {
                         if (countPlaces == 0) {
                             Toast.makeText(getApplicationContext(), getString(R.string.one_place), Toast.LENGTH_LONG).show();
-                            return;
+                            Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                            startActivity(intent);
                         } else {
                             Intent intent = new Intent(getApplicationContext(), NewWifiRuleActivity.class);
                             startActivity(intent);
@@ -133,21 +153,19 @@ public class WifiRulesActivity extends AppCompatActivity {
     }
 
 
-    //ToDo: set it as not required in Manifest
-
     @Override
     public void onResume() {
         super.onResume();
 
         // Initialize permissions checkbox
-        CheckBox wifiPermissions = findViewById(R.id.wifi_permission_checkbox);
+        /*CheckBox wifiPermissions = findViewById(R.id.wifi_permission_checkbox);
         if (ActivityCompat.checkSelfPermission(WifiRulesActivity.this,
                 Manifest.permission.CHANGE_WIFI_STATE) != PackageManager.PERMISSION_GRANTED) {
             wifiPermissions.setChecked(false);
         } else {
             wifiPermissions.setChecked(true);
             wifiPermissions.setEnabled(false);
-        }
+        }*/
 
         if (mListState != null) {
             layoutManager.onRestoreInstanceState(mListState);
@@ -180,11 +198,11 @@ public class WifiRulesActivity extends AppCompatActivity {
             mListState = state.getParcelable(LIST_STATE_KEY);
     }
 
-    public void onWifiPermissionClicked(View view) {
+    /*public void onWifiPermissionClicked(View view) {
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.CHANGE_WIFI_STATE},
                 MY_PERMISSIONS_REQUEST_WIFI);
-    }
+    }*/
 
 }
 

@@ -90,7 +90,7 @@
     <string name="stalker_update_toast">Stalker updated successfully</string>
     <string name="new_stalker_toast">New stalker saved successfully</string>
 
-    <string name="rule_saved_toast">Rule stalker saved successfully</string>
+    <string name="rule_saved_toast">Rule saved successfully</string>
 
     <string name="new_message_toast">New text saved successfully</string>
 
@@ -179,5 +179,9 @@
     <string name="type_phone">Type phone number first!</string>
     <string name="add_text">Add some text first!</string>
     <string name="place_name">Add place name before saving it. Click the location icon to add its name.</string>
+
+    <string name="change_existing_place_rule">Text was changed successfully!</string>
+    <string name="already_saved">This rule is already in use.</string>
+    <string name="setting_changed">Setting changed successfully!</string>
 
 </resources>
