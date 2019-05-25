@@ -9,7 +9,6 @@
 
 
     <LinearLayout
-        android:id="@+id/save_message_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -17,47 +16,55 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/save_message_layout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/add_a_text_message"
-            android:textAppearance="@style/myDetailTitleStyle" />
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="4"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/messageText_editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints="@string/insert"
-            android:ems="10"
-            android:layout_margin="8dp"
-            android:hint="@string/hi_i_am_home"
-            android:inputType="textShortMessage|textLongMessage"
-            android:lines="5"
-            android:maxLength="160"
-            android:minLines="2" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/add_a_text_message"
+                android:textAppearance="@style/myDetailTitleStyle" />
 
+            <EditText
+                android:id="@+id/messageText_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_margin="8dp"
+                android:hint="@string/hi_i_am_home"
+                android:inputType="textShortMessage|textLongMessage"
+                android:lines="5"
+                android:maxLength="160"
+                android:minLines="2" />
+
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/save_text_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_margin="8dp"
+            android:layout_weight="1"
             android:background="@drawable/rounded_button"
             android:clickable="true"
             android:focusable="true"
             android:onClick="onSaveMessageButtonClick"
-            android:padding="8dp"
             android:text="@string/save_text"
             android:textAppearance="@style/myDetailTitleStyle"
             android:textColor="@color/text_color_primary"
             app:srcCompat="@android:drawable/ic_menu_save" />
+
+
     </LinearLayout>
 
 

@@ -230,11 +230,6 @@ public class PlacesActivity extends AppCompatActivity {
         }
     }
 
-    public void onLocationPermissionClicked(View view) {
-        ActivityCompat.requestPermissions(PlacesActivity.this,
-                new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                PERMISSIONS_REQUEST_FINE_LOCATION);
-    }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState)
@@ -260,7 +255,7 @@ public class PlacesActivity extends AppCompatActivity {
     public void OnMapButtonClicked(View view) {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, getString(R.string.need_location_permission_message), Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, getString(R.string.need_location_permission_message), Toast.LENGTH_LONG).show();
             ActivityCompat.requestPermissions(PlacesActivity.this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_FINE_LOCATION);
@@ -269,7 +264,7 @@ public class PlacesActivity extends AppCompatActivity {
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, getString(R.string.storage), Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, getString(R.string.storage), Toast.LENGTH_LONG).show();
             ActivityCompat.requestPermissions(PlacesActivity.this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     PERMISSIONS_REQUEST_STORAGE);
@@ -301,7 +296,7 @@ public class PlacesActivity extends AppCompatActivity {
     public void goToMap(){
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, getString(R.string.need_location_permission_message), Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, getString(R.string.need_location_permission_message), Toast.LENGTH_LONG).show();
             ActivityCompat.requestPermissions(PlacesActivity.this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_FINE_LOCATION);

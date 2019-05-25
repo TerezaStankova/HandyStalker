@@ -1,13 +1,16 @@
 package com.app.android.handystalker.ui;
 
+import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,6 +39,7 @@ public class NotificationsActivity extends AppCompatActivity {
 
     // Final String to store state information about the rules
     private static final String RULES = "rules";
+    private static final int PERMISSIONS_REQUEST_STORAGE = 161;
 
     private static final String LIST_STATE_KEY = "list_state";
     // Member variable for the Database
@@ -71,6 +75,20 @@ public class NotificationsActivity extends AppCompatActivity {
 
     public void onAddNotificationRulesButtonClicked(View view) {
 
+        goToNewRule();
+
+    }
+
+    private void goToNewRule(){
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            //Toast.makeText(this, getString(R.string.storage), Toast.LENGTH_LONG).show();
+            ActivityCompat.requestPermissions(NotificationsActivity.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    PERMISSIONS_REQUEST_STORAGE);
+            return;
+        }
+
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -81,7 +99,8 @@ public class NotificationsActivity extends AppCompatActivity {
                     public void run() {
                         if (countPlaces == 0) {
                             Toast.makeText(getApplicationContext(), getString(R.string.one_place), Toast.LENGTH_LONG).show();
-                            return;
+                            Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                            startActivity(intent);
                         } else  {
                             Intent intent = new Intent(getApplicationContext(), NewNotificationRuleActivity.class);
                             startActivity(intent);
@@ -90,7 +109,6 @@ public class NotificationsActivity extends AppCompatActivity {
                 });
             }
         });
-
     }
 
     private void showRulesDataView() {
@@ -159,5 +177,20 @@ public class NotificationsActivity extends AppCompatActivity {
         // Retrieve list state and list/item positions
         if(state != null)
             mListState = state.getParcelable(LIST_STATE_KEY);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission was granted
+                    goToNewRule();
+                }
+            }
+        }
     }
 }

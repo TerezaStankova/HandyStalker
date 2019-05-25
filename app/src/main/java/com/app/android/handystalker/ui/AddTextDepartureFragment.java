@@ -132,8 +132,8 @@ public class AddTextDepartureFragment extends Fragment {
 
 
                                     if (rule.getType().equals(type) && contactId.equals(rule.getContactId())) {
+                                        update = true;
                                         if ((rule.getMessageId() == null && messageId == null) || (rule.getMessageId() != null && rule.getMessageId().equals(messageId))) {
-                                            update = true;
                                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                                 @Override
                                                 public void run() {

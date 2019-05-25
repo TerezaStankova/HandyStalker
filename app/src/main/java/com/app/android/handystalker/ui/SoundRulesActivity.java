@@ -1,14 +1,17 @@
 package com.app.android.handystalker.ui;
 
+import android.Manifest;
 import android.app.NotificationManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +38,7 @@ public class SoundRulesActivity extends AppCompatActivity {
     //Variable to save position in the list
     private Parcelable mListState;
     private LinearLayoutManager layoutManager;
+    private static final int PERMISSIONS_REQUEST_STORAGE = 161;
 
     private static final String LIST_STATE_KEY = "list_state";
     // Member variable for the Database
@@ -71,6 +75,10 @@ public class SoundRulesActivity extends AppCompatActivity {
     }
 
     public void onAddSoundRulesButtonClicked(View view) {
+        goToNewRule();
+    }
+
+    private void goToNewRule(){
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         // Check if the API supports such permission change and check if permission is granted
@@ -83,6 +91,17 @@ public class SoundRulesActivity extends AppCompatActivity {
             startActivity(intent);
             return;
         }
+
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            //Toast.makeText(this, getString(R.string.storage), Toast.LENGTH_LONG).show();
+            ActivityCompat.requestPermissions(SoundRulesActivity.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    PERMISSIONS_REQUEST_STORAGE);
+            return;
+        }
+
 
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
@@ -186,15 +205,19 @@ public class SoundRulesActivity extends AppCompatActivity {
             mListState = state.getParcelable(LIST_STATE_KEY);
     }
 
-    /*public void onSoundPermissionClicked(View view) {
-        Intent intent = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission was granted
+                    goToNewRule();
+                }
+            }
         }
-        startActivity(intent);
-    }*/
+    }
 }
-
-
-
 

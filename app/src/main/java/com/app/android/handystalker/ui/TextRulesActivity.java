@@ -43,6 +43,7 @@ public class TextRulesActivity extends AppCompatActivity {
 
 
     private static final int PERMISSIONS_REQUEST = 2222;
+    private static final int PERMISSIONS_REQUEST_STORAGE = 161;
 
     // Final String to store state information about the rules
     private static final String RULES = "rules";
@@ -89,11 +90,20 @@ public class TextRulesActivity extends AppCompatActivity {
             return;
         }
 
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            //Toast.makeText(this, getString(R.string.storage), Toast.LENGTH_LONG).show();
+            ActivityCompat.requestPermissions(TextRulesActivity.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    PERMISSIONS_REQUEST_STORAGE);
+            return;
+        }
+
         checkDatabase();
 
     }
 
-    private void checkDatabase(){
+    private void checkDatabase() {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -112,8 +122,7 @@ public class TextRulesActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), getString(R.string.one_contact), Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(getApplicationContext(), NewContactActivity.class);
                             startActivity(intent);
-                        }
-                        else {
+                        } else {
                             Intent intent = new Intent(getApplicationContext(), NewTextRuleActivity.class);
                             startActivity(intent);
                         }
@@ -139,16 +148,16 @@ public class TextRulesActivity extends AppCompatActivity {
         viewModel.getRules().observe(this, new Observer<List<RuleEntry>>() {
             @Override
             public void onChanged(@Nullable List<RuleEntry> ruleEntries) {
-                Log.d("message", "Updating list of rules from LiveData in ViewModel"  + ruleEntries.size() );
+                Log.d("message", "Updating list of rules from LiveData in ViewModel" + ruleEntries.size());
                 if (ruleEntries.size() == 0) {
                     hideRulesDataView();
                     return;
                 }
 
                 if (ruleEntries != null) {
-                        showRulesDataView();
-                        mAdapter.setTextRule(true);
-                        mAdapter.setRulesFromDatabase(ruleEntries);
+                    showRulesDataView();
+                    mAdapter.setTextRule(true);
+                    mAdapter.setRulesFromDatabase(ruleEntries);
                 }
             }
 
@@ -188,8 +197,7 @@ public class TextRulesActivity extends AppCompatActivity {
 
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState)
-    {
+    public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
         // Save list state
@@ -202,7 +210,7 @@ public class TextRulesActivity extends AppCompatActivity {
         super.onRestoreInstanceState(state);
 
         // Retrieve list state and list/item positions
-        if(state != null)
+        if (state != null)
             mListState = state.getParcelable(LIST_STATE_KEY);
     }
 
@@ -225,6 +233,14 @@ public class TextRulesActivity extends AppCompatActivity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted
+                    checkDatabase();
+                }
+            }
+            case PERMISSIONS_REQUEST_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission was granted
                     checkDatabase();
                 }
             }

@@ -146,8 +146,9 @@ public class AddTextArrivalFragment extends Fragment {
                                     if (rule.getType().equals(type)) {
 
                                         if (contactId.equals(rule.getContactId()) && rule.getDepartureId() == null) {
+                                            update = true;
                                             if ((rule.getMessageId() == null && messageId == null) || (rule.getMessageId() != null && rule.getMessageId().equals(messageId))) {
-                                                update = true;
+
                                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                                     @Override
                                                     public void run() {
@@ -170,7 +171,6 @@ public class AddTextArrivalFragment extends Fragment {
 
                                                 break;
                                             }
-
                                         }
                                     }
                                 }
@@ -217,6 +217,7 @@ public class AddTextArrivalFragment extends Fragment {
 
                                                 break;
                                             } else {
+                                                update = true;
                                                 rule.setMessageId(messageId);
                                                 mDb.ruleDao().insertRule(rule);
 
