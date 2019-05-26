@@ -18,7 +18,6 @@ You can also easily turn on/off sound or Wi-Fi while you are inside a place (hom
 + Room
 + Places API
 + **Geofences** 
-+ **Widget** 
 + Leverage a third-party library.
 
 **Please insert your API key in Manifest.** https://developers.google.com/places/web-service/get-api-key
