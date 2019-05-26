@@ -213,16 +213,12 @@ public class Geofencing {
             final Place place = place1;
 
 
-
-
             //Context context = getApplicationContext();
             mDb = AppDatabase.getInstance(mContext);
 
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
-
-
 
                     String requestId = String.valueOf(mDb.placeDao().findIdByPlaceId(placeID));
 
